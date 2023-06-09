@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipesApi", "RecipesApi\RecipesApi.csproj", "{4DC2D2AE-21F4-4C2A-AD56-9473486B3447}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{8C1656EF-08CA-4928-A195-1D2981B90551}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DC2D2AE-21F4-4C2A-AD56-9473486B3447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DC2D2AE-21F4-4C2A-AD56-9473486B3447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DC2D2AE-21F4-4C2A-AD56-9473486B3447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DC2D2AE-21F4-4C2A-AD56-9473486B3447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C1656EF-08CA-4928-A195-1D2981B90551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C1656EF-08CA-4928-A195-1D2981B90551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C1656EF-08CA-4928-A195-1D2981B90551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C1656EF-08CA-4928-A195-1D2981B90551}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DFACC040-D0F1-4DAE-AFDE-82ADF00BB751}
+	EndGlobalSection
+EndGlobal
