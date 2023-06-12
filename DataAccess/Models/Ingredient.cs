@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Models;
 
-internal class Ingredients
+internal class Ingredient
 {
-    //list of meats
-    //list of spices
-    //list ofvegetables
-    //list of fruits
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+
+    public string Description { get; set; } 
 }

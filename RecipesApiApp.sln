@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipesApi", "RecipesApi\RecipesApi.csproj", "{4DC2D2AE-21F4-4C2A-AD56-9473486B3447}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApi", "RecipesApi\RecipesApi.csproj", "{4DC2D2AE-21F4-4C2A-AD56-9473486B3447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{8C1656EF-08CA-4928-A195-1D2981B90551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{8C1656EF-08CA-4928-A195-1D2981B90551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeLibrary", "RecipeLibrary\RecipeLibrary.csproj", "{B055A927-3023-44C2-9424-DD9F1AED1BEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{8C1656EF-08CA-4928-A195-1D2981B90551}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C1656EF-08CA-4928-A195-1D2981B90551}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C1656EF-08CA-4928-A195-1D2981B90551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B055A927-3023-44C2-9424-DD9F1AED1BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B055A927-3023-44C2-9424-DD9F1AED1BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B055A927-3023-44C2-9424-DD9F1AED1BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B055A927-3023-44C2-9424-DD9F1AED1BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
