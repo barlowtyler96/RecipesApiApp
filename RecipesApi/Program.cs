@@ -12,7 +12,7 @@ builder.Services.AddAuthorization(opts =>
     opts.AddPolicy(PolicyConstants.MustBeAnAdmin, policy =>
     {
         policy.RequireClaim("true");
-    });// might need to add fallback authorization hereeeeeeeeeeeeeee
+    });
 });
 
 builder.Services.AddHealthChecks()
