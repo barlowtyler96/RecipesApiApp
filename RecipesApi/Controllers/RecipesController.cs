@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using RecipeLibrary.Models;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RecipesApi.Controllers;
@@ -10,33 +10,36 @@ public class RecipesController : ControllerBase
 {
     // GET: api/Recipes
     [HttpGet]
-    public IEnumerable<string> Get()
+    public ActionResult<IEnumerable<RecipeModel>> Get()
     {
-        return new string[] { "value1", "value2" };
+        throw new NotImplementedException();
     }
 
     // GET api/Recipes
     [HttpGet("{id}")]
-    public string Get(int id)
+    public ActionResult<RecipeModel> Get(int id)
     {
-        return "value";
+        throw new NotImplementedException();
     }
 
     // POST api/Recipes
     [HttpPost]
-    public void Post([FromBody] string value)
+    public IActionResult Post([FromBody] string value)
     {
+        throw new NotImplementedException();
     }
 
     // PUT api/Recipes/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public IActionResult Put(int id, [FromBody] string value)
     {
+        throw new NotImplementedException();
     }
 
     // DELETE api/Recipes/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public IActionResult Delete(int id)
     {
+        throw new NotImplementedException();
     }
 }
