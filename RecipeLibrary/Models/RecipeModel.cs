@@ -9,8 +9,6 @@ public class RecipeModel
 
     public string? Description { get; set; }
 
-    public List<Ingredient>? Ingredients { get; set; }
-
     public string? Instructions { get; set; }
 
 }
