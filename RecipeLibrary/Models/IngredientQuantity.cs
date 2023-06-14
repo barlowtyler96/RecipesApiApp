@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RecipeLibrary.Models;
 
-namespace RecipeLibrary.Models
+internal class IngredientQuantity
 {
-    internal class IngredientQuantity
-    {
-    }
+    public int Id { get; set; } 
+
+    public string? Quantity { get; set; }
 }

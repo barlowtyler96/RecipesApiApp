@@ -1,5 +1,4 @@
-﻿
-namespace RecipeLibrary.Models;
+﻿namespace RecipeLibrary.Models;
 
 public class RecipeModel
 {

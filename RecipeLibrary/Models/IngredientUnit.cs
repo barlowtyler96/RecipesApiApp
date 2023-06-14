@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RecipeLibrary.Models;
 
-namespace RecipeLibrary.Models
+internal class IngredientUnit
 {
-    internal class MeasurementUnit
-    {
-    }
+    public int Id { get; set; }
+
+    public string? Unit { get; set; }
+
 }
