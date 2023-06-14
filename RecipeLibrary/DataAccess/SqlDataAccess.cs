@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace RecipeLibrary.DataAccess;
 
-public class SqlDataAccess
+public class SqlDataAccess : ISqlDataAccess
 {
     private readonly IConfiguration _config;
 
@@ -14,7 +14,7 @@ public class SqlDataAccess
         _config = config;
     }
 
-    
+
 
     public async Task<List<T>> LoadData<T, U>(
         string storedProcedure,
@@ -45,8 +45,8 @@ public class SqlDataAccess
     //    return rows;
     //}
 
-    public Task SaveData<T>(string storedProcedure, 
-        T parameters, 
+    public Task SaveData<T>(string storedProcedure,
+        T parameters,
         string connectionStringName)
     {
         string connectionString = _config.GetConnectionString(connectionStringName);
@@ -54,8 +54,8 @@ public class SqlDataAccess
         using IDbConnection connection = new SqlConnection(connectionString);
 
         return connection.ExecuteAsync(
-            storedProcedure, 
-            parameters, 
+            storedProcedure,
+            parameters,
             commandType: CommandType.StoredProcedure);
     }
 }
