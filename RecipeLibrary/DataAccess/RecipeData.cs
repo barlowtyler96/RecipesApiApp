@@ -12,10 +12,10 @@ public class RecipeData
     }
 
     //GET
-    public Task<List<RecipeModel>> GetNameDescription()
+    public Task<List<RecipeModel>> GetAll()
     {
         return _sql.LoadData<RecipeModel, dynamic>(
-            "dbo.spRecipes_GetNameDescription",
+            "dbo.spRecipes_GetAll",
             new { },
             "Default");
     }
@@ -34,11 +34,13 @@ public class RecipeData
     //POST
     public async Task<RecipeModel?> Create(string name, 
         string description, 
-        string instructions)
+        string instructions,
+        string ingredients)
     {
         var results = await _sql.LoadData<RecipeModel, dynamic>(
             "dbo.spRecipes_Create",
-            new { Name = name, Description = description, Instructions = instructions },
+            new { Name = name, Description = description, 
+                  Instructions = instructions, Ingredients = ingredients },
             "Default");
 
         return results.FirstOrDefault();
@@ -46,11 +48,12 @@ public class RecipeData
 
     //PUT
     public Task UpdateAllColumns(int recipesId, string name, 
-        string description, string instructions)
+        string description, string instructions, string ingredients)
     {
         return _sql.SaveData<dynamic>(
             "dbo.spRecipes_UpdateAll",
-            new { RecipesId =  recipesId, Name = name, Description = description, Instructions = instructions},
+            new { RecipesId =  recipesId, Name = name, 
+                  Description = description, Instructions = instructions, Ingredients = ingredients },
             "Default");
     }
 }

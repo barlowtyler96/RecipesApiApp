@@ -10,4 +10,6 @@ public class RecipeModel
 
     public string? Instructions { get; set; }
 
+    public string? Ingredients { get; set; }
+
 }
