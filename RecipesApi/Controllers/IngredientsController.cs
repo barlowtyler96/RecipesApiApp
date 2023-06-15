@@ -11,21 +11,21 @@ namespace RecipesApi.Controllers;
 [ApiController]
 public class IngredientsController : ControllerBase
 {
-    // GET: api/<IngredientController>
+    // GET: api/Ingredient
     [HttpGet]
-    public ActionResult<IEnumerable<Ingredient>> Get()
+    public ActionResult<IEnumerable<IngredientModel>> Get()
     {
         throw new NotImplementedException();
     }
 
-    // GET api/<IngredientController>/5
+    // GET api/Ingredient/5
     [HttpGet("{id}")]
-    public ActionResult<Ingredient> Get(int id)
+    public ActionResult<IngredientModel> Get(int id)
     {
         throw new NotImplementedException();
     }
 
-    // POST api/<IngredientController>
+    // POST api/Ingredient
     [HttpPost]
     [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
     public IActionResult Post([FromBody] string value)
@@ -33,7 +33,7 @@ public class IngredientsController : ControllerBase
         throw new NotImplementedException();
     }
 
-    // PUT api/<IngredientController>/5
+    // PUT api/Ingredient/5
     [HttpPut("{id}")]
     [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
     public IActionResult Put(int id, [FromBody] string value)
@@ -41,7 +41,7 @@ public class IngredientsController : ControllerBase
         throw new NotImplementedException();
     }
 
-    // DELETE api/<IngredientController>/5
+    // DELETE api/Ingredient/5
     [HttpDelete("{id}")]
     [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
     public IActionResult Delete(int id)

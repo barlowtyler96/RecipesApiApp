@@ -45,7 +45,8 @@ public class RecipeData
     }
 
     //PUT
-    public Task UpdateAll(int recipesId, string name, string description, string instructions)
+    public Task UpdateAllColumns(int recipesId, string name, 
+        string description, string instructions)
     {
         return _sql.SaveData<dynamic>(
             "dbo.spRecipes_UpdateAll",
