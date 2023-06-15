@@ -51,7 +51,7 @@ public class RecipeData
         string description, string instructions, string ingredients)
     {
         return _sql.SaveData<dynamic>(
-            "dbo.spRecipes_UpdateAll",
+            "dbo.spRecipes_UpdateAllColumns",
             new { RecipesId =  recipesId, Name = name, 
                   Description = description, Instructions = instructions, Ingredients = ingredients },
             "Default");
