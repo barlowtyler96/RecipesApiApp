@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
 using RecipesApi.Constants;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,6 +11,13 @@ namespace RecipesApi.Controllers;
 [ApiController]
 public class RecipesController : ControllerBase
 {
+    private readonly IRecipeData _data;
+
+    public RecipesController(IRecipeData data)
+    {
+        _data = data;
+    }
+
     // GET: api/Recipes
     [HttpGet]
     public ActionResult<IEnumerable<RecipeModel>> Get()
