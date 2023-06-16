@@ -56,4 +56,14 @@ public class RecipeData
                   Description = description, Instructions = instructions, Ingredients = ingredients },
             "Default");
     }
+
+    //DELETE
+    public Task Delete(int recipesId)
+    {
+        return _sql.SaveData<dynamic>(
+            "dbo.spRecipes_Delete",
+            new
+            { RecipesId = recipesId },
+            "Default");
+    }
 }
