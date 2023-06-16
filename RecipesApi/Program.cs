@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
+builder.Services.AddSingleton<IRecipeData, RecipeData>();
 builder.Services.AddAuthorization(opts =>
 {
     opts.AddPolicy(PolicyConstants.MustBeAnAdmin, policy =>
