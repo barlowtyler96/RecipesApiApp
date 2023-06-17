@@ -20,30 +20,34 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes
     [HttpGet]
-    public ActionResult<IEnumerable<RecipeModel>> Get()
+    public async Task<ActionResult<List<RecipeModel>>> Get()
     {
-        throw new NotImplementedException();
+        var output = await _data.GetAll();
+        return Ok(output);
     }
 
     // GET api/Recipes
-    [HttpGet("{id}")]
-    public ActionResult<RecipeModel> Get(int id)
+    [HttpGet("{name}")]
+    public async Task<ActionResult<RecipeModel>> Get(string name)
     {
-        throw new NotImplementedException();
+        var output = await _data.GetByName(name);
+        return Ok(output);
     }
 
     // POST api/Recipes
     [HttpPost]
     [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
-    public IActionResult Post([FromBody] string value)
+    public async Task<ActionResult<RecipeModel>> Post([FromBody] RecipeModel recipeModel)
     {
-        throw new NotImplementedException();
+        var output = await _data.Create(recipeModel.Name, recipeModel.Description, 
+                                        recipeModel.Ingredients, recipeModel.Instructions);
+        return Ok(output);
     }
 
     // PUT api/Recipes/5
     [HttpPut("{id}")]
     [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
-    public IActionResult Put(int id, [FromBody] string value)
+    public IActionResult Put([FromBody] RecipeModel recipeModel)
     {
         throw new NotImplementedException();
     }

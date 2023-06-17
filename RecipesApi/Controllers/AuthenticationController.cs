@@ -19,7 +19,7 @@ public class AuthenticationController : ControllerBase
     }
 
     public record AuthenticationData(string? UserName, string? Password);
-    public record UserData(int Id, string FirstName, string LastName, string UserName, bool IsAdmin);
+    public record UserData(int Id, string UserName, bool IsAdmin);
 
     [HttpPost("token")]
     [AllowAnonymous]
@@ -46,10 +46,8 @@ public class AuthenticationController : ControllerBase
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
         List<Claim> claims = new();
-        claims.Add(new(JwtRegisteredClaimNames.Sub, user.Id.ToString())); // might not need these for authorization
+        claims.Add(new(JwtRegisteredClaimNames.Sub, user.Id.ToString())); 
         claims.Add(new(JwtRegisteredClaimNames.UniqueName, user.UserName));
-        claims.Add(new(JwtRegisteredClaimNames.GivenName, user.FirstName));
-        claims.Add(new(JwtRegisteredClaimNames.FamilyName, user.LastName));
         claims.Add(new("isAdmin", user.IsAdmin.ToString()));
 
         var token = new JwtSecurityToken(
@@ -68,13 +66,13 @@ public class AuthenticationController : ControllerBase
         if(CompareValues(data.UserName, "tbarlow") &&
             CompareValues(data.Password, "Test123"))
         {
-            return new UserData(1, "Tyler", "Barlow", data.UserName!, true);
+            return new UserData(1, data.UserName!, true); //REPLACE WITH CALL TO UserDB
         }
 
         if (CompareValues(data.UserName, "sstorm") &&
             CompareValues(data.Password, "Test123"))
         {
-            return new UserData(1, "Sue", "Storm", data.UserName!, false);
+            return new UserData(1, data.UserName!, false); //REPLACE WITH CALL TO UserDB
         }
         return null;
     }

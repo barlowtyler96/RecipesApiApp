@@ -43,8 +43,8 @@ public class RecipeData : IRecipeData
             {
                 Name = name,
                 Description = description,
-                Instructions = instructions,
-                Ingredients = ingredients
+                Ingredients = ingredients,
+                Instructions = instructions
             },
             "Default");
 

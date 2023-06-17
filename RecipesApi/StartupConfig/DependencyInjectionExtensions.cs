@@ -12,8 +12,6 @@ public static class DependencyInjectionExtensions
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        
-        
     }
 
     public static void AddCustomServices(this WebApplicationBuilder builder)
@@ -34,7 +32,7 @@ public static class DependencyInjectionExtensions
         {
             opts.AddPolicy(PolicyConstants.MustBeAnAdmin, policy =>
             {
-                policy.RequireClaim("true");
+                policy.RequireClaim("isAdmin", "True");
             });
         });
 
