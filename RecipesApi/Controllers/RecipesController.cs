@@ -88,7 +88,7 @@ public class RecipesController : ControllerBase
 
         try
         {
-            await _data.UpdateAllColumns(recipeId, recipeModel);
+            await _data.UpdateAllColumns(recipeId, recipeModel); 
             return Ok();
         }
         catch (Exception ex)
