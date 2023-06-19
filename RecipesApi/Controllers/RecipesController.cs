@@ -65,8 +65,7 @@ public class RecipesController : ControllerBase
         _logger.LogInformation("POST: api/Recipes");
         try
         {
-            var output = await _data.Create(recipeModel.Name, recipeModel.Description,
-                                            recipeModel.Ingredients, recipeModel.Instructions);
+            var output = await _data.Create(recipeModel);
             return Ok(output);
         }
         catch (Exception ex)

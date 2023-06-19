@@ -32,19 +32,16 @@ public class RecipeData : IRecipeData
     }
 
     //POST
-    public async Task<RecipeModel?> Create(string name,
-        string description,
-        string instructions,
-        string ingredients)
+    public async Task<RecipeModel?> Create(RecipeModel recipeModel)
     {
         var results = await _sql.LoadData<RecipeModel, dynamic>(
             "dbo.spRecipes_Create",
             new
             {
-                Name = name,
-                Description = description,
-                Ingredients = ingredients,
-                Instructions = instructions
+                Name = recipeModel.Name,
+                Description = recipeModel.Description,
+                Ingredients = recipeModel.Ingredients,
+                Instructions = recipeModel.Instructions
             },
             "Default");
 
