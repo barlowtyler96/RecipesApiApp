@@ -97,9 +97,9 @@ public class RecipesController : ControllerBase
         {
             _logger.LogError(
                 ex,
-                "The PUT call to api/Recipes/ failed. Recipe model was " +
+                "The PUT call to api/Recipes/{RecipeId} failed. Recipe model was " +
                 "Name: {Name} Description: {Description} Ingredients: {Ingredients} Instructions: {Instructions}",
-                recipeModel.Name, recipeModel.Description, recipeModel.Ingredients, recipeModel.Instructions);
+                recipeId, recipeModel.Name, recipeModel.Description, recipeModel.Ingredients, recipeModel.Instructions);
             return BadRequest();
         }
     }
@@ -119,7 +119,7 @@ public class RecipesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError("The DELETE call to api/Recipes/{RecipeId} failed", recipeId);
+            _logger.LogError(ex, "The DELETE call to api/Recipes/{RecipeId} failed", recipeId);
             return BadRequest();
         }
     }
