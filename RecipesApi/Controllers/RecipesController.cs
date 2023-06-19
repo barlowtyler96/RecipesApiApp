@@ -38,7 +38,7 @@ public class RecipesController : ControllerBase
     }
 
     // GET api/Recipes
-    [HttpGet("{id}")]
+    [HttpGet("{recipeId}")]
     public async Task<ActionResult<RecipeModel>> Get(int recipeId)
     {
         _logger.LogInformation("GET: api/Recipes/{RecipeId}", recipeId);
