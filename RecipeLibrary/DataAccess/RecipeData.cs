@@ -49,18 +49,17 @@ public class RecipeData : IRecipeData
     }
 
     //PUT
-    public Task UpdateAllColumns(int recipesId, string name,
-        string description, string instructions, string ingredients)
+    public Task UpdateAllColumns(int recipesId, RecipeModel recipeModel)
     {
         return _sql.SaveData<dynamic>(
             "dbo.spRecipes_UpdateAllColumns",
             new
             {
                 RecipesId = recipesId,
-                Name = name,
-                Description = description,
-                Instructions = instructions,
-                Ingredients = ingredients
+                Name = recipeModel.Name,
+                Description = recipeModel.Description,
+                Instructions = recipeModel.Instructions,
+                Ingredients = recipeModel.Ingredients
             },
             "Default");
     }
