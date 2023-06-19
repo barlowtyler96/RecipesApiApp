@@ -45,7 +45,7 @@ public class SqlDataAccess : ISqlDataAccess
     //    return rows;
     //}
 
-    public Task SaveData<T>(string storedProcedure,
+    public async Task SaveData<T>(string storedProcedure,
         T parameters,
         string connectionStringName)
     {
@@ -53,7 +53,7 @@ public class SqlDataAccess : ISqlDataAccess
 
         using IDbConnection connection = new SqlConnection(connectionString);
 
-        return connection.ExecuteAsync(
+        await connection.ExecuteAsync(
             storedProcedure,
             parameters,
             commandType: CommandType.StoredProcedure);

@@ -21,11 +21,11 @@ public class RecipeData : IRecipeData
     }
 
     //GET
-    public async Task<RecipeModel?> GetByName(string name)
+    public async Task<RecipeModel?> GetById(int id)
     {
         var results = await _sql.LoadData<RecipeModel, dynamic>(
-            "dbo.spRecipes_GetByName",
-            new { Name = name },
+            "dbo.spRecipes_GetById",
+            new { Id = id },
             "Default");
 
         return results.FirstOrDefault();

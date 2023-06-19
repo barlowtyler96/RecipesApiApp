@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
 using RecipesApi.Constants;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RecipesApi.Controllers;
 
@@ -27,10 +26,10 @@ public class RecipesController : ControllerBase
     }
 
     // GET api/Recipes
-    [HttpGet("{name}")]
-    public async Task<ActionResult<RecipeModel>> Get(string name)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<RecipeModel>> Get(int id)
     {
-        var output = await _data.GetByName(name);
+        var output = await _data.GetById(id);
         return Ok(output);
     }
 
@@ -47,16 +46,20 @@ public class RecipesController : ControllerBase
     // PUT api/Recipes/5
     [HttpPut("{id}")]
     [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
-    public IActionResult Put([FromBody] RecipeModel recipeModel)
+    public async Task<ActionResult> Put(int id, [FromBody] RecipeModel recipeModel)
     {
-        throw new NotImplementedException();
+        await _data.UpdateAllColumns(id, recipeModel.Name, recipeModel.Description,
+                                            recipeModel.Ingredients, recipeModel.Instructions);
+        return Ok();
     }
 
     // DELETE api/Recipes/5
     [HttpDelete("{id}")]
     [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        throw new NotImplementedException();
+        await _data.Delete(id);
+
+        return Ok();
     }
 }
