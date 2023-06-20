@@ -1,0 +1,41 @@
+﻿@page "/allrecipes"
+@using System.Net.Http.Json
+@using System.Net.Http.Headers
+@inject IHttpClientFactory factory
+@inject TokenModel tokenInfo
+<PageTitle>All Recipes</PageTitle>
+
+<h1>Recipes</h1>
+
+@if (recipes == null)
+{
+    <div class="h1">Loading...</div>
+}
+else
+{
+    <div class="container">
+        <div class="row bg-dark">
+            @foreach(var r in recipes)
+            {
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                    <div class="card border-3 border-black rounded-4">
+                        <div class="h3">@r.Name</div>
+                        <div class="h5">@r.Description</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private List<RecipeModel>? recipes;
+    private HttpClient? client;
+
+    protected override async Task OnInitializedAsync()
+    {
+        client = factory.CreateClient("api");
+        //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenInfo.Token);
+        recipes = await client.GetFromJsonAsync<List<RecipeModel>>("Recipes");
+    }
+}
