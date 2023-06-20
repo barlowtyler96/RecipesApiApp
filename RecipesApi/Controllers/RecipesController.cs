@@ -37,6 +37,24 @@ public class RecipesController : ControllerBase
         }
     }
 
+    // GET: api/Recipes/recent
+    [HttpGet("{recent}")]
+    public async Task<ActionResult<List<RecipeModel>>> GetByDate()
+    {
+        _logger.LogInformation("GET: api/Recipes/recent");
+
+        try
+        {
+            var output = await _data.GetByDate();
+            return Ok(output);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The GET call to api/Recipes/recent failed.");
+            return BadRequest();
+        }
+    }
+
     // GET api/Recipes
     [HttpGet("{recipeId}")]
     public async Task<ActionResult<RecipeModel>> Get(int recipeId)

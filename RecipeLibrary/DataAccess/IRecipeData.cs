@@ -8,6 +8,7 @@ namespace RecipeLibrary.DataAccess
         Task Delete(int recipesId);
         Task<List<RecipeModel>> GetAll();
         Task<RecipeModel?> GetById(int id);
+        Task<List<RecipeModel>> GetByDate();
         Task UpdateAllColumns(int recipeId, RecipeModel recipeModel);
     }
 }
