@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApi", "RecipesApi\Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeLibrary", "RecipeLibrary\RecipeLibrary.csproj", "{B055A927-3023-44C2-9424-DD9F1AED1BEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipesBlazorUI", "RecipesBlazorUI\RecipesBlazorUI.csproj", "{BA48C112-FF57-4B27-80D9-EAD730539C54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesBlazorUI", "RecipesBlazorUI\RecipesBlazorUI.csproj", "{BA48C112-FF57-4B27-80D9-EAD730539C54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
