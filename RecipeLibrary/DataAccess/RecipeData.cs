@@ -41,7 +41,8 @@ public class RecipeData : IRecipeData
                 Name = recipeModel.Name,
                 Description = recipeModel.Description,
                 Ingredients = recipeModel.Ingredients,
-                Instructions = recipeModel.Instructions
+                Instructions = recipeModel.Instructions,
+                DateAdded = DateTime.UtcNow
             },
             "Default");
 
