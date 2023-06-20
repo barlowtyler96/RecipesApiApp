@@ -38,7 +38,7 @@ else
     {
         client = factory.CreateClient("api");
         //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenInfo.Token);
-        recipes = await client.GetFromJsonAsync<List<RecipeModel>>("Recipes");
+        recipes = await client.GetFromJsonAsync<List<RecipeModel>>("Recipes/recent");
     }
 }
 
