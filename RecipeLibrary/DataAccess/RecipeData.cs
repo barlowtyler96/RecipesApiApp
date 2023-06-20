@@ -31,6 +31,15 @@ public class RecipeData : IRecipeData
         return results.FirstOrDefault();
     }
 
+    //GET
+    public Task<List<RecipeModel>> GetByDate()
+    {
+        return _sql.LoadData<RecipeModel, dynamic>(
+            "dbo.spRecipes_GetByDate",
+            new { },
+            "Default");
+    }
+
     //POST
     public async Task<RecipeModel?> Create(RecipeModel recipeModel)
     {
