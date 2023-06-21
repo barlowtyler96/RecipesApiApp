@@ -5,9 +5,9 @@
 @inject TokenModel tokenInfo
 <PageTitle>Index</PageTitle>
 
-<h1 class="text-center">Hello! Welcome to my site. This is where I store some of my favorite recipes.</h1>
+<div class="h1 text-center">Hello! Welcome to my site. This is where I store some of my favorite recipes.</div>
 
-<h1 class="text-center">Recently Added Recipes</h1>
+<div class="h3 text-center">Recently Added Recipes</div>
 
 @if (recipes == null)
 {
@@ -15,14 +15,14 @@
 }
 else
 {
-    <div class="container">
-        <div class="row bg-dark">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
             @foreach (var r in recipes)
             {
-                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                    <div class="card border-3 border-black rounded-4">
-                        <div class="h3">@r.Name</div>
-                        <div class="h5">@r.Description</div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 m-3">
+                    <div class="card bg-dark text-center border-3 border-black rounded-4 h-100">
+                        <div class="h3 text-warning">@r.Name</div>
+                        <div class="h5 text-warning">@r.Description</div>
                     </div>
                 </div>
             }

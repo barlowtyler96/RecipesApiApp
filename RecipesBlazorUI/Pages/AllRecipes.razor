@@ -5,7 +5,7 @@
 @inject TokenModel tokenInfo
 <PageTitle>All Recipes</PageTitle>
 
-<h1>Recipes</h1>
+<div class="h1 text-center">Recipes</div>
 
 @if (recipes == null)
 {
@@ -13,12 +13,12 @@
 }
 else
 {
-    <div class="container">
-        <div class="row bg-dark">
+    <div class="container-fluid bg-dark">
+        <div class="row">
             @foreach(var r in recipes)
             {
-                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                    <div class="card border-3 border-black rounded-4">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 m-3">
+                    <div class="card text-center border-3 border-black rounded-4 h-100">
                         <div class="h3">@r.Name</div>
                         <div class="h5">@r.Description</div>
                     </div>

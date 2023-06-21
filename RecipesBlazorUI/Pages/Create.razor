@@ -1,0 +1,47 @@
+﻿@page "/create"
+@using System.Net.Http.Json
+@using System.Net.Http.Headers
+@inject IHttpClientFactory factory
+@inject TokenModel tokenInfo
+<PageTitle>Create</PageTitle>
+
+<h3>Create</h3>
+
+<div class="container">
+    <EditForm Model=@recipe>
+        <div class="form-group mb-3">
+            <label for="Name">Recipe Name</label>
+            <InputText @bind-Value=recipe.Name class="form-control" id="Name"/>
+            <div class="form-text">Please capitalize the first letter of each word. (ex: Pepperoni Pizza)</div>
+        </div>
+        <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="Description">
+            <div class="form-text">Please capitalize on a new sentence and use periods. Like this.</div>
+        </div>
+        <div class="mb-3">
+            <label for="Ingredients" class="form-label">Ingredients</label>
+            <input type="text" class="form-control" id="Ingredients ">
+            <div class="form-text">Please put a '-' between each ingredient. (ex: 1 cup flour - 1 egg)</div>
+        </div>
+        <div class="mb-3">
+            <label for="Instructions" class="form-label">Instructions</label>
+            <input type="text" class="form-control" id="Instructions">
+            <div class="form-text">Please capitalize on a new sentence and use periods. Like this.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+</div>
+
+
+@code {
+    private RecipeModel recipe =new RecipeModel();
+    private HttpClient? client;
+
+    private async void CreateRecipe(RecipeModel recipe) 
+    {
+        client = factory.CreateClient("api");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenInfo.Token);
+        await client.PostAsJsonAsync<RecipeModel>("Recipes", recipe);
+    }
+}
