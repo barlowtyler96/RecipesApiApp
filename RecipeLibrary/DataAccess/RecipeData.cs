@@ -68,8 +68,8 @@ public class RecipeData : IRecipeData
                 RecipesId = recipesId,
                 Name = recipeModel.Name,
                 Description = recipeModel.Description,
-                Instructions = recipeModel.Instructions,
-                Ingredients = recipeModel.Ingredients
+                Ingredients = recipeModel.Ingredients,
+                Instructions = recipeModel.Instructions
             },
             "Default");
     }

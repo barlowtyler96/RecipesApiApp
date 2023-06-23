@@ -32,7 +32,7 @@ public static class DependencyInjectionExtensions
         {
             opts.AddPolicy(PolicyConstants.MustBeAnAdmin, policy =>
             {
-                policy.RequireClaim("isAdmin", "True");
+                policy.RequireClaim(PolicyConstants.MustBeAnAdmin, "True");
             });
         });
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using RecipesApi.Constants;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -48,7 +49,7 @@ public class AuthenticationController : ControllerBase
         List<Claim> claims = new();
         claims.Add(new(JwtRegisteredClaimNames.Sub, user.Id.ToString())); 
         claims.Add(new(JwtRegisteredClaimNames.UniqueName, user.UserName));
-        claims.Add(new("isAdmin", user.IsAdmin.ToString()));
+        claims.Add(new(PolicyConstants.MustBeAnAdmin, user.IsAdmin.ToString()));
 
         var token = new JwtSecurityToken(
             _config.GetValue<string>("Authentication:Issuer"),
