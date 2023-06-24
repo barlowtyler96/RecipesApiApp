@@ -13,8 +13,8 @@
 }
 else
 {
-    <div class="container-fluid bg-dark">
-        <div class="row">
+    <div class="container-fluid bg-primary bg-dark">
+        <div class="row justify-content-center">
             @foreach(var r in recipes)
             {
                 <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 m-3">
@@ -35,7 +35,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         client = factory.CreateClient("api");
-        //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenInfo.Token);
         recipes = await client.GetFromJsonAsync<List<RecipeModel>>("Recipes");
     }
 }

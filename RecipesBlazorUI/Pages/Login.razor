@@ -5,22 +5,26 @@
 
 <PageTitle>Login</PageTitle>
 
-@if (isLoggedIn)
-{
-	<h1>You are logged in</h1>
-	<button class="btn btn-danger" @onclick="LogOut">Log Out</button>
-}
-else
-{
-	<h1>Please Log In</h1>
 
-	<EditForm Model="login" OnValidSubmit="HandleValidSubmit">
-		<InputText @bind-Value="login.UserName" />
-		<InputText type="password" @bind-Value="login.Password" />
+<div class="container-fluid justify-content-center">
+	@if (isLoggedIn)
+	{
+		<div class="h1">Log Out</div>
+		<button class="btn btn-danger" @onclick="LogOut">Log Out</button>
+	}
+	else
+	{
+		<div class="h1">Please Log In</div>
+		<EditForm Model="login" OnValidSubmit="HandleValidSubmit">
+			<InputText @bind-Value="login.UserName" />
+			<div class="form-text">Username</div>
+			<InputText type="password" @bind-Value="login.Password" />
+			<div class="form-text">Password</div>
+			<button class="btn btn-success" type="submit">Log In</button>
+		</EditForm>
+	}
+</div>
 
-		<button class="btn btn-success" type="submit">Log In</button>
-	</EditForm>
-}
 
 @code {
 	private AuthenticationModel login = new();

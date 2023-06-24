@@ -6,49 +6,59 @@
 <PageTitle>Create</PageTitle>
 
 <h3>Create</h3>
-@if (tokenInfo.Token is not null)
-{
-    <div class="container">
-        <EditForm Model=@recipe>
-            <div class="form-group mb-3">
-                <label for="Name">Recipe Name</label>
-                <InputText @bind-Value=recipe.Name class="form-control" id="Name" />
-                <div class="form-text">Please capitalize the first letter of each word. (ex: Pepperoni Pizza)</div>
-            </div>
-            <div class="form-group mb-3">
-                <label for="Description">Recipe Description</label>
-                <InputText @bind-Value=recipe.Description class="form-control" id="Description" />
-                <div class="form-text">Please capitalize and use periods on a new sentence. Like this.</div>
-            </div>
-            <div class="form-group mb-3">
-                <label for="Ingredients">Recipe Ingredients</label>
-                <InputText @bind-Value=recipe.Ingredients class="form-control" id="Ingredients" />
-                <div class="form-text">Please put a '-' between each ingredient. (ex: 1 cup flour - 1 egg).</div>
-            </div>
-            <div class="form-group mb-3">
-                <label for="Instructions">Recipe Instructions</label>
-                <InputText @bind-Value=recipe.Instructions class="form-control" id="Instructions" />
-                <div class="form-text">Please capitalize and use periods on a new sentence. Like this.</div>
-            </div>
-            <input type="submit" class="btn btn-primary" value="Submit" @onclick="() => CreateRecipe(recipe)" />
-        </EditForm>
-    </div>
-}
-else
-{
-    <div class="h1">You are not authorized to view this page. You must be an admin to submit a recipe</div>
-}
 
+
+
+<div class="container-fluid">
+    <EditForm Model=@recipe OnValidSubmit="SubmitRecipe">
+        <div class="form-group mb-3">
+            <label for="Name">Recipe Name</label>
+            <InputText @bind-Value=recipe.Name class="form-control" id="Name" />
+            <div class="form-text">Please capitalize the first letter of each word. (ex: Pepperoni Pizza)</div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="Description">Recipe Description</label>
+            <InputText @bind-Value=recipe.Description class="form-control" id="Description" />
+            <div class="form-text">Please capitalize and use periods on a new sentence. Like this.</div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="Ingredients">Recipe Ingredients</label>
+            <InputText @bind-Value=recipe.Ingredients class="form-control" id="Ingredients" />
+            <div class="form-text">Please put a '-' between each ingredient. (ex: 1 cup flour - 1 egg).</div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="Instructions">Recipe Instructions</label>
+            <InputText @bind-Value=recipe.Instructions class="form-control" id="Instructions" />
+            <div class="form-text">Please capitalize and use periods on a new sentence. Like this.</div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </EditForm>
+</div>
+
+<div>
+    @displayMessage
+</div>
 
 
 @code {
-    private HttpClient? client;
     private RecipeModel recipe = new();
-    private async void CreateRecipe(RecipeModel recipe) 
+    private HttpResponseMessage response;
+    private string displayMessage;
+
+    private async void SubmitRecipe()
     {
-        client = factory.CreateClient("api");
+        var client = factory.CreateClient("api");
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenInfo.Token);
-        //maybe read the isAdmin claim from token here and then use if(isAdmin up top)
-        var newRecipe = await client.PostAsJsonAsync<RecipeModel>("Recipes", recipe);
+        response = await client.PostAsJsonAsync<RecipeModel>("Administrator", recipe);
+        if (response.IsSuccessStatusCode)
+        {
+            displayMessage = "Your recipe has posted.";
+        }
+        else
+        {
+            displayMessage = "There was an error posting your submission. You are not authorized to submit a recipe. " +
+                             "You must be an admin.";
+        }
+        await InvokeAsync(StateHasChanged);
     }
 }
