@@ -67,13 +67,13 @@ public class AuthenticationController : ControllerBase
         if(CompareValues(data.UserName, "tbarlow") &&
             CompareValues(data.Password, "Test123"))
         {
-            return new UserData(1, data.UserName!, true); //REPLACE WITH CALL TO UserDB
+            return new UserData(1, data.UserName!, true);
         }
 
         if (CompareValues(data.UserName, "sstorm") &&
             CompareValues(data.Password, "Test123"))
         {
-            return new UserData(1, data.UserName!, false); //REPLACE WITH CALL TO UserDB
+            return new UserData(1, data.UserName!, false);
         }
         return null;
     }
