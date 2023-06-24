@@ -1,14 +1,24 @@
-﻿namespace RecipesBlazorUI.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RecipesBlazorUI.Models;
 
 public class RecipeModel
 {
 	public int Id { get; set; }
 
+	[Required]
+    [MaxLength(50)]
 	public string? Name { get; set; }
 
-	public string? Description { get; set; }
+    [Required]
+    [MaxLength(1000)]
+    public string? Description { get; set; }
 
-	public string? Ingredients { get; set; }
+    [Required]
+    [MaxLength(1000)]
+    public string? Ingredients { get; set; }
 
-	public string? Instructions { get; set; }
+    [Required]
+    [MaxLength(1000)]
+    public string? Instructions { get; set; }
 }
