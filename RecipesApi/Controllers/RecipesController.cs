@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
-using RecipesApi.Constants;
 
 namespace RecipesApi.Controllers;
 
@@ -55,7 +53,7 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET api/Recipes
+    // GET api/Recipes/5
     [HttpGet("{recipeId}")]
     public async Task<ActionResult<RecipeModel>> Get(int recipeId)
     {
@@ -71,71 +69,6 @@ public class RecipesController : ControllerBase
             _logger.LogError(
                 ex, 
                 "The GET call to {ApiPath} failed. The Id was {RecipeId}", $"api/Recipes/Id", recipeId);
-            return BadRequest();
-        }
-    }
-
-    // POST api/Recipes
-    [HttpPost]
-    [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
-    public async Task<ActionResult<RecipeModel>> Post([FromBody] RecipeModel recipeModel)
-    {
-        _logger.LogInformation("POST: api/Recipes");
-        try
-        {
-            var output = await _data.Create(recipeModel);
-            return Ok(output);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(
-                ex,
-                "The POST call to api/Recipes failed. Recipe model was " +
-                "Name: {Name} Description: {Description} Ingredients: {Ingredients} Instructions: {Instructions}",
-                recipeModel.Name, recipeModel.Description, recipeModel.Ingredients, recipeModel.Instructions);
-            return BadRequest();
-        }
-    }
-
-    // PUT api/Recipes/5
-    [HttpPut("{recipeId}")]
-    [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
-    public async Task<ActionResult> Put(int recipeId, [FromBody] RecipeModel recipeModel)
-    {
-        _logger.LogInformation("PUT: api/Recipes/{RecipeId}", recipeId);
-
-        try
-        {
-            await _data.UpdateAllColumns(recipeId, recipeModel); 
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(
-                ex,
-                "The PUT call to api/Recipes/{RecipeId} failed. Recipe model was " +
-                "Name: {Name} Description: {Description} Ingredients: {Ingredients} Instructions: {Instructions}",
-                recipeId, recipeModel.Name, recipeModel.Description, recipeModel.Ingredients, recipeModel.Instructions);
-            return BadRequest();
-        }
-    }
-
-    // DELETE api/Recipes/5
-    [HttpDelete("{recipeId}")]
-    [Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
-    public async Task<IActionResult> Delete(int recipeId)
-    {
-        _logger.LogInformation("DELETE: api/Recipes/{RecipeId}", recipeId);
-
-        try
-        {
-            await _data.Delete(recipeId);
-
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "The DELETE call to api/Recipes/{RecipeId} failed", recipeId);
             return BadRequest();
         }
     }
