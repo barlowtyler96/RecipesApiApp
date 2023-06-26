@@ -28,28 +28,5 @@ public static class DependencyInjectionExtensions
 
     public static void AddAuthServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddAuthorization(opts =>
-        {
-            opts.AddPolicy(PolicyConstants.MustBeAnAdmin, policy =>
-            {
-                policy.RequireClaim(PolicyConstants.MustBeAnAdmin, "True");
-            });
-        });
-
-        builder.Services.AddAuthentication("Bearer")
-            .AddJwtBearer(opts =>
-            {
-                opts.TokenValidationParameters = new()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration.GetValue<string>("Authentication:Issuer"),
-                    ValidAudience = builder.Configuration.GetValue<string>("Authentication:Audience"),
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.ASCII.GetBytes(
-                        builder.Configuration.GetValue<string>("Authentication:SecretKey")))
-                };
-            });
     }
 }
