@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace RecipesApi.StartupConfig;
 
@@ -34,7 +36,9 @@ public static class DependencyInjectionExtensions
             .AddMicrosoftIdentityWebApi(opts =>
             {
                 builder.Configuration.Bind("AzureAdB2C", opts);
+                opts.TokenValidationParameters.NameClaimType = "name";
             },
             opts => { builder.Configuration.Bind("AzureAdB2C", opts); });
+
     }
 }

@@ -7,8 +7,8 @@ using RecipesApi.Constants;
 
 namespace RecipesApi.Controllers;
 
-//[RequiredScope(PolicyConstants.RequireReadScope)]
 [Authorize]
+[RequiredScope(PolicyConstants.RequireReadScope)]
 [Route("api/[controller]")]
 [ApiController]
 public class RecipesController : ControllerBase
