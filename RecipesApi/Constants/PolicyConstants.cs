@@ -2,5 +2,5 @@
 
 public static class PolicyConstants
 {
-    public const string MustBeAnAdmin = "MustBeAnAdmin";
+    public const string RequireReadScope = "RequireReadScope";
 }

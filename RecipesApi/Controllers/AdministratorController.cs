@@ -8,9 +8,10 @@ using RecipesApi.Constants;
 
 namespace RecipesApi.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
-	public class AdministratorController : ControllerBase
+    [Authorize(Policy = PolicyConstants.RequireReadScope)]
+    public class AdministratorController : ControllerBase
 	{
 		private readonly IRecipeData _data;
 		private readonly ILogger _logger;
@@ -22,7 +23,6 @@ namespace RecipesApi.Controllers
 
 		// POST api/Administrator
 		[HttpPost]
-		[Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
 		public async Task<ActionResult<RecipeModel>> Post([FromBody] RecipeModel recipeModel)
 		{
 			_logger.LogInformation("POST: api/Administrator");
@@ -44,7 +44,6 @@ namespace RecipesApi.Controllers
 
 		// PUT api/Administrator/5
 		[HttpPut("{recipeId}")]
-		[Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
 		public async Task<ActionResult> Put(int recipeId, [FromBody] RecipeModel recipeModel)
 		{
 			_logger.LogInformation("PUT: api/Administrator/{RecipeId}", recipeId);
@@ -67,7 +66,6 @@ namespace RecipesApi.Controllers
 
 		// DELETE api/Administrator/5
 		[HttpDelete("{recipeId}")]
-		[Authorize(Policy = PolicyConstants.MustBeAnAdmin)]
 		public async Task<IActionResult> Delete(int recipeId)
 		{
 			_logger.LogInformation("DELETE: api/Administrator/{RecipeId}", recipeId);

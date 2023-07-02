@@ -1,13 +1,25 @@
-using RecipesBlazorUI.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+
+//builder.Services.AddTransient<ClientApiWithRolesService>();
+builder.Services.AddHttpClient();
+
+string[] initialScopes = builder.Configuration.GetValue<string>
+        ("ApiWithRoles:ScopeForAccessToken")?.Split(' ');
+
+builder.Services.AddMicrosoftIdentityWebAppAuthentication(builder.Configuration)
+            .EnableTokenAcquisitionToCallDownstreamApi()
+            .AddInMemoryTokenCaches();
+
+
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<TokenModel>();
 builder.Services.AddHttpClient("api", opts =>
 {
-	opts.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ApiUrl"));
+    opts.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ApiUrl"));
 });
 
 var app = builder.Build();
