@@ -1,10 +1,5 @@
-﻿using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Tokens;
-using RecipeLibrary.DataAccess;
-using RecipesApi.Constants;
+﻿using RecipeLibrary.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.Identity.Web;
 using System.IdentityModel.Tokens.Jwt;
 
