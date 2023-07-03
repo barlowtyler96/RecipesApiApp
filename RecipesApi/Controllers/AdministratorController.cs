@@ -10,7 +10,7 @@ namespace RecipesApi.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
-    [Authorize(Policy = PolicyConstants.RequireReadScope)]
+    [Authorize(Policy = PolicyConstants.ReadScope)]
     public class AdministratorController : ControllerBase
 	{
 		private readonly IRecipeData _data;
