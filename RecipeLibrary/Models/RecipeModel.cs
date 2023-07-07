@@ -13,4 +13,6 @@ public class RecipeModel
     public string? Instructions { get; set; }
 
     public DateTime DateAdded { get; set; } = DateTime.UtcNow;
+
+    public string ImagePath { get; set; }
 }
