@@ -51,7 +51,8 @@ public class RecipeData : IRecipeData
                 Description = recipeModel.Description,
                 Ingredients = recipeModel.Ingredients,
                 Instructions = recipeModel.Instructions,
-                DateAdded = DateTime.UtcNow
+                DateAdded = DateTime.UtcNow,
+                ImagePath = recipeModel.ImagePath
             },
             "Default");
 
@@ -69,7 +70,8 @@ public class RecipeData : IRecipeData
                 Name = recipeModel.Name,
                 Description = recipeModel.Description,
                 Ingredients = recipeModel.Ingredients,
-                Instructions = recipeModel.Instructions
+                Instructions = recipeModel.Instructions,
+                ImagePath = recipeModel.ImagePath
             },
             "Default");
     }
