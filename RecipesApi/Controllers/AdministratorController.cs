@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
 using RecipesApi.Constants;
@@ -8,14 +9,14 @@ using RecipesApi.Constants;
 
 namespace RecipesApi.Controllers
 {
+	[Authorize]
     [Route("api/[controller]")]
 	[ApiController]
-    [Authorize(Policy = PolicyConstants.ReadScope)]
     public class AdministratorController : ControllerBase
 	{
 		private readonly IRecipeData _data;
 		private readonly ILogger _logger;
-		public AdministratorController(IRecipeData data, ILogger<RecipesController> logger)
+		public AdministratorController(IRecipeData data, ILogger<AdministratorController> logger)
 		{
 			_data = data;
 			_logger = logger;
