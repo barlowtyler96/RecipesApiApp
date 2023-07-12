@@ -37,6 +37,5 @@ public static class DependencyInjectionExtensions
                 opts.TokenValidationParameters.NameClaimType = "name";
             },
             opts => { builder.Configuration.Bind("AzureAdB2C", opts); });
-
     }
 }
