@@ -51,7 +51,7 @@ public class RecipeData : IRecipeData
                 Description = recipeModel.Description,
                 Ingredients = recipeModel.Ingredients,
                 Instructions = recipeModel.Instructions,
-                DateAdded = DateTime.UtcNow,
+                DateAdded = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                 ImagePath = recipeModel.ImagePath
             },
             "Default");
