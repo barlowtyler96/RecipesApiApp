@@ -58,11 +58,11 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET: api/Recipes/search
-    [HttpGet("search")]
+    // GET: api/Recipes/keyword/{keyword}
+    [HttpGet("keyword/{keyword}")]
     public async Task<ActionResult<List<RecipeModel>>> GetByKeyword(string keyword)
     {
-        _logger.LogInformation("GET: api/Recipes/search");
+        _logger.LogInformation("GET: api/Recipes/{keyword}", keyword);
 
         try
         {
@@ -71,16 +71,16 @@ public class RecipesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Recipes/search failed.");
+            _logger.LogError(ex, "The GET call to api/Recipes/keyword/{keyword} failed.", keyword);
             return BadRequest();
         }
     }
 
-    // GET api/Recipes/5
-    [HttpGet("{recipeId}")]
+    // GET api/Recipes/id/5
+    [HttpGet("id/{recipeId}")]
     public async Task<ActionResult<RecipeModel>> Get(int recipeId)
     {
-        _logger.LogInformation("GET: api/Recipes/{RecipeId}", recipeId);
+        _logger.LogInformation("GET: api/Recipes/id/{RecipeId}", recipeId);
 
         try
         {
