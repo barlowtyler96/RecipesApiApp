@@ -10,5 +10,6 @@ namespace RecipeLibrary.DataAccess
         Task<RecipeModel?> GetById(int id);
         Task<List<RecipeModel>> GetByDate();
         Task UpdateAllColumns(int recipeId, RecipeModel recipeModel);
+        Task<List<RecipeModel>> GetByKeyword(string keyword);
     }
 }

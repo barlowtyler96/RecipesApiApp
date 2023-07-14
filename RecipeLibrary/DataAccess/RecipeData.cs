@@ -30,11 +30,19 @@ public class RecipeData : IRecipeData
 
         return results.FirstOrDefault();
     }
+    public async Task<List<RecipeModel>> GetByKeyword(string keyword)
+    {
+        var results = await _sql.LoadData<RecipeModel, dynamic>(
+            "dbo.spRecipes_GetByKeyword",
+            new { Keyword = keyword },
+            "Default");
+        return results;
+    }
 
     //GET
-    public Task<List<RecipeModel>> GetByDate()
+    public async Task<List<RecipeModel>> GetByDate()
     {
-        return _sql.LoadData<RecipeModel, dynamic>(
+        return await _sql.LoadData<RecipeModel, dynamic>(
             "dbo.spRecipes_GetByDate",
             new { },
             "Default");
