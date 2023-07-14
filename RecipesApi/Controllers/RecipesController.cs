@@ -58,6 +58,24 @@ public class RecipesController : ControllerBase
         }
     }
 
+    // GET: api/Recipes/search
+    [HttpGet("search")]
+    public async Task<ActionResult<List<RecipeModel>>> GetByKeyword()
+    {
+        _logger.LogInformation("GET: api/Recipes/search");
+
+        try
+        {
+            var output = await _data.GetByDate();
+            return Ok(output);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The GET call to api/Recipes/search failed.");
+            return BadRequest();
+        }
+    }
+
     // GET api/Recipes/5
     [HttpGet("{recipeId}")]
     public async Task<ActionResult<RecipeModel>> Get(int recipeId)
