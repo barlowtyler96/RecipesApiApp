@@ -60,13 +60,13 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes/search
     [HttpGet("search")]
-    public async Task<ActionResult<List<RecipeModel>>> GetByKeyword()
+    public async Task<ActionResult<List<RecipeModel>>> GetByKeyword(string keyword)
     {
         _logger.LogInformation("GET: api/Recipes/search");
 
         try
         {
-            var output = await _data.GetByDate();
+            var output = await _data.GetByKeyword(keyword);
             return Ok(output);
         }
         catch (Exception ex)
