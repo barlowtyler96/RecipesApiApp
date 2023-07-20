@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Configuration;
 
 namespace RecipesApi.StartupConfig;
 
@@ -28,14 +29,7 @@ public static class DependencyInjectionExtensions
 
     public static void AddAuthServices(this WebApplicationBuilder builder)
     {
-        JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(opts =>
-            {
-                builder.Configuration.Bind("AzureAdB2C", opts);
-                opts.TokenValidationParameters.NameClaimType = "name";
-            },
-            opts => { builder.Configuration.Bind("AzureAdB2C", opts); });
+            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
     }
 }
