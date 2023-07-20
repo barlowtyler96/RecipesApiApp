@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
+using RecipesApi.Constants;
 
 namespace RecipesApi.Controllers
 {
+    [Authorize]
+    [RequiredScope(PolicyConstants.ReadScope)]
     [Route("api/[controller]")]
 	[ApiController]
     public class AdministratorController : ControllerBase
