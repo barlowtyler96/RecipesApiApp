@@ -1,4 +1,5 @@
 ﻿using RecipeLibrary.Models;
+using System.Text;
 
 namespace RecipeLibrary.DataAccess;
 
@@ -30,12 +31,18 @@ public class RecipeData : IRecipeData
 
         return results.FirstOrDefault();
     }
-    public async Task<List<RecipeModel>> GetByKeyword(string keyword)
+
+    public async Task<PaginationResponse<List<RecipeModel>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize)
     {
-        var results = await _sql.LoadData<RecipeModel, dynamic>(
+        int skip = (currentPageNumber - 1) * pageSize;
+        int take = pageSize;
+
+        var results = await _sql.LoadMultiData<PaginationResponse<RecipeModel>, dynamic>(
             "dbo.spRecipes_GetByKeyword",
-            new { Keyword = keyword },
-            "Default");
+            new { Keyword = keyword, Skip = skip, Take = take}, 
+            "Default",
+            currentPageNumber,
+            pageSize);
         return results;
     }
 
