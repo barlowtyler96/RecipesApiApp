@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
-using RecipesApi.Constants;
 
 namespace RecipesApi.Controllers;
 
@@ -57,20 +55,20 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET: api/Recipes/keyword/{keyword}
-    [HttpGet("keyword/{keyword}")]
-    public async Task<ActionResult<List<RecipeModel>>> GetByKeyword(string keyword)
+    // GET: api/Recipes/keyword={keyword}/skip={skip}
+    [HttpGet("keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}")]
+    public async Task<ActionResult<PaginationResponse<List<RecipeModel>>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize)
     {
-        _logger.LogInformation("GET: api/Recipes/{keyword}", keyword);
+        _logger.LogInformation("GET: api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}", keyword, currentPageNumber, pageSize);
 
         try
         {
-            var output = await _data.GetByKeyword(keyword);
+            var output = await _data.GetByKeyword(keyword, currentPageNumber, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Recipes/keyword/{keyword} failed.", keyword);
+            _logger.LogError(ex, "The GET call to api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize} failed.", keyword, currentPageNumber, pageSize);
             return BadRequest();
         }
     }
