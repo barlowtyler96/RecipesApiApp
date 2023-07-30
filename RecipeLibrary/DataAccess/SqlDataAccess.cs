@@ -2,6 +2,7 @@
 using Dapper;
 using System.Data;
 using System.Data.SqlClient;
+using RecipeLibrary.Models;
 
 namespace RecipeLibrary.DataAccess;
 
@@ -14,14 +15,12 @@ public class SqlDataAccess : ISqlDataAccess
         _config = config;
     }
 
-
-
     public async Task<List<T>> LoadData<T, U>(
         string storedProcedure,
         U parameters,
         string connectionStringName)
     {
-        string connectionString = _config.GetConnectionString(connectionStringName);
+        string connectionString = _config.GetConnectionString(connectionStringName)!;
 
         using IDbConnection connection = new SqlConnection(connectionString);
 
@@ -30,26 +29,33 @@ public class SqlDataAccess : ISqlDataAccess
         return rows.ToList();
     }
 
-    // ABOVE THIS METHOD IS THE ASYNC VERSION
-    //public List<T> LoadData<T, U>(
-    //    string storedProcedure,
-    //    U parameters,
-    //    string connectionStringName)
-    //{
-    //    string connectionString = _config.GetConnectionString(connectionStringName);
+    public async Task<PaginationResponse<List<RecipeModel>>> LoadMultiData<T, U>(
+        string storedProcedure,
+        U parameters,
+        string connectionStringName,
+        int currentPageNumber, int pageSize)
+    {
+        string connectionString = _config.GetConnectionString(connectionStringName)!;
 
-    //    using IDbConnection connection = new SqlConnection(connectionString);
+        using IDbConnection connection = new SqlConnection(connectionString);
 
-    //    List<T> rows = connection.Query<T>(storedProcedure, parameters,
-    //        commandType: CommandType.StoredProcedure).ToList();
-    //    return rows;
-    //}
+        var reader = await connection.QueryMultipleAsync(storedProcedure, parameters,
+            commandType: CommandType.StoredProcedure);
+
+        int totalCount = reader.Read<int>().FirstOrDefault();
+        
+        List<RecipeModel> recipes = reader.Read<RecipeModel>().ToList();
+
+        var response = new PaginationResponse<List<RecipeModel>>(totalCount, recipes, currentPageNumber, pageSize);
+
+        return response;
+    }
 
     public async Task SaveData<T>(string storedProcedure,
         T parameters,
         string connectionStringName)
     {
-        string connectionString = _config.GetConnectionString(connectionStringName);
+        string connectionString = _config.GetConnectionString(connectionStringName)!;
 
         using IDbConnection connection = new SqlConnection(connectionString);
 
