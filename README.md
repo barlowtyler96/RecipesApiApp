@@ -10,9 +10,12 @@
 * SQL Server 2022
 * Azure AD
 * OAuth 2.0
+## Tools used:
 * Postman
 * Swagger
+* [jwt.io ](https://jwt.io/)
 
 ## Features: 
 * Secured with Azure AD
-* 
+* Server-side paging for pagination component
+* Basic logging with ILogger
