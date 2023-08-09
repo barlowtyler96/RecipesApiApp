@@ -10,6 +10,7 @@
 * SQL Server 2022
 * Azure AD
 * OAuth 2.0
+
 ## Tools used:
 * Postman
 * Swagger
