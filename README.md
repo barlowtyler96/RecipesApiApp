@@ -24,4 +24,4 @@
 * Basic logging with ILogger
 
 ## Sample Video: 
-[![Sample Video](https://img.youtube.com/vi/dlsZ7XV1Vsk/0.jpg)](https://www.youtube.com/watch?v=CcnFogJZYZ8
+[![Sample Video](https://img.youtube.com/vi/CcnFogJZYZ8/0.jpg)](https://www.youtube.com/watch?v=CcnFogJZYZ8)
