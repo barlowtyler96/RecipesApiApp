@@ -22,3 +22,6 @@
 * Endpoints secured with Azure AD
 * Server-side paging for pagination component
 * Basic logging with ILogger
+
+## Sample Video: 
+[![Sample Video](https://img.youtube.com/vi/dlsZ7XV1Vsk/0.jpg)](https://www.youtube.com/watch?v=CcnFogJZYZ8
