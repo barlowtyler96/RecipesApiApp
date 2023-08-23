@@ -55,11 +55,13 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET: api/Recipes/keyword={keyword}/skip={skip}
+    // GET: api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}
     [HttpGet("keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}")]
-    public async Task<ActionResult<PaginationResponse<List<RecipeModel>>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize)
+    public async Task<ActionResult<PaginationResponse<List<RecipeModel>>>> GetByKeyword(
+        string keyword, int currentPageNumber, int pageSize)
     {
-        _logger.LogInformation("GET: api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}", keyword, currentPageNumber, pageSize);
+        _logger.LogInformation("GET: api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}", 
+            keyword, currentPageNumber, pageSize);
 
         try
         {
@@ -68,7 +70,9 @@ public class RecipesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize} failed.", keyword, currentPageNumber, pageSize);
+            _logger.LogError(ex, 
+                "The GET call to api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize} failed.", 
+                keyword, currentPageNumber, pageSize);
             return BadRequest();
         }
     }
