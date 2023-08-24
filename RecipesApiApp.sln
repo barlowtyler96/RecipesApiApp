@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApi", "RecipesApi\Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeLibrary", "RecipeLibrary\RecipeLibrary.csproj", "{B055A927-3023-44C2-9424-DD9F1AED1BEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesClassLibraryEFCore", "..\..\RecipesClassLibraryEFCore\RecipesClassLibraryEFCore\RecipesClassLibraryEFCore.csproj", "{F6692420-59F1-4CC3-B3DD-CEC0DD656BC7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{B055A927-3023-44C2-9424-DD9F1AED1BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B055A927-3023-44C2-9424-DD9F1AED1BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B055A927-3023-44C2-9424-DD9F1AED1BEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6692420-59F1-4CC3-B3DD-CEC0DD656BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6692420-59F1-4CC3-B3DD-CEC0DD656BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6692420-59F1-4CC3-B3DD-CEC0DD656BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6692420-59F1-4CC3-B3DD-CEC0DD656BC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
