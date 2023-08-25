@@ -22,6 +22,9 @@
 * Endpoints secured with Azure AD
 * Server-side paging for pagination component
 * Basic logging with ILogger
+* 
+## Database Schema
+![](ReadMeImages/Recipe-Db-Schema.PNG)
 
 ## Sample Video: 
 [![Sample Video](https://img.youtube.com/vi/CcnFogJZYZ8/0.jpg)](https://www.youtube.com/watch?v=CcnFogJZYZ8)
