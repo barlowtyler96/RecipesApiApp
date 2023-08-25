@@ -25,8 +25,10 @@ public class SqlDataAccess : ISqlDataAccess
         using IDbConnection connection = new SqlConnection(connectionString);
 
         var rows = await connection.QueryAsync<T>(storedProcedure, parameters,
-            commandType: CommandType.StoredProcedure);
+            commandType: CommandType.StoredProcedure); 
+
         return rows.ToList();
+
     }
 
     public async Task<PaginationResponse<List<RecipeModel>>> LoadMultiData<T, U>(
