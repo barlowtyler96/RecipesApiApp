@@ -45,12 +45,37 @@ public class RecipeData : IRecipeData
     }
 
     //GET
-    public async Task<List<RecipeModel>> GetByDate()
+    public async Task<List<RecipeDto>> GetByDate()
     {
-        return await _sql.LoadData<RecipeModel, dynamic>(
-            "dbo.spRecipes_GetByDate",
+        var recipes =  await _sql.LoadData<RecipeModel, dynamic>(
+            "dbo.spGetRecipesByDate",
             new { },
             "Default");
+        var recipeIds = new List<int>();
+
+        foreach (var r in recipes)
+        {
+            recipeIds.Add(r.RecipeId);
+        }
+
+        var recipeIdsAsString = string.Join(",", recipeIds);
+
+        var recipeIngredients = await _sql.LoadData<RecipeIngredient, dynamic>(
+            "dbo.spGetRecipeIngredientsById",
+            new { RecipeIdsAsString = recipeIdsAsString },
+            "Default");
+
+        List<RecipeDto> recipeDtos = recipes.Select(recipe => new RecipeDto
+        {
+            Id = recipe.RecipeId,
+            Name = recipe.Name,
+            Description = recipe.Description,
+            Instructions = recipe.Instructions,
+            ImagePath = recipe.ImagePath,
+            RecipeIngredients = recipeIngredients.Where(ri => ri.RecipeId == recipe.RecipeId).ToList()
+        }).ToList();
+
+        return recipeDtos;
     }
 
     //POST
@@ -62,7 +87,7 @@ public class RecipeData : IRecipeData
             {
                 Name = recipeModel.Name,
                 Description = recipeModel.Description,
-                Ingredients = recipeModel.Ingredients,
+                //Ingredients = recipeModel.Ingredients,
                 Instructions = recipeModel.Instructions,
                 DateAdded = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                 ImagePath = recipeModel.ImagePath
@@ -82,7 +107,7 @@ public class RecipeData : IRecipeData
                 RecipesId = recipesId,
                 Name = recipeModel.Name,
                 Description = recipeModel.Description,
-                Ingredients = recipeModel.Ingredients,
+                //Ingredients = recipeModel.Ingredients,
                 Instructions = recipeModel.Instructions,
                 ImagePath = recipeModel.ImagePath
             },
