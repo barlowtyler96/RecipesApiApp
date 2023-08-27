@@ -39,7 +39,7 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes/recent
     [HttpGet("recent")]
-    public async Task<ActionResult<List<RecipeModel>>> GetByDate()
+    public async Task<ActionResult<List<RecipeDto>>> GetByDate()
     {
         _logger.LogInformation("GET: api/Recipes/recent");
 
