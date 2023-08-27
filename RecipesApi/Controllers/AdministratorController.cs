@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
-using RecipesApi.Constants;
 
 namespace RecipesApi.Controllers
 {
@@ -22,12 +21,12 @@ namespace RecipesApi.Controllers
 
 		// POST api/Administrator
 		[HttpPost]
-		public async Task<ActionResult<RecipeModel>> Post([FromBody] RecipeModel recipeModel)
+		public async Task<ActionResult<int>> Post([FromBody] RecipeDto recipeDto)
 		{
 			_logger.LogInformation("POST: api/Administrator");
 			try
 			{
-				var output = await _data.Create(recipeModel);
+				var output = await _data.Create(recipeDto);
 				return Ok(output);
 			}
 			catch (Exception ex)
@@ -35,8 +34,8 @@ namespace RecipesApi.Controllers
 				_logger.LogError(
 					ex,
 					"The POST call to api/Administrator failed. Recipe model was " +
-					"Name: {Name} Description: {Description} Ingredients: {Ingredients} Instructions: {Instructions}",
-					recipeModel.Name, recipeModel.Description, recipeModel.Ingredients, recipeModel.Instructions);
+					"Name: {Name} Description: {Description} Instructions: {Instructions}",
+					recipeDto.Name, recipeDto.Description, recipeDto.Instructions);
 				return BadRequest();
 			}
 		}
@@ -57,8 +56,8 @@ namespace RecipesApi.Controllers
 				_logger.LogError(
 					ex,
 					"The PUT call to api/Administrator/{RecipeId} failed. Recipe model was " +
-					"Name: {Name} Description: {Description} Ingredients: {Ingredients} Instructions: {Instructions}",
-					recipeId, recipeModel.Name, recipeModel.Description, recipeModel.Ingredients, recipeModel.Instructions);
+					"Name: {Name} Description: {Description} Instructions: {Instructions}",
+					recipeId, recipeModel.Name, recipeModel.Description, recipeModel.Instructions);
 				return BadRequest();
 			}
 		}
