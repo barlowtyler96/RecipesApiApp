@@ -22,7 +22,7 @@
 * Endpoints secured with Azure AD
 * Server-side paging for pagination component
 * Basic logging with ILogger
-* 
+  
 ## Database Schema
 ![](ReadMeImages/Recipe-Db-Schema.PNG)
 
