@@ -21,7 +21,7 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes
     [HttpGet]
-    public async Task<ActionResult<List<RecipeModel>>> Get()
+    public async Task<ActionResult<List<RecipeDto>>> Get()
     {
         _logger.LogInformation("GET: api/Recipes");
 
@@ -39,7 +39,7 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes/recent
     [HttpGet("recent")]
-    public async Task<ActionResult<List<RecipeDto>>> GetByDate()
+    public async Task<ActionResult<List<RecipeModel>>> GetByDate()
     {
         _logger.LogInformation("GET: api/Recipes/recent");
 
@@ -57,7 +57,7 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}
     [HttpGet("keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}")]
-    public async Task<ActionResult<PaginationResponse<List<RecipeModel>>>> GetByKeyword(
+    public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetByKeyword(
         string keyword, int currentPageNumber, int pageSize)
     {
         _logger.LogInformation("GET: api/Recipes/keyword={keyword}/page={currentPageNumber}/pageSize={pageSize}", 
@@ -79,7 +79,7 @@ public class RecipesController : ControllerBase
 
     // GET api/Recipes/id/5
     [HttpGet("id/{recipeId}")]
-    public async Task<ActionResult<RecipeModel>> Get(int recipeId)
+    public async Task<ActionResult<RecipeDto>> Get(int recipeId)
     {
         _logger.LogInformation("GET: api/Recipes/id/{RecipeId}", recipeId);
 
