@@ -4,12 +4,12 @@ namespace RecipeLibrary.DataAccess
 {
     public interface IRecipeData
     {
-        Task<RecipeModel?> Create(RecipeModel recipeModel);
         Task Delete(int recipesId);
         Task<List<RecipeModel>> GetAll();
-        Task<RecipeModel?> GetById(int id);
         Task UpdateAllColumns(int recipeId, RecipeModel recipeModel);
         Task<PaginationResponse<List<RecipeModel>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize);
         Task<List<RecipeDto>> GetByDate();
+        Task<List<RecipeDto>> GetById(int id);
+        Task<int> Create(RecipeDto recipeDto);
     }
 }
