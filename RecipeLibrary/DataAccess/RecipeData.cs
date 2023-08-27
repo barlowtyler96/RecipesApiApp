@@ -1,4 +1,7 @@
-﻿using RecipeLibrary.Models;
+﻿using Dapper;
+using RecipeLibrary.Models;
+using System.Data;
+
 namespace RecipeLibrary.DataAccess;
 
 public class RecipeData : IRecipeData
@@ -20,28 +23,43 @@ public class RecipeData : IRecipeData
     }
 
     //GET
-    public async Task<RecipeModel?> GetById(int id)
+    public async Task<List<RecipeDto>> GetById(int id)
     {
-        var results = await _sql.LoadData<RecipeModel, dynamic>(
-            "dbo.spRecipes_GetById",
-            new { Id = id },
+        var recipes = await _sql.LoadData<RecipeModel, dynamic>(
+            "dbo.spGetRecipeById",
+            new 
+            { RecipeId = id},
             "Default");
 
-        return results.FirstOrDefault();
-    }
+        var recipeId = recipes[0].RecipeId;
+        var recipeIdsAsString = string.Join(",", recipeId);
+        var recipeIngredients = await _sql.LoadData<RecipeIngredient, dynamic>(
+            "dbo.spGetRecipeIngredientsById",
+            new { RecipeIdsAsString = recipeIdsAsString },
+            "Default");
 
-    public async Task<PaginationResponse<List<RecipeModel>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize)
-    {
-        int skip = (currentPageNumber - 1) * pageSize;
-        int take = pageSize;
+        var ingredientIdsAsString = string.Join(",", recipeIngredients.Select(i => i.IngredientId));
+        var ingredients = await _sql.LoadData<IngredientModel, dynamic>(
+            "dbo.spGetIngredientsById",
+            new { IngredientIdsAsString = ingredientIdsAsString },
+            "Default");
 
-        var results = await _sql.LoadMultiData<PaginationResponse<RecipeModel>, dynamic>(
-            "dbo.spRecipes_GetByKeyword",
-            new { Keyword = keyword, Skip = skip, Take = take}, 
-            "Default",
-            currentPageNumber,
-            pageSize);
-        return results;
+        for (int i = 0; i < ingredients.Count && i < recipeIngredients.Count; i++)
+        {
+            recipeIngredients[i].IngredientName = ingredients[i].Name;
+        }
+
+        List<RecipeDto> recipeDtos = recipes.Select(recipe => new RecipeDto
+        {
+            Id = recipe.RecipeId,
+            Name = recipe.Name,
+            Description = recipe.Description,
+            Instructions = recipe.Instructions,
+            ImagePath = recipe.ImagePath,
+            RecipeIngredients = recipeIngredients.Where(ri => ri.RecipeId == recipe.RecipeId).ToList()
+        }).ToList();
+
+        return recipeDtos;
     }
 
     //GET
@@ -59,11 +77,21 @@ public class RecipeData : IRecipeData
         }
 
         var recipeIdsAsString = string.Join(",", recipeIds);
-
         var recipeIngredients = await _sql.LoadData<RecipeIngredient, dynamic>(
             "dbo.spGetRecipeIngredientsById",
             new { RecipeIdsAsString = recipeIdsAsString },
             "Default");
+
+        var ingredientIdsAsString = string.Join(",", recipeIngredients.Select(i => i.IngredientId));
+        var ingredients = await _sql.LoadData<IngredientModel, dynamic>(
+            "dbo.spGetIngredientsById",
+            new { IngredientIdsAsString = ingredientIdsAsString },
+            "Default");
+
+        for (int i = 0; i < ingredients.Count && i < recipeIngredients.Count; i++)
+        {
+            recipeIngredients[i].IngredientName = ingredients[i].Name;
+        }
 
         List<RecipeDto> recipeDtos = recipes.Select(recipe => new RecipeDto
         {
@@ -78,23 +106,45 @@ public class RecipeData : IRecipeData
         return recipeDtos;
     }
 
-    //POST
-    public async Task<RecipeModel?> Create(RecipeModel recipeModel)
+    public async Task<PaginationResponse<List<RecipeModel>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize)
     {
-        var results = await _sql.LoadData<RecipeModel, dynamic>(
-            "dbo.spRecipes_Create",
+        int skip = (currentPageNumber - 1) * pageSize;
+        int take = pageSize;
+
+        var results = await _sql.LoadMultiData<PaginationResponse<RecipeModel>, dynamic>(
+            "dbo.spRecipes_GetByKeyword",
+            new { Keyword = keyword, Skip = skip, Take = take },
+            "Default",
+            currentPageNumber,
+            pageSize);
+        return results;
+    }
+
+    //POST
+    public async Task<int> Create(RecipeDto recipeDto)
+    {
+        var recipeIngredientsTable = new DataTable();
+        recipeIngredientsTable.Columns.Add("IngredientName", typeof(string));
+        recipeIngredientsTable.Columns.Add("Amount", typeof(decimal));
+        recipeIngredientsTable.Columns.Add("Unit", typeof(string));
+
+        foreach (var ingredient in recipeDto.RecipeIngredients)
+        {
+            recipeIngredientsTable.Rows.Add(ingredient.IngredientName, ingredient.Amount, ingredient.Unit);
+        }
+
+        var createdRecipeId = await _sql.LoadData<int, dynamic>(
+            "spTestReview_InsertRecipeWithIngredients",
             new
             {
-                Name = recipeModel.Name,
-                Description = recipeModel.Description,
-                //Ingredients = recipeModel.Ingredients,
-                Instructions = recipeModel.Instructions,
-                DateAdded = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                ImagePath = recipeModel.ImagePath
+                recipeDto.Name,
+                recipeDto.Description,
+                recipeDto.Instructions,
+                recipeDto.ImagePath,
+                RecipeIngredients = recipeIngredientsTable.AsTableValuedParameter("RecipeIngredientType")
             },
             "Default");
-
-        return results.FirstOrDefault();
+        return createdRecipeId.FirstOrDefault();
     }
 
     //PUT
@@ -107,7 +157,6 @@ public class RecipeData : IRecipeData
                 RecipesId = recipesId,
                 Name = recipeModel.Name,
                 Description = recipeModel.Description,
-                //Ingredients = recipeModel.Ingredients,
                 Instructions = recipeModel.Instructions,
                 ImagePath = recipeModel.ImagePath
             },
