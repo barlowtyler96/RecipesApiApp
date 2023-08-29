@@ -10,8 +10,7 @@
 * Custom Data Access Class Library
 * Dapper w/ Stored Procedures
 * SQL Server 2022
-* Azure AD
-* OAuth 2.0
+* Azure AD B2C
 
 ## Tools used:
 * Postman
@@ -19,7 +18,7 @@
 * [jwt.io ](https://jwt.io/)
 
 ## Features: 
-* Endpoints secured with Azure AD
+* Endpoints secured with Azure AD B2C
 * Server-side paging for pagination component
 * Basic logging with ILogger
   
