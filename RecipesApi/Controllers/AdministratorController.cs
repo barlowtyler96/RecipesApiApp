@@ -21,7 +21,7 @@ namespace RecipesApi.Controllers
 
 		// POST api/Administrator
 		[HttpPost]
-		public async Task<ActionResult<int>> Post([FromBody] RecipeDto recipeDto)
+		public async Task<ActionResult<int>> Post([FromBody] RecipeModel recipeDto)
 		{
 			_logger.LogInformation("POST: api/Administrator");
 			try
@@ -42,7 +42,7 @@ namespace RecipesApi.Controllers
 
 		// PUT api/Administrator/5
 		[HttpPut("{recipeId}")]
-		public async Task<ActionResult> Put(int recipeId, [FromBody] RecipeModel recipeModel)
+		public async Task<ActionResult> Put(int recipeId, [FromBody] RecipeDto recipeModel)
 		{
 			_logger.LogInformation("PUT: api/Administrator/{RecipeId}", recipeId);
 
