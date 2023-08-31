@@ -55,7 +55,7 @@ public class RecipeData : IRecipeData
     }
 
     //GET
-    public async Task<List<RecipeModel>> GetByDate()
+    public async Task<List<RecipeDto>> GetByDate()
     {
         var recipesDto =  await _sql.LoadData<RecipeDto, dynamic>(
             "dbo.spGetRecipesByDate",
@@ -85,57 +85,30 @@ public class RecipeData : IRecipeData
             recipeIngredients[i].IngredientName = ingredients[i].Name;
         }
 
-        var recipeModels = PopulateRecipeModel(recipesDto, recipeIngredients);
-        
-
-        return recipeModels;
+    
+        return recipesDto;
     }
 
-    public async Task<PaginationResponse<List<RecipeModel>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize)
+    public async Task<PaginationResponse<List<RecipeDto>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize)
     {
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        var results = await _sql.LoadMultiData<PaginationResponse<RecipeModel>, dynamic>(
+        var results = await _sql.LoadMultiData<PaginationResponse<RecipeDto>, dynamic>(
             "dbo.spGetRecipeByKeyword",
             new { Keyword = keyword, Skip = skip, Take = take },
             "Default",
             currentPageNumber,
             pageSize);
 
-        var recipeIds = new List<int>();
+        
+        
 
-        foreach (var r in results.Data)
-        {
-            recipeIds.Add(r.RecipeId);
-        }
-        var recipeIdsAsString = string.Join(",", recipeIds);
-        var recipeIngredients = await _sql.LoadData<RecipeIngredient, dynamic>(
-            "dbo.spGetRecipeIngredientsById",
-            new { RecipeIdsAsString = recipeIdsAsString },
-            "Default");
+        
 
-        var ingredientIdsAsString = string.Join(",", recipeIngredients.Select(i => i.IngredientId));
-        var ingredients = await _sql.LoadData<IngredientModel, dynamic>(
-            "dbo.spGetIngredientsById",
-            new { IngredientIdsAsString = ingredientIdsAsString },
-            "Default");
+        
 
-        for (int i = 0; i < ingredients.Count && i < recipeIngredients.Count; i++)
-        {
-            recipeIngredients[i].IngredientName = ingredients[i].Name;
-        }
-
-        List<RecipeModel> recipeModels = results.Data.Select(recipe => new RecipeModel
-        {
-            RecipeId = recipe.RecipeId,
-            Name = recipe.Name,
-            Description = recipe.Description,
-            Instructions = recipe.Instructions,
-            ImagePath = recipe.ImagePath,
-            RecipeIngredients = recipeIngredients.Where(ri => ri.RecipeId == recipe.RecipeId).ToList()
-        }).ToList();
-        results.Data = recipeModels;
+        
         return results;
     }
 

@@ -31,7 +31,7 @@ public class SqlDataAccess : ISqlDataAccess
 
     }
 
-    public async Task<PaginationResponse<List<RecipeModel>>> LoadMultiData<T, U>(
+    public async Task<PaginationResponse<List<RecipeDto>>> LoadMultiData<T, U>(
         string storedProcedure,
         U parameters,
         string connectionStringName,
@@ -46,9 +46,9 @@ public class SqlDataAccess : ISqlDataAccess
 
         int totalCount = reader.Read<int>().FirstOrDefault();
         
-        List<RecipeModel> recipes = reader.Read<RecipeModel>().ToList();
+        List<RecipeDto> recipes = reader.Read<RecipeDto>().ToList();
 
-        var response = new PaginationResponse<List<RecipeModel>>(totalCount, recipes, currentPageNumber, pageSize);
+        var response = new PaginationResponse<List<RecipeDto>>(totalCount, recipes, currentPageNumber, pageSize);
 
         return response;
     }

@@ -7,9 +7,9 @@ namespace RecipeLibrary.DataAccess
         Task Delete(int recipesId);
         Task<List<RecipeDto>> GetAll();
         Task UpdateAllColumns(int recipeId, RecipeDto recipeDto);
-        Task<List<RecipeModel>> GetByDate();
+        Task<List<RecipeDto>> GetByDate();
         Task<List<RecipeModel>> GetById(int id);
         Task<int> Create(RecipeModel recipeModel);
-        Task<PaginationResponse<List<RecipeModel>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize);
+        Task<PaginationResponse<List<RecipeDto>>> GetByKeyword(string keyword, int currentPageNumber, int pageSize);
     }
 }
