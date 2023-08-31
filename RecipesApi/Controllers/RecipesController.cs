@@ -5,7 +5,6 @@ using RecipeLibrary.Models;
 
 namespace RecipesApi.Controllers;
 
-
 [Route("api/[controller]")]
 [ApiController]
 public class RecipesController : ControllerBase
@@ -39,7 +38,7 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes/recent
     [HttpGet("recent")]
-    public async Task<ActionResult<List<RecipeModel>>> GetRecentRecipes()
+    public async Task<ActionResult<List<RecipeDto>>> GetRecentRecipes()
     {
         _logger.LogInformation("GET: api/Recipes/recent");
 
@@ -79,7 +78,7 @@ public class RecipesController : ControllerBase
 
     // GET api/Recipes/id/5
     [HttpGet("id/{recipeId}")]
-    public async Task<ActionResult<RecipeDto>> Get(int recipeId)
+    public async Task<ActionResult<RecipeModel>> Get(int recipeId)
     {
         _logger.LogInformation("GET: api/Recipes/id/{RecipeId}", recipeId);
 

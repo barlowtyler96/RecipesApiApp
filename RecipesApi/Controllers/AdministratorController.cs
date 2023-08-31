@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
 
@@ -21,7 +20,7 @@ namespace RecipesApi.Controllers
 
 		// POST api/Administrator
 		[HttpPost]
-		public async Task<ActionResult<int>> Post([FromBody] RecipeModel recipeDto)
+		public async Task<ActionResult> Post([FromBody] RecipeModel recipeDto)
 		{
 			_logger.LogInformation("POST: api/Administrator");
 			try
