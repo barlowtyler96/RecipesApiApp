@@ -1,8 +1,7 @@
 ﻿using RecipeLibrary.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
 
 namespace RecipesApi.StartupConfig;
 
@@ -19,6 +18,7 @@ public static class DependencyInjectionExtensions
     {
         builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
         builder.Services.AddSingleton<IRecipeData, RecipeData>();
+        builder.Services.AddSingleton<IUserData, UserData>();
     }
 
     public static void AddHealthCheckServices(this WebApplicationBuilder builder)
@@ -30,6 +30,12 @@ public static class DependencyInjectionExtensions
     public static void AddAuthServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+            .AddMicrosoftIdentityWebApi(options =>
+            {
+                builder.Configuration.Bind("AzureAdB2C", options);
+
+            },
+        options => { builder.Configuration.Bind("AzureAdB2C", options); });
+        builder.Services.AddInMemoryTokenCaches();
     }
 }
