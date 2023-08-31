@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
+using RecipeLibrary.DataAccess;
+using RecipeLibrary.Models;
 namespace RecipesApi.Controllers;
 
 [Authorize]
@@ -10,35 +9,88 @@ namespace RecipesApi.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    // GET: api/<UserController>
-    [HttpGet]
-    public IEnumerable<string> Get()
+    private readonly IUserData _data;
+    private readonly ILogger<UsersController> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public UsersController(IUserData data, ILogger<UsersController> logger, IHttpContextAccessor httpContextAccessor)
     {
-        return new string[] { "value1", "value2" };
+        _data = data;
+        _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
     }
 
-    // GET api/<UserController>/5
-    [HttpGet("{id}")]
-    public string Get(int id)
+    // POST: api/Users/favorite
+    [HttpPost("favorite")]
+    public async Task<ActionResult> PostUserFavorite([FromBody] int recipeId)
     {
-        return "value";
+        var userFavorite = new UserFavorite()
+        {
+            UserSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value,
+            RecipeId = recipeId
+        };
+
+        _logger.LogInformation("POST: api/users/favorite");
+        try
+        {
+            await _data.AddUserFavorite(userFavorite);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "The POST call to api/User/Favorite failed. UserFavorite model was " +
+                "UserSub: {UserSub} RecipeId: {RecipeId}",
+                userFavorite.UserSub, userFavorite.RecipeId);
+            return BadRequest();
+        }
     }
 
-    // POST api/<UserController>
-    [HttpPost]
-    public void Post([FromBody] string value)
+    // DELETE: api/Users/favorite/recipeId
+    [HttpDelete("favorite/{recipeId}")]
+    public async Task<ActionResult> DeleteUserFavorite(int recipeId)
     {
+        var userFavorite = new UserFavorite()
+        {
+            UserSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value,
+            RecipeId = recipeId
+        };
+
+        _logger.LogInformation("POST: api/users/favorite/{recipeId}", recipeId);
+        try
+        {
+            await _data.DeleteUserFavorite(userFavorite);
+            return Ok();
+        }
+        catch (Exception ex)   
+        {
+            _logger.LogError(
+                ex,
+                "The DELETE call to api/User/Favorite/recipeId failed. UserFavorite model was " +
+                "UserSub: {UserSub} RecipeId: {RecipeId}",
+                userFavorite.UserSub, userFavorite.RecipeId);
+            return BadRequest();
+        }
     }
 
-    // PUT api/<UserController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    // GET: api/Users/favoritesIds
+    [HttpGet("favoritesIds")]
+    public async Task<ActionResult<List<UserFavorite>>> GetUserFavoritesIds()
     {
-    }
+        var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        _logger.LogInformation("GET: api/Users/favoritesIds");
 
-    // DELETE api/<UserController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
+        try
+        {
+            
+            var output = await _data.GetUserFavoritesIds(userSub!);
+            return Ok(output);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The GET call to api/Users/favoritesIds failed.");
+            return BadRequest();
+        }
     }
 }
