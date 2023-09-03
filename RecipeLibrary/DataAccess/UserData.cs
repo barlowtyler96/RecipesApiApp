@@ -10,7 +10,6 @@ public class UserData : IUserData
         _sql = sql;
     }
 
-
     public async Task AddUserFavorite(UserFavorite userFavorite)
     {
         await _sql.SaveData<dynamic>(
@@ -23,7 +22,7 @@ public class UserData : IUserData
             "Default");
     }
 
-    public async Task DeleteUserFavorite(UserFavorite userFavorite) 
+    public async Task DeleteUserFavorite(UserFavorite userFavorite)
     {
         await _sql.SaveData<dynamic>(
             "spDeleteUserFavorite",
@@ -35,14 +34,27 @@ public class UserData : IUserData
             "Default");
     }
 
-    public async Task<List<UserFavorite>> GetUserFavoritesIds(string userSub)
+    public async Task<List<int>> GetUserFavoritesIds(string userSub)
     {
-        return await _sql.LoadData<UserFavorite, dynamic>(
+        return await _sql.LoadData<int, dynamic>(
             "spGetUserFavoriteIds",
             new
             {
                 UserSub = userSub
             },
             "Default");
+    }
+
+    public async Task<List<RecipeDto>> GetUserFavorites(string userSub)
+    {
+        var userFavoriteRecipes = await _sql.LoadData<RecipeDto, dynamic>(
+            "spGetUserFavorites",
+            new
+            {
+                UserSub = userSub
+            },
+            "Default");
+
+        return userFavoriteRecipes;
     }
 }
