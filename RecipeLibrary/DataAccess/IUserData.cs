@@ -5,5 +5,6 @@ public interface IUserData
 {
     Task AddUserFavorite(UserFavorite userFavorite);
     Task DeleteUserFavorite(UserFavorite userFavorite);
-    Task<List<UserFavorite>> GetUserFavoritesIds(string userSub);
+    Task<List<RecipeDto>> GetUserFavorites(string userSub);
+    Task<List<int>> GetUserFavoritesIds(string userSub);
 }
