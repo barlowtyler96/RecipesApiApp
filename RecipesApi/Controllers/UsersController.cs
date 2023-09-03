@@ -74,9 +74,29 @@ public class UsersController : ControllerBase
         }
     }
 
+    // GET: api/Users/favorites
+    [HttpGet("favorites")]
+    public async Task<ActionResult<List<int>>> GetUserFavorites()
+    {
+        var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        _logger.LogInformation("GET: api/Users/favorites");
+
+        try
+        {
+
+            var output = await _data.GetUserFavorites(userSub!);
+            return Ok(output);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The GET call to api/Users/favorites failed.");
+            return BadRequest();
+        }
+    }
+
     // GET: api/Users/favoritesIds
     [HttpGet("favoritesIds")]
-    public async Task<ActionResult<List<UserFavorite>>> GetUserFavoritesIds()
+    public async Task<ActionResult<List<int>>> GetUserFavoritesIds()
     {
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
         _logger.LogInformation("GET: api/Users/favoritesIds");
