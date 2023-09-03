@@ -10,6 +10,7 @@ public class RecipeModel
     public string? Description { get; set; }
 
     public string? Instructions { get; set; }
+    public string? CreatedBy { get; set; }   
 
     public string? ImagePath { get; set; }
 

@@ -125,6 +125,7 @@ public class RecipeData : IRecipeData
                 recipeModel.Description,
                 recipeModel.Instructions,
                 recipeModel.ImagePath,
+                recipeModel.CreatedBy,
                 RecipeIngredients = recipeIngredientsTable.AsTableValuedParameter("RecipeIngredientType")
             },
             "Default");
