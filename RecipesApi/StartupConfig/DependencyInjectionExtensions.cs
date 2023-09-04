@@ -37,16 +37,5 @@ public static class DependencyInjectionExtensions
             },
         options => { builder.Configuration.Bind("AzureAdB2C", options); });
         builder.Services.AddInMemoryTokenCaches();
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowBlazorServerApp", builder =>
-            {
-                builder.WithOrigins("https://therecipevault.azurewebsites.net")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();    
-            });
-        });
     }
 }
