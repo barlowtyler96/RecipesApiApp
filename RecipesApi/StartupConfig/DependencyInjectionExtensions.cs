@@ -12,6 +12,7 @@ public static class DependencyInjectionExtensions
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Configuration.AddEnvironmentVariables();
     }
 
     public static void AddCustomServices(this WebApplicationBuilder builder)
