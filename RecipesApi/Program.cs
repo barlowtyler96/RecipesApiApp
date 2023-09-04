@@ -2,7 +2,7 @@ using RecipesApi.StartupConfig;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration.AddEnvironmentVariables();
 builder.AddStandardServices();
 builder.AddAuthServices();
 builder.AddHealthCheckServices();
