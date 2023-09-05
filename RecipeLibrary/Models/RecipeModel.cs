@@ -12,7 +12,7 @@ public class RecipeModel
     public string? Instructions { get; set; }
     public string? CreatedBy { get; set; }   
 
-    public string? ImagePath { get; set; }
+    public string? ImageUrl { get; set; }
 
     public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
 

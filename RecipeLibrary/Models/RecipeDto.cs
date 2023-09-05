@@ -12,5 +12,5 @@ public class RecipeDto
 
     public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
-    public string? ImagePath { get; set; }
+    public string? ImageUrl { get; set; }
 }
