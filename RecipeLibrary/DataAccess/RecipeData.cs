@@ -104,33 +104,7 @@ public class RecipeData : IRecipeData
         return results;
     }
 
-    //POST
-    public async Task<int> Create(RecipeModel recipeModel)
-    {
-        var recipeIngredientsTable = new DataTable();
-        recipeIngredientsTable.Columns.Add("IngredientName", typeof(string));
-        recipeIngredientsTable.Columns.Add("Amount", typeof(decimal));
-        recipeIngredientsTable.Columns.Add("Unit", typeof(string));
-
-        foreach (var ingredient in recipeModel.RecipeIngredients)
-        {
-            recipeIngredientsTable.Rows.Add(ingredient.IngredientName, ingredient.Amount, ingredient.Unit);
-        }
-
-        var createdRecipeId = await _sql.LoadData<int, dynamic>(
-            "spTestReview_InsertRecipeWithIngredients",
-            new
-            {
-                recipeModel.Name,
-                recipeModel.Description,
-                recipeModel.Instructions,
-                recipeModel.ImagePath,
-                recipeModel.CreatedBy,
-                RecipeIngredients = recipeIngredientsTable.AsTableValuedParameter("RecipeIngredientType")
-            },
-            "Default");
-        return createdRecipeId.FirstOrDefault();
-    }
+    
 
     //PUT
     public Task UpdateAllColumns(int recipesId, RecipeDto recipeDto)
@@ -143,7 +117,7 @@ public class RecipeData : IRecipeData
                 Name = recipeDto.Name,
                 Description = recipeDto.Description,
                 Instructions = recipeDto.Instructions,
-                ImagePath = recipeDto.ImagePath
+                ImageUrl = recipeDto.ImageUrl
             },
             "Default");
     }
@@ -165,7 +139,7 @@ public class RecipeData : IRecipeData
             Name = recipe.Name,
             Description = recipe.Description,
             Instructions = recipe.Instructions,
-            ImagePath = recipe.ImagePath,
+            ImageUrl = recipe.ImageUrl,
             RecipeIngredients = recipeIngredients.Where(ri => ri.RecipeId == recipe.RecipeId).ToList()
         }).ToList();
 

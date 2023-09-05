@@ -1,4 +1,7 @@
-﻿using RecipeLibrary.Models;
+﻿using Dapper;
+using RecipeLibrary.Models;
+using System.Data;
+
 namespace RecipeLibrary.DataAccess;
 
 public class UserData : IUserData
@@ -9,7 +12,33 @@ public class UserData : IUserData
     {
         _sql = sql;
     }
+    //POST
+    public async Task<int> ShareRecipe(RecipeModel recipeModel)
+    {
+        var recipeIngredientsTable = new DataTable();
+        recipeIngredientsTable.Columns.Add("IngredientName", typeof(string));
+        recipeIngredientsTable.Columns.Add("Amount", typeof(decimal));
+        recipeIngredientsTable.Columns.Add("Unit", typeof(string));
 
+        foreach (var ingredient in recipeModel.RecipeIngredients)
+        {
+            recipeIngredientsTable.Rows.Add(ingredient.IngredientName, ingredient.Amount, ingredient.Unit);
+        }
+
+        var createdRecipeId = await _sql.LoadData<int, dynamic>(
+            "spInsertRecipeWithIngredients",
+            new
+            {
+                Name = recipeModel.Name,
+                Description = recipeModel.Description,
+                Instructions = recipeModel.Instructions,
+                ImageUrl = recipeModel.ImageUrl,
+                CreatedBy = recipeModel.CreatedBy,
+                RecipeIngredients = recipeIngredientsTable.AsTableValuedParameter("RecipeIngredientType")
+            },
+            "Default");
+        return createdRecipeId.FirstOrDefault();
+    }
     public async Task AddUserFavorite(UserFavorite userFavorite)
     {
         await _sql.SaveData<dynamic>(
