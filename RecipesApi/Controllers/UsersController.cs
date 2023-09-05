@@ -20,6 +20,29 @@ public class UsersController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
+    // POST api/Users/share
+    [HttpPost("share")]
+    public async Task<ActionResult<int>> Post([FromBody] RecipeModel recipeModel)
+    {
+        recipeModel.CreatedBy = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+
+        _logger.LogInformation("POST: api/Users/share");
+        try
+        {
+            var output = await _data.ShareRecipe(recipeModel);
+            return Ok(output);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "The POST call to api/Users/share failed. Recipe model was " +
+                "Name: {Name} Description: {Description} Instructions: {Instructions}",
+                recipeModel.Name, recipeModel.Description, recipeModel.Instructions);
+            return BadRequest();
+        }
+    }
+
     // POST: api/Users/favorite
     [HttpPost("favorite")]
     public async Task<ActionResult> PostUserFavorite([FromBody] int recipeId)
