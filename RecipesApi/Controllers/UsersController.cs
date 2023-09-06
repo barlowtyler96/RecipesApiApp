@@ -53,7 +53,7 @@ public class UsersController : ControllerBase
             RecipeId = recipeId
         };
 
-        _logger.LogInformation("POST: api/users/favorite");
+        _logger.LogInformation("POST: api/Users/favorite");
         try
         {
             await _data.AddUserFavorite(userFavorite);
@@ -80,7 +80,7 @@ public class UsersController : ControllerBase
             RecipeId = recipeId
         };
 
-        _logger.LogInformation("POST: api/users/favorite/{recipeId}", recipeId);
+        _logger.LogInformation("POST: api/Users/favorite/{recipeId}", recipeId);
         try
         {
             await _data.DeleteUserFavorite(userFavorite);
@@ -90,7 +90,7 @@ public class UsersController : ControllerBase
         {
             _logger.LogError(
                 ex,
-                "The DELETE call to api/User/Favorite/recipeId failed. UserFavorite model was " +
+                "The DELETE call to api/Users/Favorite/recipeId failed. UserFavorite model was " +
                 "UserSub: {UserSub} RecipeId: {RecipeId}",
                 userFavorite.UserSub, userFavorite.RecipeId);
             return BadRequest();
