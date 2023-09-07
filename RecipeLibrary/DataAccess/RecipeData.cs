@@ -104,8 +104,6 @@ public class RecipeData : IRecipeData
         return results;
     }
 
-    
-
     //PUT
     public Task UpdateAllColumns(int recipesId, RecipeDto recipeDto)
     {
