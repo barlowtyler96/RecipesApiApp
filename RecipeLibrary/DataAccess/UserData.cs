@@ -12,6 +12,21 @@ public class UserData : IUserData
     {
         _sql = sql;
     }
+
+    //POST
+    public async Task AddNewUser(UserModel newUser)
+    {
+        await _sql.SaveData<dynamic>(
+            "spAddNewUser",
+            new
+            {
+                UserSub = newUser.UserSub,
+                FirstName = newUser.FirstName,
+                LastName = newUser.LastName,
+            },
+            "Default");
+    }
+
     //POST
     public async Task<int> ShareRecipe(RecipeModel recipeModel)
     {
@@ -39,6 +54,8 @@ public class UserData : IUserData
             "Default");
         return createdRecipeId.FirstOrDefault();
     }
+
+    //POST
     public async Task AddUserFavorite(UserFavorite userFavorite)
     {
         await _sql.SaveData<dynamic>(
@@ -51,6 +68,7 @@ public class UserData : IUserData
             "Default");
     }
 
+    //DELETE
     public async Task DeleteUserFavorite(UserFavorite userFavorite)
     {
         await _sql.SaveData<dynamic>(
@@ -63,6 +81,7 @@ public class UserData : IUserData
             "Default");
     }
 
+    //GET
     public async Task<List<int>> GetUserFavoritesIds(string userSub)
     {
         return await _sql.LoadData<int, dynamic>(
@@ -74,6 +93,7 @@ public class UserData : IUserData
             "Default");
     }
 
+    //GET
     public async Task<List<RecipeDto>> GetUserFavorites(string userSub)
     {
         var userFavoriteRecipes = await _sql.LoadData<RecipeDto, dynamic>(

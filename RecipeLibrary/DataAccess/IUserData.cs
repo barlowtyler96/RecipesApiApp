@@ -8,4 +8,5 @@ public interface IUserData
     Task DeleteUserFavorite(UserFavorite userFavorite);
     Task<List<RecipeDto>> GetUserFavorites(string userSub);
     Task<List<int>> GetUserFavoritesIds(string userSub);
+    Task AddNewUser(UserModel newUser);
 }
