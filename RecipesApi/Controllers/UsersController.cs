@@ -20,9 +20,35 @@ public class UsersController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
+    // POST api/Users/new
+    [HttpPost("new")]
+    public async Task<ActionResult<int>> PostNewUser()
+    {
+        var newUser = new UserModel()
+        {
+            UserSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value,
+            FirstName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_FirstName")?.Value,
+            LastName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_LastName")?.Value
+        };
+
+        _logger.LogInformation("POST: api/Users/new");
+        try
+        {
+            await _data.AddNewUser(newUser);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "The POST call to api/Users/new failed");
+            return BadRequest();
+        }
+    }
+
     // POST api/Users/share
     [HttpPost("share")]
-    public async Task<ActionResult<int>> Post([FromBody] RecipeModel recipeModel)
+    public async Task<ActionResult<int>> PostSharedRecipe([FromBody] RecipeModel recipeModel)
     {
         recipeModel.CreatedBy = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
@@ -126,7 +152,6 @@ public class UsersController : ControllerBase
 
         try
         {
-            
             var output = await _data.GetUserFavoritesIds(userSub!);
             return Ok(output);
         }
