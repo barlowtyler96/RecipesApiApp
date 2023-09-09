@@ -35,15 +35,15 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET: api/Recipes/recent
+    // GET: api/Recipes/recent?page={page}&pageSize={pageSize}
     [HttpGet("recent")]
-    public async Task<ActionResult<List<RecipeDto>>> GetRecentRecipes()
+    public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetRecentRecipes([FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/Recipes/recent");
 
         try
         {
-            var output = await _data.GetByDate();
+            var output = await _data.GetByDate(page, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
