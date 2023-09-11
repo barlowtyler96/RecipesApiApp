@@ -10,10 +10,6 @@ public class PaginationResponse<T> where T : class
 
     public int TotalPages { get; set; }
 
-    public bool HasPreviousPage { get; set; }
-
-    public bool HasNextPage { get; set;}
-
     public T Data { get; set; }
 
     public PaginationResponse(int totalCount, T data, int currentPageNumber, int pageSize)
@@ -24,8 +20,5 @@ public class PaginationResponse<T> where T : class
         PageSize = pageSize;
 
         TotalPages = (int)Math.Ceiling((double)TotalCount / (double)PageSize);
-
-        HasPreviousPage = CurrentPageNumber > 1;
-        HasNextPage = CurrentPageNumber < 1;
     }
 }
