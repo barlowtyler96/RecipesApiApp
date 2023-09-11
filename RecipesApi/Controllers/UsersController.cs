@@ -125,14 +125,13 @@ public class UsersController : ControllerBase
 
     // GET: api/Users/favorites
     [HttpGet("favorites")]
-    public async Task<ActionResult<List<int>>> GetUserFavorites()
+    public async Task<ActionResult<List<RecipeDto>>> GetUserFavorites()
     {
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
         _logger.LogInformation("GET: api/Users/favorites");
 
         try
         {
-
             var output = await _data.GetUserFavorites(userSub!);
             return Ok(output);
         }
