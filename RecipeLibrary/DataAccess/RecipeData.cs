@@ -1,5 +1,4 @@
-﻿using Dapper;
-using RecipeLibrary.Models;
+﻿using RecipeLibrary.Models;
 using System.Data;
 
 namespace RecipeLibrary.DataAccess;
@@ -48,8 +47,7 @@ public class RecipeData : IRecipeData
         {
             recipeIngredients[i].IngredientName = ingredients[i].Name;
         }
-
-        var recipeModels = PopulateRecipeModel(recipesDto, recipeIngredients);
+        var recipeModels = PopulateRecipeModels(recipesDto, recipeIngredients);
 
         return recipeModels;
     }
@@ -110,7 +108,8 @@ public class RecipeData : IRecipeData
             { RecipesId = recipesId },
             "Default");
     }
-    private List<RecipeModel> PopulateRecipeModel(List<RecipeDto> recipesDto, List<RecipeIngredient> recipeIngredients)
+
+    private List<RecipeModel> PopulateRecipeModels(List<RecipeDto> recipesDto, List<RecipeIngredient> recipeIngredients)
     {
         List<RecipeModel> recipeModels = recipesDto.Select(recipe => new RecipeModel
         {
