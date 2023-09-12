@@ -82,6 +82,20 @@ public class UserData : IUserData
     }
 
     //GET
+    public async Task<List<RecipeDto>> GetUserCreatedRecipes(string userSub)
+    {
+        var userCreatedRecipes = await _sql.LoadData<RecipeDto, dynamic>(  
+            "spGetUserCreatedRecipes",
+            new
+            {
+                UserSub = userSub
+            },
+            "Default");
+
+        return userCreatedRecipes;
+    }
+
+    //GET
     public async Task<List<int>> GetUserFavoritesIds(string userSub)
     {
         return await _sql.LoadData<int, dynamic>(
