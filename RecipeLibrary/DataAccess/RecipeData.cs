@@ -22,7 +22,7 @@ public class RecipeData : IRecipeData
     }
 
     //GET
-    public async Task<List<RecipeModel>> GetById(int id)
+    public async Task<RecipeModel> GetById(int id)
     {
         var recipesDto = await _sql.LoadData<RecipeDto, dynamic>(
             "dbo.spGetRecipeById",
@@ -47,9 +47,9 @@ public class RecipeData : IRecipeData
         {
             recipeIngredients[i].IngredientName = ingredients[i].Name;
         }
-        var recipeModels = PopulateRecipeModels(recipesDto, recipeIngredients);
+        var recipeModel = new RecipeModel(recipesDto.FirstOrDefault()!, recipeIngredients);
 
-        return recipeModels;
+        return recipeModel;
     }
 
     //GET
@@ -107,20 +107,5 @@ public class RecipeData : IRecipeData
             new
             { RecipesId = recipesId },
             "Default");
-    }
-
-    private List<RecipeModel> PopulateRecipeModels(List<RecipeDto> recipesDto, List<RecipeIngredient> recipeIngredients)
-    {
-        List<RecipeModel> recipeModels = recipesDto.Select(recipe => new RecipeModel
-        {
-            RecipeId = recipe.RecipeId,
-            Name = recipe.Name,
-            Description = recipe.Description,
-            Instructions = recipe.Instructions,
-            ImageUrl = recipe.ImageUrl,
-            RecipeIngredients = recipeIngredients.Where(ri => ri.RecipeId == recipe.RecipeId).ToList()
-        }).ToList();
-
-        return recipeModels;
     }
 }
