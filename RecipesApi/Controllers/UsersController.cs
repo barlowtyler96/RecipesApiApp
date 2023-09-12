@@ -22,7 +22,7 @@ public class UsersController : ControllerBase
 
     // POST api/Users/new
     [HttpPost("new")]
-    public async Task<ActionResult<int>> PostNewUser()
+    public async Task<ActionResult> PostNewUser()
     {
         var newUser = new UserModel()
         {
@@ -119,6 +119,25 @@ public class UsersController : ControllerBase
                 "The DELETE call to api/Users/Favorite/recipeId failed. UserFavorite model was " +
                 "UserSub: {UserSub} RecipeId: {RecipeId}",
                 userFavorite.UserSub, userFavorite.RecipeId);
+            return BadRequest();
+        }
+    }
+
+    // GET: api/Users/myrecipes
+    [HttpGet("myrecipes")]
+    public async Task<ActionResult<List<RecipeDto>>> GetUserCreatedRecipes()
+    {
+        var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        _logger.LogInformation("GET: api/Users/myrecipes");
+
+        try
+        {
+            var output = await _data.GetUserCreatedRecipes(userSub!);
+            return Ok(output);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The GET call to api/Users/myrecipes failed.");
             return BadRequest();
         }
     }
