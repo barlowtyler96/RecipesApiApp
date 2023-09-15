@@ -15,7 +15,7 @@ public class RecipeDto
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? CreatedBy { get; set; }
 
-    public DateTime DateAdded { get; set; } = DateTime.UtcNow;
+    public DateTime DateAdded { get; set; }
 
     public string? ImageUrl { get; set; }
 }
