@@ -13,12 +13,17 @@ public class RecipeData : IRecipeData
     }
 
     //GET
-    public Task<List<RecipeDto>> GetAll()
+    public Task<PaginationResponse<List<RecipeDto>>> GetAll(int currentPageNumber, int pageSize)
     {
-        return _sql.LoadData<RecipeDto, dynamic>(
-            "dbo.spRecipes_GetAll",
-            new { },
-            "Default");
+        int skip = (currentPageNumber - 1) * pageSize;
+        int take = pageSize;
+
+        return _sql.LoadMultiData<RecipeDto, dynamic>(
+            "dbo.spGetRecipes_All",
+            new { Skip = skip, Take = take },
+            "Default",
+            currentPageNumber,
+            pageSize);
     }
 
     //GET

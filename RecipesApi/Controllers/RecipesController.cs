@@ -19,18 +19,18 @@ public class RecipesController : ControllerBase
 
     // GET: api/Recipes
     [HttpGet]
-    public async Task<ActionResult<List<RecipeDto>>> Get()
+    public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> Get([FromQuery] int page, [FromQuery] int pageSize)
     {
-        _logger.LogInformation("GET: api/Recipes");
+        _logger.LogInformation("GET: api/Recipes?page={page}&pageSize={pageSize}", page, pageSize);
 
         try
         {
-            var output = await _data.GetAll();
+            var output = await _data.GetAll(page, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Recipes failed.");
+            _logger.LogError(ex, "The GET call to api/Recipes?page={page}&pageSize={pageSize}", page, pageSize);
             return BadRequest();
         }
     }
@@ -39,7 +39,7 @@ public class RecipesController : ControllerBase
     [HttpGet("recent")]
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetRecentRecipes([FromQuery] int page, [FromQuery] int pageSize)
     {
-        _logger.LogInformation("GET: api/Recipes/recent");
+        _logger.LogInformation("GET: api/Recipes/recent?page={page}&pageSize={pageSize}", page, pageSize);
 
         try
         {
@@ -48,7 +48,7 @@ public class RecipesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Recipes/recent failed.");
+            _logger.LogError(ex, "The GET call to api/Recipes/recent?page={page}&pageSize={pageSize} failed.", page, pageSize);
             return BadRequest();
         }
     }
@@ -58,7 +58,7 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetByKeyword(
     [FromQuery] string keyword, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        _logger.LogInformation("GET: api/Recipes/search?keyword={keyword}/page={page}/pageSize={pageSize}", 
+        _logger.LogInformation("GET: api/Recipes/search?keyword={keyword}&page={page}&pageSize={pageSize}", 
             keyword, page, pageSize);
 
         try
