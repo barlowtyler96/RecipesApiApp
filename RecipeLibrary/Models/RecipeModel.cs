@@ -26,4 +26,7 @@ public class RecipeModel
         ImageUrl = recipesDto.ImageUrl;
         RecipeIngredients = recipeIngredients.Where(ri => ri.RecipeId == recipesDto.RecipeId).ToList();
     }
+    public RecipeModel()
+    {
+    }
 }
