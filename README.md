@@ -4,7 +4,7 @@
 
 #### This project was created to practice data access, SQL Server, Dapper, authentication/authorization, and API developement.
 
-#### I used Microsoft's documentation & code examples, Stack Overflow, and ChatGPT to complete the project. The biggest challenge I faced was learning how to implement Azures auth systems.
+#### I used Microsoft's documentation & code examples, and stack overflow to complete the project. The biggest challenge I faced was learning how to implement Azures auth systems.
 
 ## Technologies used: 
 * Data Access Class Library
