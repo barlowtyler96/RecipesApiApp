@@ -1,4 +1,4 @@
-# Recipes Web API
+# Culinary Shares Web API
 
 #### This solution consists of two projects, a class library for data access and a web API. My data access library utilizes dapper with stored procedures. The library is referenced in my API. The API is then consumed by my blazor server app. My favorite feature is the server-side paging. When a user searches for a recipe on the blazor app, only the results for the current page are returned and stored in memory. 
 
