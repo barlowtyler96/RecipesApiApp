@@ -70,8 +70,8 @@ public class UsersController : ControllerBase
     }
 
     // POST: api/Users/favorite
-    [HttpPost("favorite")]
-    public async Task<ActionResult> PostUserFavorite([FromBody] int recipeId)
+    [HttpPost("favorite/{recipeId}")]
+    public async Task<ActionResult> PostUserFavorite(int recipeId)
     {
         var userFavorite = new UserFavorite()
         {
