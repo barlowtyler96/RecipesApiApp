@@ -89,9 +89,12 @@ public class RecipesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(
-                ex, 
-                "The GET call to {ApiPath} failed. The Id was {RecipeId}", $"api/Recipes/Id", recipeId);
-            return BadRequest();
+                ex,
+                "The GET call to api/Recipes/id/{RecipeId}", recipeId);
+            return NotFound(new
+            {
+                message = $"The recipe with ID {recipeId} was not found."
+            });
         }
     }
 }
