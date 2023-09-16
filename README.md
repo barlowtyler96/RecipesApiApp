@@ -20,8 +20,11 @@
 
 ## Features: 
 * Endpoints secured with Azure AD B2C
-* Server-side paging for pagination component
+* Versioning
+* Rate Limiting
 * Basic logging with ILogger
+* Server-side paging for pagination component
+
   
 ## Database Schema
 ![](ReadMeImages/culinaryshares-entity-relationship.PNG)
