@@ -21,7 +21,7 @@
 ## Features: 
 * Endpoints secured with Azure AD B2C
 * Versioning
-* Rate Limiting
+* IP Rate Limiting
 * Basic logging with ILogger
 * Server-side paging for pagination component
 
