@@ -87,30 +87,4 @@ public class RecipeData : IRecipeData
 
         return results;
     }
-
-    //PUT
-    public Task UpdateAllColumns(int recipesId, RecipeDto recipeDto)
-    {
-        return _sql.SaveData<dynamic>(
-            "dbo.spRecipes_UpdateAllColumns",
-            new
-            {
-                RecipesId = recipesId,
-                Name = recipeDto.Name,
-                Description = recipeDto.Description,
-                Instructions = recipeDto.Instructions,
-                ImageUrl = recipeDto.ImageUrl
-            },
-            "Default");
-    }
-
-    //DELETE
-    public Task Delete(int recipesId)
-    {
-        return _sql.SaveData<dynamic>(
-            "dbo.spRecipes_Delete",
-            new
-            { RecipesId = recipesId },
-            "Default");
-    }
 }
