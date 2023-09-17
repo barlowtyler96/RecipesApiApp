@@ -2,9 +2,10 @@
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
 
-namespace RecipesApi.Controllers;
+namespace RecipesApi.Controllers.v1;
 
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 public class RecipesController : ControllerBase
 {
@@ -17,7 +18,13 @@ public class RecipesController : ControllerBase
         _logger = logger;
     }
 
-    // GET: api/Recipes
+    // GET: api/v1/Recipes
+    /// <summary>
+    /// Gets a list of all RecipeDtos(paged)
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <returns>A list of paged recipes</returns>
     [HttpGet]
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> Get([FromQuery] int page, [FromQuery] int pageSize)
     {
@@ -35,7 +42,13 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET: api/Recipes/recent?page={page}&pageSize={pageSize}
+    // GET: api/v1/Recipes/recent?page={page}&pageSize={pageSize}
+    /// <summary>
+    /// Gets a list of most recently added RecipeDtos(paged)
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <returns>A list of paged most recently added recipes</returns>
     [HttpGet("recent")]
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetRecentRecipes([FromQuery] int page, [FromQuery] int pageSize)
     {
@@ -53,12 +66,19 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET api/Recipes/search?keyword={keyword}&page={page}&pageSize={pageSize}
+    // GET api/v1/Recipes/search?keyword={keyword}&page={page}&pageSize={pageSize}
+    /// <summary>
+    /// Gets a list of RecipeDtos based on a keyword(paged)
+    /// </summary>
+    /// <param name="keyword"></param>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <returns>A list of paged recipes based on a keyword</returns>
     [HttpGet("search")]
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetByKeyword(
     [FromQuery] string keyword, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        _logger.LogInformation("GET: api/Recipes/search?keyword={keyword}&page={page}&pageSize={pageSize}", 
+        _logger.LogInformation("GET: api/Recipes/search?keyword={keyword}&page={page}&pageSize={pageSize}",
             keyword, page, pageSize);
 
         try
@@ -68,18 +88,23 @@ public class RecipesController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, 
-                "The GET call to api/Recipes/keyword={keyword}/page={page}/pageSize={pageSize} failed.", 
+            _logger.LogError(ex,
+                "The GET call to api/Recipes/keyword={keyword}/page={page}/pageSize={pageSize} failed.",
                 keyword, page, pageSize);
             return BadRequest();
         }
     }
 
-    // GET api/Recipes/id/5
-    [HttpGet("id/{recipeId}")]
+    // GET api/v1/Recipes/5
+    /// <summary>
+    /// Gets a RecipeModel based on the id. Includes RecipeIngredients.
+    /// </summary>
+    /// <param name="recipeId"></param>
+    /// <returns>A RecipeModel with the specified id. Includes RecipeIngredients</returns>
+    [HttpGet("{recipeId}")]
     public async Task<ActionResult<RecipeModel>> Get(int recipeId)
     {
-        _logger.LogInformation("GET: api/Recipes/id/{RecipeId}", recipeId);
+        _logger.LogInformation("GET: api/Recipes/{RecipeId}", recipeId);
 
         try
         {

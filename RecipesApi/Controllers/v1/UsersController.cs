@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
-namespace RecipesApi.Controllers;
+using RecipesApi.Constants;
+
+namespace RecipesApi.Controllers.v1;
 
 [Authorize]
-[Route("api/[controller]")]
+[RequiredScope(ScopeConstants.UserReadWrite)]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 [ApiController]
 public class UsersController : ControllerBase
 {
@@ -20,7 +25,11 @@ public class UsersController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
-    // POST api/Users/new
+    // POST api/v1/Users/new
+    /// <summary>
+    /// Posts a new users info to SQL database.(requires auth)
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("new")]
     public async Task<ActionResult> PostNewUser()
     {
@@ -46,7 +55,12 @@ public class UsersController : ControllerBase
         }
     }
 
-    // POST api/Users/share
+    // POST api/v1/Users/share
+    /// <summary>
+    /// Posts a user's shared recipe to SQL database.(requires auth)
+    /// </summary>
+    /// <param name="recipeModel"></param>
+    /// <returns>The new id of user's posted recipe</returns>
     [HttpPost("share")]
     public async Task<ActionResult<int>> PostSharedRecipe([FromBody] RecipeModel recipeModel)
     {
@@ -69,7 +83,12 @@ public class UsersController : ControllerBase
         }
     }
 
-    // POST: api/Users/favorite
+    // POST: api/v1/Users/favorite
+    /// <summary>
+    /// Posts a user's favorited recipe Id to SQL database.(requires auth)
+    /// </summary>
+    /// <param name="recipeId"></param>
+    /// <returns></returns>
     [HttpPost("favorite/{recipeId}")]
     public async Task<ActionResult> PostUserFavorite(int recipeId)
     {
@@ -96,7 +115,12 @@ public class UsersController : ControllerBase
         }
     }
 
-    // DELETE: api/Users/favorite/recipeId
+    // DELETE: api/v1/Users/favorite/recipeId
+    /// <summary>
+    /// Deletes a user's favorited recipe Id from SQL database.(requires auth)
+    /// </summary>
+    /// <param name="recipeId"></param>
+    /// <returns></returns>
     [HttpDelete("favorite/{recipeId}")]
     public async Task<ActionResult> DeleteUserFavorite(int recipeId)
     {
@@ -112,7 +136,7 @@ public class UsersController : ControllerBase
             await _data.DeleteUserFavorite(userFavorite);
             return Ok();
         }
-        catch (Exception ex)   
+        catch (Exception ex)
         {
             _logger.LogError(
                 ex,
@@ -123,9 +147,13 @@ public class UsersController : ControllerBase
         }
     }
 
-    // GET: api/Users/myrecipes
+    // GET: api/v1/Users/myrecipes
+    /// <summary>
+    /// Gets a list of RecipeDtos a user has shared.(requires auth)
+    /// </summary>
+    /// <returns>A list of RecipeDtos a user has shared</returns>
     [HttpGet("myrecipes")]
-    public async Task<ActionResult<List<RecipeDto>>> GetUserCreatedRecipes()
+    public async Task<ActionResult<List<RecipeDto>>> GetUserSharedRecipes()
     {
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
         _logger.LogInformation("GET: api/Users/myrecipes");
@@ -142,7 +170,11 @@ public class UsersController : ControllerBase
         }
     }
 
-    // GET: api/Users/favorites
+    // GET: api/v1/Users/favorites
+    /// <summary>
+    /// Gets a list of user's favorited RecipeDtos.(requires auth)
+    /// </summary>
+    /// <returns>A list of user's favorited RecipeDtos</returns>
     [HttpGet("favorites")]
     public async Task<ActionResult<List<RecipeDto>>> GetUserFavorites()
     {
@@ -161,7 +193,11 @@ public class UsersController : ControllerBase
         }
     }
 
-    // GET: api/Users/favoritesIds
+    // GET: api/v1/Users/favoritesIds
+    /// <summary>
+    /// Gets a list of user's favorite recipe Ids.(requires auth)
+    /// </summary>
+    /// <returns>A list of recipe Ids</returns>
     [HttpGet("favoritesIds")]
     public async Task<ActionResult<List<int>>> GetUserFavoritesIds()
     {
