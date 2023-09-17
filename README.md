@@ -30,4 +30,4 @@
 ![](ReadMeImages/culinaryshares-entity-relationship.PNG)
 
 ## Sample Video: 
-[![Sample Video](https://img.youtube.com/vi/CcnFogJZYZ8/0.jpg)](https://www.youtube.com/watch?v=WmavLFWBwnY)
+[![Sample Video](https://img.youtube.com/vi/WmavLFWBwnY/0.jpg)](https://www.youtube.com/watch?v=WmavLFWBwnY)
