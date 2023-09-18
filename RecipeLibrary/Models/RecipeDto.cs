@@ -10,12 +10,11 @@ public class RecipeDto
 
     public string? Description { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Instructions { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? CreatedBy { get; set; }
-
-    public DateTime DateAdded { get; set; }
 
     public string? ImageUrl { get; set; }
 }
