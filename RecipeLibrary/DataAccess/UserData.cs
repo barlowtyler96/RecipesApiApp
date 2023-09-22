@@ -49,6 +49,7 @@ public class UserData : IUserData
                 Instructions = recipeModel.Instructions,
                 ImageUrl = recipeModel.ImageUrl,
                 CreatedBy = recipeModel.CreatedBy,
+                DateAdded = DateTime.UtcNow.ToString("MM/dd/yy"),
                 RecipeIngredients = recipeIngredientsTable.AsTableValuedParameter("RecipeIngredientType")
             },
             "Default");
