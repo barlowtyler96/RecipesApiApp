@@ -18,7 +18,7 @@ public class RecipeData : IRecipeData
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        return _sql.LoadMultiData<RecipeDto, dynamic>(
+        return _sql.LoadPaginationData<RecipeDto, dynamic>(
             "dbo.spGetRecipes_All",
             new { Skip = skip, Take = take },
             "Default",
@@ -29,30 +29,10 @@ public class RecipeData : IRecipeData
     //GET
     public async Task<RecipeModel> GetById(int id)
     {
-        var recipesDto = await _sql.LoadData<RecipeDto, dynamic>(
+        var recipeModel = await _sql.LoadRecipeModelData<RecipeModel, dynamic>(
             "dbo.spGetRecipeById",
-            new 
-            { RecipeId = id},
-            "Default");
-
-        var recipeId = recipesDto[0].RecipeId;
-        var recipeIdsAsString = string.Join(",", recipeId);
-        var recipeIngredients = await _sql.LoadData<RecipeIngredient, dynamic>(
-            "dbo.spGetRecipeIngredientsById",
-            new { RecipeIdsAsString = recipeIdsAsString },
-            "Default");
-
-        var ingredientIdsAsString = string.Join(",", recipeIngredients.Select(i => i.IngredientId));
-        var ingredients = await _sql.LoadData<IngredientModel, dynamic>(
-            "dbo.spGetIngredientsById",
-            new { IngredientIdsAsString = ingredientIdsAsString },
-            "Default");
-
-        for (int i = 0; i < ingredients.Count && i < recipeIngredients.Count; i++)
-        {
-            recipeIngredients[i].IngredientName = ingredients[i].Name;
-        }
-        var recipeModel = new RecipeModel(recipesDto.FirstOrDefault()!, recipeIngredients);
+            new { RecipeId = id },
+            "Default"); 
 
         return recipeModel;
     }
@@ -63,7 +43,7 @@ public class RecipeData : IRecipeData
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        var results =  await _sql.LoadMultiData<PaginationResponse<RecipeDto>, dynamic>(
+        var results =  await _sql.LoadPaginationData<PaginationResponse<RecipeDto>, dynamic>(
             "dbo.spGetRecipesByDate",
             new { Skip = skip, Take = take },
             "Default",
@@ -78,7 +58,7 @@ public class RecipeData : IRecipeData
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        var results = await _sql.LoadMultiData<PaginationResponse<RecipeDto>, dynamic>(
+        var results = await _sql.LoadPaginationData<PaginationResponse<RecipeDto>, dynamic>(
             "dbo.spGetRecipesByKeyword",
             new { Keyword = keyword, Skip = skip, Take = take },
             "Default",
