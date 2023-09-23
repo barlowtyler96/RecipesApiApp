@@ -19,5 +19,10 @@ namespace RecipeLibrary.DataAccess
             int pageSize);
 
         Task SaveData<T>(string storedProcedure, T parameters, string connectionStringName);
+        Task<PaginationResponse<List<RecipeModel>>> LoadRecipeModelData<T, U>(
+            string storedProcedure, 
+            U parameters, 
+            string connectionStringName,
+            int currentPageNumber, int pageSize);
     }
 }

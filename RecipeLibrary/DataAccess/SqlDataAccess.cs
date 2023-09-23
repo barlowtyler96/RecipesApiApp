@@ -53,6 +53,36 @@ public class SqlDataAccess : ISqlDataAccess
         return response;
     }
 
+    public async Task<PaginationResponse<List<RecipeModel>>> LoadRecipeModelData<T, U>(   
+        string storedProcedure,
+        U parameters,
+        string connectionStringName,
+        int currentPageNumber, int pageSize)
+    {
+        string connectionString = _config.GetConnectionString(connectionStringName)!;
+
+        using IDbConnection connection = new SqlConnection(connectionString);
+
+        var reader = await connection.QueryMultipleAsync(storedProcedure, parameters,
+            commandType: CommandType.StoredProcedure);
+
+        int totalCount = reader.Read<int>().FirstOrDefault();
+        List<RecipeDto> recipeDtos = reader.Read<RecipeDto>().ToList();
+        List<RecipeIngredient> recipeIngredients = reader.Read<RecipeIngredient>().ToList();
+
+        List<RecipeModel> recipeModels = new List<RecipeModel>();
+
+        foreach(var recipe in recipeDtos)
+        {
+            RecipeModel recipeModel = new RecipeModel(recipe, recipeIngredients);
+            recipeModels.Add(recipeModel);
+        }
+        
+        var response = new PaginationResponse<List<RecipeModel>>(totalCount, recipeModels, currentPageNumber, pageSize);
+
+        return response;
+    }
+
     public async Task<RecipeModel> LoadRecipeModelData<T, U>(
     string storedProcedure,
     U parameters,
