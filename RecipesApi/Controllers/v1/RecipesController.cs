@@ -24,20 +24,44 @@ public class RecipesController : ControllerBase
     /// </summary>
     /// <param name="page"></param>
     /// <param name="pageSize"></param>
-    /// <returns>A list of paged recipes</returns>
+    /// <returns>A list of paged recipe dtos</returns>
     [HttpGet]
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> Get([FromQuery] int page, [FromQuery] int pageSize)
     {
-        _logger.LogInformation("GET: api/Recipes?page={page}&pageSize={pageSize}", page, pageSize);
+        _logger.LogInformation("GET: api/v1/Recipes?page={page}&pageSize={pageSize}", page, pageSize);
 
         try
         {
-            var output = await _data.GetAll(page, pageSize);
+            var output = await _data.GetAllRecipeDtos(page, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "The GET call to api/Recipes?page={page}&pageSize={pageSize}", page, pageSize);
+            return BadRequest();
+        }
+    }
+
+    // GET: api/v1/Recipes/full
+    /// <summary>
+    /// Gets a list of all RecipeModels(paged)
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <returns>A list of paged recipe models</returns>
+    [HttpGet("full")]
+    public async Task<ActionResult<PaginationResponse<List<RecipeModel>>>> GetFullRecipes([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        _logger.LogInformation("GET: api/v1/Recipes/full?page={page}&pageSize={pageSize}", page, pageSize);
+
+        try
+        {
+            var output = await _data.GetAllRecipeModels(page, pageSize);
+            return Ok(output);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The GET call to api/v1/Recipes/full?page={page}&pageSize={pageSize}", page, pageSize);
             return BadRequest();
         }
     }
