@@ -202,7 +202,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<int>>> GetUserFavoritesIds()
     {
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-        _logger.LogInformation("GET: api/Users/favoritesIds");
+        _logger.LogInformation("GET: api/v1/Users/favoritesIds");
 
         try
         {
@@ -211,7 +211,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Users/favoritesIds failed.");
+            _logger.LogError(ex, "The GET call to api/v1/Users/favoritesIds failed.");
             return BadRequest();
         }
     }
