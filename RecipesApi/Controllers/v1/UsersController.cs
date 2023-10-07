@@ -4,6 +4,7 @@ using Microsoft.Identity.Web.Resource;
 using RecipeLibrary.DataAccess;
 using RecipeLibrary.Models;
 using RecipesApi.Constants;
+using RecipesApi.Services;
 
 namespace RecipesApi.Controllers.v1;
 
@@ -17,12 +18,14 @@ public class UsersController : ControllerBase
     private readonly IUserData _data;
     private readonly ILogger<UsersController> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private IBlobService _blobService;
 
-    public UsersController(IUserData data, ILogger<UsersController> logger, IHttpContextAccessor httpContextAccessor)
+    public UsersController(IUserData data, ILogger<UsersController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
     {
         _data = data;
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
+        _blobService = blobService;
     }
 
     // POST api/v1/Users/new
@@ -215,4 +218,25 @@ public class UsersController : ControllerBase
             return BadRequest();
         }
     }
+
+    [HttpPost("upload"), DisableRequestSizeLimit()]
+    public async Task<ActionResult> PostRecipeImage()   
+    {
+        IFormFile file = Request.Form.Files[0];
+        if (file == null)
+        {
+            return BadRequest();
+        }
+
+        var result = await _blobService.UploadFileBlobAsync(
+                "recipevaultimages",
+                file.OpenReadStream(),
+                file.ContentType,
+                file.Name);
+
+        var toReturn = result.AbsoluteUri;
+
+        return Ok(new { path = toReturn });
+    }
+
 }
