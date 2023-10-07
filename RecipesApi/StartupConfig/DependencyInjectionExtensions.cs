@@ -5,6 +5,8 @@ using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
 using Microsoft.OpenApi.Models;
 using AspNetCoreRateLimit;
 using System.Reflection;
+using Azure.Storage.Blobs;
+using RecipesApi.Services;
 
 namespace RecipesApi.StartupConfig;
 
@@ -97,6 +99,8 @@ public static class DependencyInjectionExtensions
         builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
         builder.Services.AddSingleton<IRecipeData, RecipeData>();
         builder.Services.AddSingleton<IUserData, UserData>();
+        builder.Services.AddScoped(x => new BlobServiceClient(builder.Configuration.GetValue<string>("AzureBlobStorage")));
+        builder.Services.AddScoped<IBlobService, BlobService>();
     }
 
     public static void AddHealthCheckServices(this WebApplicationBuilder builder)
