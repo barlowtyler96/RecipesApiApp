@@ -18,7 +18,7 @@ public class UsersController : ControllerBase
     private readonly IUserData _data;
     private readonly ILogger<UsersController> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private IBlobService _blobService;
+    private readonly IBlobService _blobService;
 
     public UsersController(IUserData data, ILogger<UsersController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
     {
