@@ -31,7 +31,7 @@ public class RecipeData : IRecipeData
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        return _sql.LoadRecipeModelData<RecipeModel, dynamic>(
+        return _sql.LoadPaginationRecipeModelData<RecipeModel, dynamic>(
             "dbo.spGetAllRecipes",
             new { Skip = skip, Take = take },
             "Default",
