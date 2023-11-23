@@ -28,7 +28,7 @@ public class RecipeModel
         Instructions = recipesDto.Instructions;
         CreatedBy = recipesDto.CreatedBy;
         ImageUrl = recipesDto.ImageUrl;
-        RecipeIngredients = recipeIngredients.Where(ri => ri.RecipeId == recipesDto.RecipeId).ToList();
+        RecipeIngredients = recipeIngredients;
     }
     public RecipeModel()
     {
