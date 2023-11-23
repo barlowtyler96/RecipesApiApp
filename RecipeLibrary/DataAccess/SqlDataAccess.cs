@@ -3,6 +3,7 @@ using Dapper;
 using System.Data;
 using System.Data.SqlClient;
 using RecipeLibrary.Models;
+using static Dapper.SqlMapper;
 
 namespace RecipeLibrary.DataAccess;
 
@@ -28,7 +29,6 @@ public class SqlDataAccess : ISqlDataAccess
             commandType: CommandType.StoredProcedure); 
 
         return rows.ToList();
-
     }
 
     public async Task<PaginationResponse<List<RecipeDto>>> LoadPaginationData<T, U>(
@@ -44,16 +44,16 @@ public class SqlDataAccess : ISqlDataAccess
         var reader = await connection.QueryMultipleAsync(storedProcedure, parameters,
             commandType: CommandType.StoredProcedure);
 
-        int totalCount = reader.Read<int>().FirstOrDefault();
-        
-        List<RecipeDto> recipes = reader.Read<RecipeDto>().ToList();
+        int totalCount = ReadTotalCount(reader);
 
-        var response = new PaginationResponse<List<RecipeDto>>(totalCount, recipes, currentPageNumber, pageSize);
+        List<RecipeDto> recipes = ReadRecipeDtos(reader);
+
+        PaginationResponse<List<RecipeDto>> response = new (totalCount, recipes, currentPageNumber, pageSize);
 
         return response;
     }
 
-    public async Task<PaginationResponse<List<RecipeModel>>> LoadRecipeModelData<T, U>(   
+    public async Task<PaginationResponse<List<RecipeModel>>> LoadPaginationRecipeModelData<T, U>(   
         string storedProcedure,
         U parameters,
         string connectionStringName,
@@ -66,27 +66,27 @@ public class SqlDataAccess : ISqlDataAccess
         var reader = await connection.QueryMultipleAsync(storedProcedure, parameters,
             commandType: CommandType.StoredProcedure);
 
-        int totalCount = reader.Read<int>().FirstOrDefault();
-        List<RecipeDto> recipeDtos = reader.Read<RecipeDto>().ToList();
-        List<RecipeIngredient> recipeIngredients = reader.Read<RecipeIngredient>().ToList();
+        int totalCount = ReadTotalCount(reader);
+        List<RecipeDto> recipeDtos = ReadRecipeDtos(reader);
+        List<RecipeIngredient> recipeIngredients = ReadRecipeIngredients(reader);
 
-        List<RecipeModel> recipeModels = new List<RecipeModel>();
+        List<RecipeModel> recipeModels = new ();
 
         foreach(var recipe in recipeDtos)
         {
-            RecipeModel recipeModel = new RecipeModel(recipe, recipeIngredients);
+            RecipeModel recipeModel = new (recipe, recipeIngredients);
             recipeModels.Add(recipeModel);
         }
         
-        var response = new PaginationResponse<List<RecipeModel>>(totalCount, recipeModels, currentPageNumber, pageSize);
+        PaginationResponse<List<RecipeModel>> response = new (totalCount, recipeModels, currentPageNumber, pageSize);
 
         return response;
     }
 
     public async Task<RecipeModel> LoadRecipeModelData<T, U>(
-    string storedProcedure,
-    U parameters,
-    string connectionStringName)
+        string storedProcedure,
+        U parameters,
+        string connectionStringName)
     {
         string connectionString = _config.GetConnectionString(connectionStringName)!;
 
@@ -95,15 +95,15 @@ public class SqlDataAccess : ISqlDataAccess
         var reader = await connection.QueryMultipleAsync(storedProcedure, parameters,
             commandType: CommandType.StoredProcedure);
 
-        RecipeDto recipeDto = reader.Read<RecipeDto>().FirstOrDefault()!;
-        List<RecipeIngredient> recipeIngredients = reader.Read<RecipeIngredient>().ToList();
+        RecipeDto recipeDto = ReadRecipeDtos(reader).FirstOrDefault()!;
+        List<RecipeIngredient> recipeIngredients = ReadRecipeIngredients(reader);
 
-        RecipeModel recipeModel = new RecipeModel(recipeDto, recipeIngredients);
+        RecipeModel recipeModel = new (recipeDto, recipeIngredients);
 
         return recipeModel;
     }
 
-    public async Task SaveData<T>(string storedProcedure,
+    public async Task<int> SaveData<T>(string storedProcedure,
         T parameters,
         string connectionStringName)
     {
@@ -111,9 +111,29 @@ public class SqlDataAccess : ISqlDataAccess
 
         using IDbConnection connection = new SqlConnection(connectionString);
 
-        await connection.ExecuteAsync(
+        int rowsAffected = await connection.ExecuteAsync(
             storedProcedure,
             parameters,
             commandType: CommandType.StoredProcedure);
+
+        return rowsAffected;
+    }
+
+    public static int ReadTotalCount(GridReader reader)
+    {
+        var totalCount = reader.Read<int>();
+        return totalCount.FirstOrDefault();
+    }
+
+    public static List<RecipeIngredient> ReadRecipeIngredients(GridReader reader)
+    {
+        var recipesIngredients = reader.Read<RecipeIngredient>().ToList();
+        return recipesIngredients;
+    }
+
+    public static List<RecipeDto> ReadRecipeDtos(GridReader reader)
+    {
+        var recipesDto = reader.Read<RecipeDto>().ToList();
+        return recipesDto;
     }
 }
