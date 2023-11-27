@@ -26,7 +26,7 @@ public class RecipesController : ControllerBase
     /// <param name="pageSize"></param>
     /// <returns>A list of paged recipe dtos</returns>
     [HttpGet]
-    public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> Get([FromQuery] int page, [FromQuery] int pageSize)
+    public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetPagedRecipeDtos([FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/v1/Recipes?page={page}&pageSize={pageSize}", page, pageSize);
 
