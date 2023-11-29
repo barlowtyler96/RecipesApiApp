@@ -32,8 +32,19 @@ public class RecipesController : ControllerBase
 
         try
         {
-            var output = await _data.GetAllRecipeDtos(page, pageSize);
-            return Ok(output);
+
+            if (page > 0 && pageSize > 0)
+            {
+                var output = await _data.GetAllRecipeDtos(page, pageSize);
+                return Ok(output);
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = $"The pageNumber or pageSize provided is not valid."
+                });
+            }
         }
         catch (Exception ex)
         {
@@ -50,14 +61,24 @@ public class RecipesController : ControllerBase
     /// <param name="pageSize"></param>
     /// <returns>A list of paged recipe models</returns>
     [HttpGet("full")]
-    public async Task<ActionResult<PaginationResponse<List<RecipeModel>>>> GetFullRecipes([FromQuery] int page, [FromQuery] int pageSize)
+    public async Task<ActionResult<PaginationResponse<List<RecipeModel>>>> GetPagedFullRecipes([FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/v1/Recipes/full?page={page}&pageSize={pageSize}", page, pageSize);
 
         try
         {
-            var output = await _data.GetAllRecipeModels(page, pageSize);
-            return Ok(output);
+            if (page > 0 && pageSize > 0)
+            {
+                var output = await _data.GetAllRecipeModels(page, pageSize);
+                return Ok(output);
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = $"The pageNumber or pageSize provided is not valid."
+                });
+            }
         }
         catch (Exception ex)
         {
@@ -80,8 +101,18 @@ public class RecipesController : ControllerBase
 
         try
         {
-            var output = await _data.GetByDate(page, pageSize);
-            return Ok(output);
+            if (page > 0 && pageSize > 0)
+            {
+                var output = await _data.GetByDate(page, pageSize);
+                return Ok(output);
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = $"The pageNumber or pageSize provided is not valid."
+                });
+            }
         }
         catch (Exception ex)
         {
@@ -126,7 +157,7 @@ public class RecipesController : ControllerBase
     /// <param name="recipeId"></param>
     /// <returns>A RecipeModel with the specified id. Includes RecipeIngredients</returns>
     [HttpGet("{recipeId}")]
-    public async Task<ActionResult<RecipeModel>> Get(int recipeId)
+    public async Task<ActionResult<RecipeModel>> GetById(int recipeId)
     {
         _logger.LogInformation("GET: api/Recipes/{RecipeId}", recipeId);
 
