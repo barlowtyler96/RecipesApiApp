@@ -13,12 +13,12 @@ public class RecipeData : IRecipeData
     }
 
     //GET
-    public Task<PaginationResponse<List<RecipeDto>>> GetAllRecipeDtos(int currentPageNumber, int pageSize)
+    public async Task<PaginationResponse<List<RecipeDto>>> GetAllRecipeDtos(int currentPageNumber, int pageSize)
     {
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        return _sql.LoadPaginationData<RecipeDto, dynamic>(
+        return await _sql.LoadPaginationData<RecipeDto, dynamic>(
             "dbo.spGetAllRecipeDtos",
             new { Skip = skip, Take = take },
             "Default",
@@ -26,12 +26,12 @@ public class RecipeData : IRecipeData
             pageSize);
     }
 
-    public Task<PaginationResponse<List<RecipeModel>>> GetAllRecipeModels(int currentPageNumber, int pageSize) 
+    public async Task<PaginationResponse<List<RecipeModel>>> GetAllRecipeModels(int currentPageNumber, int pageSize) 
     {
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        return _sql.LoadPaginationRecipeModelData<RecipeModel, dynamic>(
+        return await _sql.LoadPaginationRecipeModelData<RecipeModel, dynamic>(
             "dbo.spGetAllRecipes",
             new { Skip = skip, Take = take },
             "Default",
