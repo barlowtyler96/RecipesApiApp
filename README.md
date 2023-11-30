@@ -12,8 +12,10 @@
 * SQL Server 2022
 * Azure AD B2C
 
-## Tools used:
+## Tools / Libraries Used:
+* xUnit w/ Fluent Assertions
 * SSMS
+* Dapper
 * Postman
 * Swagger
 * [jwt.io ](https://jwt.io/)
