@@ -26,10 +26,8 @@
 * IP Rate Limiting
 * Basic logging with ILogger
 * Server-side paging for pagination component
-
+## Postman Documentation: 
+https://documenter.getpostman.com/view/27883820/2s9YCARW1m
   
 ## Database Schema
 ![](ReadMeImages/culinaryshares-entity-relationship.PNG)
-
-## Sample Video: 
-[![Sample Video](https://img.youtube.com/vi/WmavLFWBwnY/0.jpg)](https://www.youtube.com/watch?v=WmavLFWBwnY)
