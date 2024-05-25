@@ -1,5 +1,4 @@
 ﻿using RecipeLibrary.Models;
-using System.Data;
 
 namespace RecipeLibrary.DataAccess;
 
@@ -31,7 +30,7 @@ public class RecipeData : IRecipeData
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        return await _sql.LoadPaginationRecipeModelData<RecipeModel, dynamic>(
+        return await _sql.LoadPaginationData<RecipeModel, dynamic>(
             "dbo.spGetAllRecipes",
             new { Skip = skip, Take = take },
             "Default",
@@ -42,12 +41,12 @@ public class RecipeData : IRecipeData
     //GET
     public async Task<RecipeModel> GetById(int id)
     {
-        var recipeModel = await _sql.LoadRecipeModelData<RecipeModel, dynamic>(
+        var response = await _sql.LoadData<RecipeModel, dynamic>(
             "dbo.spGetRecipeById",
             new { RecipeId = id },
             "Default"); 
 
-        return recipeModel;
+        return response.FirstOrDefault()!;
     }
 
     //GET
@@ -56,13 +55,13 @@ public class RecipeData : IRecipeData
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        var results =  await _sql.LoadPaginationData<PaginationResponse<RecipeDto>, dynamic>(
+        var results =  await _sql.LoadPaginationData<RecipeDto, dynamic>(
             "dbo.spGetRecipesByDate",
             new { Skip = skip, Take = take },
             "Default",
             currentPageNumber,
             pageSize);
-    
+
         return results;
     }
 
@@ -71,7 +70,7 @@ public class RecipeData : IRecipeData
         int skip = (currentPageNumber - 1) * pageSize;
         int take = pageSize;
 
-        var results = await _sql.LoadPaginationData<PaginationResponse<RecipeDto>, dynamic>(
+        var results = await _sql.LoadPaginationData<RecipeDto, dynamic>(
             "dbo.spGetRecipesByKeyword",
             new { Keyword = keyword, Skip = skip, Take = take },
             "Default",
