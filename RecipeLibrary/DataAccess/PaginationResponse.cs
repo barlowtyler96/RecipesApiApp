@@ -12,12 +12,12 @@ public class PaginationResponse<T> where T : class
 
     public T Data { get; set; }
 
-    public PaginationResponse(int totalCount, T data, int currentPageNumber, int pageSize)
+    public PaginationResponse(int totalCount, int pageSize, int currentPageNumber, T data)
     {
         TotalCount = totalCount;
-        Data = data;
         CurrentPageNumber = currentPageNumber;
         PageSize = pageSize;
+        Data = data;
 
         TotalPages = (int)Math.Ceiling((double)TotalCount / (double)PageSize);
     }
