@@ -40,7 +40,7 @@ public class UserData : IUserData
             recipeIngredientsTable.Rows.Add(ingredient.IngredientName, ingredient.Amount, ingredient.Unit);
         }
 
-        var createdRecipeId = await _sql.LoadData<int, dynamic>(
+        var createdRecipeId = await _sql.SaveData<dynamic>(
             "spInsertRecipeWithIngredients",
             new
             {
@@ -53,7 +53,7 @@ public class UserData : IUserData
                 RecipeIngredients = recipeIngredientsTable.AsTableValuedParameter("RecipeIngredientType")
             },
             "Default");
-        return createdRecipeId.FirstOrDefault();
+        return createdRecipeId;
     }
 
     //POST
