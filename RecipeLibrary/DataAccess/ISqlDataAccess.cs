@@ -1,27 +1,22 @@
-﻿using RecipeLibrary.Models;
-
-namespace RecipeLibrary.DataAccess;
+﻿namespace RecipeLibrary.DataAccess;
 
 public interface ISqlDataAccess
 {
-    Task<List<T>> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName);
-
-    Task<RecipeModel> LoadRecipeModelData<T, U>(
-        string storedProcedure,
-        U parameters,
-        string connectionStringName);
-
-    Task<PaginationResponse<List<RecipeDto>>> LoadPaginationData<T, U>(
+    Task<List<T>> LoadData<T, U>(
         string storedProcedure, 
         U parameters, 
-        string connectionStringName, 
-        int currentPageNumber, 
-        int pageSize);
+        string connectionStringName);
 
-    Task<int> SaveData<T>(string storedProcedure, T parameters, string connectionStringName);
-    Task<PaginationResponse<List<RecipeModel>>> LoadPaginationRecipeModelData<T, U>(
+
+    Task<PaginationResponse<List<T>>> LoadPaginationData<T, U>(
         string storedProcedure, 
         U parameters, 
         string connectionStringName,
-        int currentPageNumber, int pageSize);
+        int currentPageNumber,
+        int pageSize);
+
+    Task<int> SaveData<T>(
+        string storedProcedure, 
+        T parameters, 
+        string connectionStringName);
 }
