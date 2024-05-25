@@ -164,17 +164,21 @@ public class RecipesController : ControllerBase
         try
         {
             var output = await _data.GetById(recipeId);
-            return Ok(output);
+            if (output == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(output);
+            }
         }
         catch (Exception ex)
         {
             _logger.LogError(
                 ex,
                 "The GET call to api/Recipes/id/{RecipeId}", recipeId);
-            return NotFound(new
-            {
-                message = $"The recipe with ID {recipeId} was not found."
-            });
+            return BadRequest();
         }
     }
 }
