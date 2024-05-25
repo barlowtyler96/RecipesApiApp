@@ -8,7 +8,8 @@ public class RecipeIngredient
 
     public int IngredientId { get; set; }
 
-    public decimal Amount { get; set; }
+    public double Amount { get; set; }
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Unit { get; set; }
 
