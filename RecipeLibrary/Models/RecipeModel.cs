@@ -1,5 +1,4 @@
-﻿
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RecipeLibrary.Models;
 
@@ -19,18 +18,4 @@ public class RecipeModel
     public string? ImageUrl { get; set; }
 
     public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
-
-    public RecipeModel(RecipeDto recipesDto, List<RecipeIngredient> recipeIngredients)
-    {
-        RecipeId = recipesDto.RecipeId;
-        Name = recipesDto.Name;
-        Description = recipesDto.Description;
-        Instructions = recipesDto.Instructions;
-        CreatedBy = recipesDto.CreatedBy;
-        ImageUrl = recipesDto.ImageUrl;
-        RecipeIngredients = recipeIngredients;
-    }
-    public RecipeModel()
-    {
-    }
 }
