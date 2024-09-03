@@ -13,7 +13,6 @@
 * Azure AD B2C
 
 ## Tools / Libraries Used:
-* xUnit w/ Fluent Assertions
 * SSMS
 * Dapper
 * Postman
