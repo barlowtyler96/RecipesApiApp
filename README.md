@@ -22,7 +22,6 @@
 ## Features: 
 * Endpoints secured with Azure AD B2C
 * Versioning
-* IP Rate Limiting
 * Basic logging with ILogger
 * Server-side paging for pagination component
 ## Postman Documentation: 
