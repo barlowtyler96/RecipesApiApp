@@ -1,4 +1,4 @@
-# Culinary Shares Web API
+# CulinaryShares Web API
 
 #### This solution consists of two projects, a class library for data access and a web API. My data access library utilizes dapper with stored procedures. The library is referenced in my API. The API is then consumed by my blazor server app. My favorite feature is the server-side paging. When a user searches for a recipe on the blazor app, only the results for the current page are returned and stored in memory. 
 
@@ -31,3 +31,7 @@ https://documenter.getpostman.com/view/27883820/2s9YCARW1m
   
 ## Database Schema
 ![](ReadMeImages/culinaryshares-entity-relationship.PNG)
+
+## Want to contribute?
+1. Open Git Bash to the location you wish to clone the repository.
+2. Run the following command: ```bash git clone https://github.com/barlowtyler96/RecipesApiApp.git
