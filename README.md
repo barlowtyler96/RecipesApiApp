@@ -1,6 +1,6 @@
 # CulinaryShares Web API
 
-#### This solution consists of two projects, a class library for data access and a web API. My data access library utilizes dapper with stored procedures. The API is then consumed by my [CulinaryShares blazor](https://github.com/barlowtyler96/RecipesB2CBlazor) app, as well as the [angular clone](https://github.com/barlowtyler96/AngularRecipesB2C). My favorite feature is the server-side paging. When a user searches for a recipe on the blazor app, only the results for the current page are returned and stored in memory. 
+#### This solution consists of two projects, a class library for data access and a web API. My data access library utilizes dapper with stored procedures. The API is then consumed by my [CulinaryShares blazor](https://github.com/barlowtyler96/RecipesB2CBlazor) app, as well as the [angular clone](https://github.com/barlowtyler96/AngularRecipesB2C).
 
 #### This project was created to practice data access, SQL Server, Dapper, authentication/authorization, and API developement.
 
