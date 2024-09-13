@@ -36,11 +36,13 @@ https://documenter.getpostman.com/view/27883820/2s9YCARW1m
    ```git clone https://github.com/barlowtyler96/RecipesApiApp.git```
 4. Create a new branch:
    ```git checkout -b your-branch-name```
-6. Make changes and commit them: git add . git commit -m "Brief description of the changes"
+6. Make changes. Stage and commit them: git add . git commit -m "Brief description of the changes"
+   Stage:
    ```git add .```
+   Commit:
    ```git commit -m "Brief description of the changes"```
-7. Push your changes
+8. Push your changes
    ```git push origin your-branch-name```
-8. Submit a pull request
+9. Submit a pull request
 
 
