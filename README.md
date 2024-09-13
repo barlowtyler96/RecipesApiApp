@@ -33,27 +33,14 @@ https://documenter.getpostman.com/view/27883820/2s9YCARW1m
 ## Want to contribute?
 1. Open Git Bash to the location you wish to clone the repository.
 2. Run the following command:
-   ```bash git clone https://github.com/barlowtyler96/RecipesApiApp.git```
-4. Create a new branch: git checkout -b your-branch-name
-5. Make changes and commit them: git add . git commit -m "Brief description of the changes"
+   ```git clone https://github.com/barlowtyler96/RecipesApiApp.git```
+4. Create a new branch:
+   ```git checkout -b your-branch-name```
+6. Make changes and commit them: git add . git commit -m "Brief description of the changes"
+   ```git add .```
+   ```git commit -m "Brief description of the changes"```
+7. Push your changes
+   ```git push origin your-branch-name```
+8. Submit a pull request
 
-```bash
-# Clone the repository
-git clone https://github.com/your-username/your-repo.git
-
-# Change to the project directory
-cd your-repo
-
-# Create a new branch
-git checkout -b your-branch-name
-
-# Add changes
-git add .
-
-# Commit changes
-git commit -m "Brief description of the changes"
-
-# Push changes
-git push origin your-branch-name
-```
 
