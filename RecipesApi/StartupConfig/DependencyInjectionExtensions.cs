@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
 using Microsoft.OpenApi.Models;
-//using AspNetCoreRateLimit;
+using AspNetCoreRateLimit;
 using System.Reflection;
 using Azure.Storage.Blobs;
 using RecipesApi.Services;
@@ -93,15 +93,15 @@ public static class DependencyInjectionExtensions
         });
     }
 
-    //public static void AddRateLimitingServices(this WebApplicationBuilder builder)
-    //{
-    //    builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
-    //    builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
-    //    builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
-    //    builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-    //    builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
-    //    builder.Services.AddInMemoryRateLimiting();
-    //}
+    public static void AddRateLimitingServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+        builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+        builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+        builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        builder.Services.AddInMemoryRateLimiting();
+    }
 
     public static void AddCustomServices(this WebApplicationBuilder builder)
     {

@@ -11,7 +11,7 @@ builder.AddEFCoreServices();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.AddSwaggerServices();
 builder.Services.AddMemoryCache();
-//builder.AddRateLimitingServices();
+builder.AddRateLimitingServices();
 builder.AddAuthServices();
 builder.AddHealthCheckServices();
 builder.AddCustomServices();
@@ -36,7 +36,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.UseIpRateLimiting();
+app.UseIpRateLimiting();
 app.UseCors("AllowAnyOrigin");
 app.MapHealthChecks("/health");
 
