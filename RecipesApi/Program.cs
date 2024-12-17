@@ -1,4 +1,4 @@
-//using AspNetCoreRateLimit;
+using AspNetCoreRateLimit;
 using RecipeLibraryEF.Models.MappingProfiles;
 using RecipesApi.StartupConfig;
 using System.IdentityModel.Tokens.Jwt;
