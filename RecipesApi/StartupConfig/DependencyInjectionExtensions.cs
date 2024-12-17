@@ -111,12 +111,6 @@ public static class DependencyInjectionExtensions
         builder.Services.AddScoped<IBlobService, BlobService>();
     }
 
-    public static void AddHealthCheckServices(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddHealthChecks()
-            .AddSqlServer(builder.Configuration.GetConnectionString("Default")!);
-    }
-
     public static void AddAuthServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>

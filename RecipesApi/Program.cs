@@ -13,7 +13,6 @@ builder.AddSwaggerServices();
 builder.Services.AddMemoryCache();
 builder.AddRateLimitingServices();
 builder.AddAuthServices();
-builder.AddHealthCheckServices();
 builder.AddCustomServices();
 
 var app = builder.Build();
