@@ -13,16 +13,17 @@
 * Azure AD B2C
 
 ## Tools / Libraries Used:
+* .NET Core
 * SSMS
 * Postman
 * Swagger
 * [jwt.io ](https://jwt.io/)
 
 ## Features: 
-* Endpoints secured with Azure AD B2C
+* Secured with Azure AD B2C
 * Versioning
 * Basic logging with ILogger
-* Server-side paging for pagination component
+* Server-side paging
 ## Postman Documentation: 
 https://documenter.getpostman.com/view/27883820/2s9YCARW1m
   
