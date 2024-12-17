@@ -6,15 +6,14 @@
 
 #### I used Microsoft's documentation & code examples, and stack overflow to complete the project. The biggest challenge I faced was learning how to implement Azure's auth flows.
 
-## Technologies used: 
+## Techs used: 
 * Data Access Class Library
-* Dapper w/ Stored Procedures
+* Entity Framework Core
 * SQL Server 2022
 * Azure AD B2C
 
 ## Tools / Libraries Used:
 * SSMS
-* Dapper
 * Postman
 * Swagger
 * [jwt.io ](https://jwt.io/)
