@@ -11,6 +11,7 @@
 * Entity Framework Core
 * SQL Server 2022
 * Azure AD B2C
+* Azure Blob Storage for images
 
 ## Tools Used:
 * SSMS
