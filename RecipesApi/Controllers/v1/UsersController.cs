@@ -76,7 +76,7 @@ public class UsersController : ControllerBase
     }
 
     // DELETE: api/users/favorite
-    [HttpPost("favorite/{id}")]
+    [HttpDelete("favorite/{id}")]
     public async Task<ActionResult> DeleteUserFavorite(int recipeId)
     {
         UserFavoriteDto userFavoriteDto = new()
