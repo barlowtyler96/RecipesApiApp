@@ -1,4 +1,5 @@
 using AspNetCoreRateLimit;
+using RecipeLibraryEF.Models.MappingProfiles;
 using RecipesApi.StartupConfig;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
 builder.AddStandardServices();
+builder.AddEFCoreServices();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.AddSwaggerServices();
 builder.Services.AddMemoryCache();
 builder.AddRateLimitingServices();

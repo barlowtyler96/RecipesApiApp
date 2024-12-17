@@ -1,4 +1,4 @@
-﻿using RecipeLibrary.DataAccess;
+﻿using RecipeLibraryEF.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
@@ -7,6 +7,7 @@ using AspNetCoreRateLimit;
 using System.Reflection;
 using Azure.Storage.Blobs;
 using RecipesApi.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecipesApi.StartupConfig;
 
@@ -28,6 +29,14 @@ public static class DependencyInjectionExtensions
             opts.AssumeDefaultVersionWhenUnspecified = true;
             opts.DefaultApiVersion = new(1, 0);
             opts.ReportApiVersions = true;
+        });
+    }
+
+    public static void AddEFCoreServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<RecipeContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
         });
     }
 
@@ -96,9 +105,8 @@ public static class DependencyInjectionExtensions
 
     public static void AddCustomServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
-        builder.Services.AddSingleton<IRecipeData, RecipeData>();
-        builder.Services.AddSingleton<IUserData, UserData>();
+        builder.Services.AddScoped<IRecipeData, RecipeData>();
+        builder.Services.AddScoped<IUserData, UserData>();
         builder.Services.AddScoped(x => new BlobServiceClient(builder.Configuration.GetValue<string>("AzureBlobStorage")));
         builder.Services.AddScoped<IBlobService, BlobService>();
     }
