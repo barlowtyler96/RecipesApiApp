@@ -37,6 +37,5 @@ app.MapControllers();
 
 app.UseIpRateLimiting();
 app.UseCors("AllowAnyOrigin");
-app.MapHealthChecks("/health");
 
 app.Run();
