@@ -23,7 +23,7 @@ public class RecipesController : ControllerBase
         _blobService = blobService;
     }
 
-    // GET: api/recipes?page={page}&pageSize={pagesize}
+    // GET: api/v1/recipes?page={page}&pageSize={pagesize}
     [HttpGet]
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> Get([FromQuery] int page, [FromQuery] int pageSize)
     {
@@ -41,7 +41,7 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // GET api/recipes/{id}
+    // GET api/v1/recipes/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<RecipeDto>> GetById(int id)
     {
@@ -63,7 +63,7 @@ public class RecipesController : ControllerBase
         }
     }
 
-    //GET api/recipes/search?keyword={keyword}&page={page}&pageSize={pageSize}
+    //GET api/v1/recipes/search?keyword={keyword}&page={page}&pageSize={pageSize}
     [HttpGet("search")]
     public async Task<ActionResult<RecipeDto>> GetByKeyword([FromQuery] string keyword, [FromQuery] int page, [FromQuery] int pageSize)
     {
@@ -81,7 +81,7 @@ public class RecipesController : ControllerBase
         }
     }
 
-    // POST api/recipes/share
+    // POST api/v1/recipes/share
     [HttpPost("share")]
     public async Task<ActionResult<RecipeDto>> Post([FromBody] RecipeDto newRecipeDto)
     {
@@ -124,7 +124,7 @@ public class RecipesController : ControllerBase
         return Ok(new { path = toReturn });
     }
 
-    // DELETE api/Recipes
+    // DELETE api/v1/Recipes
     [HttpDelete("{id}")]
     public async Task Delete(int id)
     {
