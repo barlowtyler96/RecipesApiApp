@@ -61,8 +61,8 @@ public class RecipeData : IRecipeData
             .Include(r => r.RecipeIngredients)
                 .ThenInclude(ri => ri.Ingredient)
             .OrderBy(r => r.CreatedOn)
-            .Take(pageSize)
             .Skip(skip)
+            .Take(pageSize)
             .ToListAsync();
 
         List<RecipeDto> recipeDtos = _mapper.Map<List<RecipeDto>>(recipesResponse);
