@@ -7,22 +7,23 @@
 #### I used Microsoft's documentation & code examples, and stack overflow to complete the project. The biggest challenge I faced was learning how to implement Azure's auth flows.
 
 ## Techs used: 
-* Data Access Class Library
+* .NET Core
 * Entity Framework Core
 * SQL Server 2022
 * Azure AD B2C
+* Azure Blob Storage for images
 
-## Tools / Libraries Used:
+## Tools Used:
 * SSMS
 * Postman
 * Swagger
 * [jwt.io ](https://jwt.io/)
 
 ## Features: 
-* Endpoints secured with Azure AD B2C
+* Secured with Azure AD B2C
 * Versioning
 * Basic logging with ILogger
-* Server-side paging for pagination component
+* Server-side paging
 ## Postman Documentation: 
 https://documenter.getpostman.com/view/27883820/2s9YCARW1m
   
