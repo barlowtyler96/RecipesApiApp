@@ -83,7 +83,7 @@ public class RecipesController : ControllerBase
 
     // POST api/v1/recipes/share
     [HttpPost("share")]
-    public async Task<ActionResult<RecipeDto>> Post([FromBody] RecipeDto newRecipeDto)
+    public async Task<ActionResult<RecipeDto>> Post([FromForm] RecipeDto newRecipeDto)
     {
         _logger.LogInformation("POST: api/v1/recipes/share");
         newRecipeDto.CreatedBySub = "47678e37-977b-4665-9451-88c53d5c65d0";
