@@ -6,7 +6,7 @@ namespace RecipeLibraryEF.Models.Entities;
 public class UserFavorite
 {
     [Required]
-    public int UserId { get; set; }
+    public string Sub { get; set; } = null!;
     public User? User { get; set; }
 
     [Required]

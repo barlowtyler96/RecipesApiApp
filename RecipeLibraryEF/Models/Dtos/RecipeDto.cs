@@ -10,4 +10,5 @@ public class RecipeDto
     public DateTime CreatedOn { get; set; }
     public string ImageUrl { get; set; }
     public List<IngredientDto> Ingredients { get; set; }
+    public bool IsFavorited { get; set; } = false;
 }

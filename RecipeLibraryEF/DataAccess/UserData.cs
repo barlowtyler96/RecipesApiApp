@@ -15,30 +15,14 @@ public class UserData : IUserData
         _mapper = mapper;
     }
 
-    public async Task AddUserFavoriteAsync(UserFavoriteDto userFavoriteDto)
+    public async Task AddUserFavoriteAsync(UserFavorite userFavorite)
     {
-        //get user id based on sub
-        var userId = await _context.Users
-                            .Where(u => u.UserSub == userFavoriteDto.UserSub)
-                            .Select(u => u.Id)
-                            .FirstOrDefaultAsync();
-        userFavoriteDto.UserId = userId;
-
-        var userFavorite = _mapper.Map<UserFavorite>(userFavoriteDto);
         _context.UserFavorites.Add(userFavorite);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteUserFavoriteAsync(UserFavoriteDto userFavoriteDto)
+    public async Task DeleteUserFavoriteAsync(UserFavorite userFavorite)
     {
-        //get user id based on sub
-        var userId = await _context.Users
-                            .Where(u => u.UserSub == userFavoriteDto.UserSub)
-                            .Select(u => u.Id)
-                            .FirstOrDefaultAsync();
-        userFavoriteDto.UserId = userId;
-
-        var userFavorite = _mapper.Map<UserFavorite>(userFavoriteDto);
         _context.UserFavorites.Remove(userFavorite);
         await _context.SaveChangesAsync();
     }
@@ -46,7 +30,7 @@ public class UserData : IUserData
     public async Task<List<RecipeDto>> GetUserFavoriteRecipesAsync(string userSub)
     {
         var favoriteRecipes = await _context.UserFavorites
-            .Where(uf => uf.User.UserSub == userSub)
+            .Where(uf => uf.User.Sub == userSub)
             .Select(uf => uf.Recipe)
             .ToListAsync();
 
@@ -57,7 +41,7 @@ public class UserData : IUserData
     public async Task<List<int>> GetUserFavoriteIdsAsync(string userSub)
     {
         var favoriteRecipes = await _context.UserFavorites
-            .Where(uf => uf.User.UserSub == userSub)
+            .Where(uf => uf.User.Sub == userSub)
             .Select(uf => uf.RecipeId)
             .ToListAsync();
         return favoriteRecipes;
@@ -66,7 +50,7 @@ public class UserData : IUserData
     public async Task AddNewUserAsync(User newUser)
     {
         bool userExists = await _context.Users
-            .AnyAsync(u => u.UserSub == newUser.UserSub);
+            .AnyAsync(u => u.Sub == newUser.Sub);
 
         if (!userExists)
         {

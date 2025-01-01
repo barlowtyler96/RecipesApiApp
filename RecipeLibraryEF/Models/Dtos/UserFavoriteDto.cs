@@ -2,7 +2,6 @@
 
 public class UserFavoriteDto
 {
-    public int UserId { get; set; }
     public int RecipeId { get; set; }
-    public string UserSub { get; set; }
+    public string Sub { get; set; }
 }

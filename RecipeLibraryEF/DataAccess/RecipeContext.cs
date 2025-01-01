@@ -31,12 +31,12 @@ public class RecipeContext: DbContext
             .HasForeignKey(ri => ri.IngredientId);
 
         modelBuilder.Entity<UserFavorite>()
-            .HasKey(uf => new { uf.UserId, uf.RecipeId });
+            .HasKey(uf => new { uf.Sub, uf.RecipeId });
 
         modelBuilder.Entity<UserFavorite>()
             .HasOne(uf => uf.User)
             .WithMany(u => u.UserFavorites)
-            .HasForeignKey(uf => uf.UserId);
+            .HasForeignKey(uf => uf.Sub);
 
         modelBuilder.Entity<UserFavorite>()
             .HasOne(uf => uf.Recipe)

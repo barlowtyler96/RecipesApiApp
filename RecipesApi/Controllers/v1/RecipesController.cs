@@ -10,14 +10,16 @@ namespace RecipesApi.Controllers.v1;
 [ApiController]
 public class RecipesController : ControllerBase
 {
-    private readonly IRecipeData _data;
+    private readonly IRecipeData _recipeData;
+    private readonly IUserData _userData;
     private readonly ILogger _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IBlobService _blobService;
 
-    public RecipesController(IRecipeData data, ILogger<RecipesController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
+    public RecipesController(IRecipeData recipeData, IUserData userData, ILogger<RecipesController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
     {
-        _data = data;
+        _recipeData = recipeData;
+        _userData = userData;
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
         _blobService = blobService;
@@ -28,11 +30,35 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> Get([FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/v1/recipes/?page={page}&pageSize={pageSize}", page, pageSize);
+        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
+        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
-            var output = await _data.GetAllRecipesAsync(page, pageSize);
-            return Ok(output);
+            var recipes = await _recipeData.GetRecipesAsync(page, pageSize, userSub);
+            
+            return Ok(recipes);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "The GET call to api/recipes?page={page}&pageSize={pageSize} failed", page, pageSize);
+            return BadRequest();
+        }
+    }
+
+    // GET: api/v1/recipes/recent?page={page}&pageSize={pagesize}
+    [HttpGet("recent")]
+    public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetRecents([FromQuery] int page, [FromQuery] int pageSize)
+    {
+        _logger.LogInformation("GET: api/v1/recipes/?page={page}&pageSize={pageSize}", page, pageSize);
+        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
+        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
+
+        try
+        {
+            var recipes = await _recipeData.GetRecipesRecentAsync(page, pageSize, userSub);
+
+            return Ok(recipes);
         }
         catch (Exception ex)
         {
@@ -49,7 +75,8 @@ public class RecipesController : ControllerBase
 
         try
         {
-            var output = await _data.GetByIdAsync(id);
+            var output = await _recipeData.GetByIdAsync(id);
+
             if (output == null)
             {
                 return NotFound(new { Message = $"Recipe with the id: {id} not found" });
@@ -68,10 +95,12 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult<RecipeDto>> GetByKeyword([FromQuery] string keyword, [FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/v1/recipes/keyword?keyword={keyword}&page={page}&pageSize={pageSize}", keyword, page, pageSize);
+        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
+        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
-            var output = await _data.GetByKeywordAsync(keyword, page, pageSize);
+            var output = await _recipeData.GetByKeywordAsync(keyword, page, pageSize, userSub);
             return Ok(output);
         }
         catch (Exception ex)
@@ -92,7 +121,7 @@ public class RecipesController : ControllerBase
 
         try
         {
-            var createdRecipe = await _data.AddRecipeAsync(newRecipeDto);
+            var createdRecipe = await _recipeData.AddRecipeAsync(newRecipeDto);
             var uri = "api/Recipes/" + createdRecipe.Id;
             return Created(uri, createdRecipe);
         }
@@ -122,12 +151,5 @@ public class RecipesController : ControllerBase
         var toReturn = result.AbsoluteUri;
 
         return Ok(new { path = toReturn });
-    }
-
-    // DELETE api/v1/Recipes
-    [HttpDelete("{id}")]
-    public async Task Delete(int id)
-    {
-        await _data.DeleteRecipeAsync(id);
     }
 }

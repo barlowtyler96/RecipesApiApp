@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
 
         var newUser = new User()
         {
-            UserSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!,
+            Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!,
             FirstName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_FirstName")?.Value!,
             LastName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_LastName")?.Value!
         };
@@ -46,7 +46,7 @@ public class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The POST call to api/users/new failed. UserSub: {newUser.UserSub}", newUser.UserSub);
+            _logger.LogError(ex, "The POST call to api/users/new failed. UserSub: {newUser.UserSub}", newUser.Sub);
             return BadRequest();
         }
     }
@@ -55,22 +55,22 @@ public class UsersController : ControllerBase
     [HttpPost("favorite/{id}")]
     public async Task<ActionResult> PostUserFavorite(int recipeId)
     {
-        UserFavoriteDto userFavoriteDto = new()
+        UserFavorite userFavorite = new()
         {
             RecipeId = recipeId,
-            UserSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+            Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
         };
 
         try
         {
             _logger.LogInformation("POST: api/users/favorite");
-            await _data.AddUserFavoriteAsync(userFavoriteDto);
+            await _data.AddUserFavoriteAsync(userFavorite);
             return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "The POST call to api/users/favorite failed. UserId: {userFavoriteDto.UserId}." +
-                "RecipeId: {userFavoriteDto.RecipeId}", userFavoriteDto.UserSub, userFavoriteDto.RecipeId);
+                "RecipeId: {userFavoriteDto.RecipeId}", userFavorite.Sub, userFavorite.RecipeId);
             return BadRequest();
         }
     }
@@ -79,22 +79,22 @@ public class UsersController : ControllerBase
     [HttpDelete("favorite/{id}")]
     public async Task<ActionResult> DeleteUserFavorite(int recipeId)
     {
-        UserFavoriteDto userFavoriteDto = new()
+        UserFavorite userFavorite = new()
         {
             RecipeId = recipeId,
-            UserSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+            Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
         };
 
         try
         {
             _logger.LogInformation("DELETE: api/users/favorite");
-            await _data.DeleteUserFavoriteAsync(userFavoriteDto);
+            await _data.DeleteUserFavoriteAsync(userFavorite);
             return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "The DELETE call to api/users/favorite failed. UserId: {userFavoriteDto.UserId}." +
-                "RecipeId: {userFavoriteDto.RecipeId}", userFavoriteDto.UserSub, userFavoriteDto.RecipeId);
+                "RecipeId: {userFavoriteDto.RecipeId}", userFavorite.Sub, userFavorite.RecipeId);
             return BadRequest();
         }
     }

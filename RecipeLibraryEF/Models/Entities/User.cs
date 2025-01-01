@@ -3,12 +3,10 @@ namespace RecipeLibraryEF.Models.Entities;
 
 public class User
 {
-    [Required]
-    public int Id { get; set; }
-
-    [Required]
     [MaxLength(100)]
-    public string UserSub { get; set; }
+    [Required]
+    [Key]
+    public string Sub { get; set; } = null!;
 
     [Required]
     [MaxLength(100)]
