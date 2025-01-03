@@ -53,11 +53,11 @@ public class UsersController : ControllerBase
 
     // POST: api/users/favorite
     [HttpPost("favorite/{id}")]
-    public async Task<ActionResult> PostUserFavorite(int recipeId)
+    public async Task<ActionResult> PostUserFavorite(int id)
     {
         UserFavorite userFavorite = new()
         {
-            RecipeId = recipeId,
+            RecipeId = id,
             Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
         };
 
@@ -77,11 +77,11 @@ public class UsersController : ControllerBase
 
     // DELETE: api/users/favorite
     [HttpDelete("favorite/{id}")]
-    public async Task<ActionResult> DeleteUserFavorite(int recipeId)
+    public async Task<ActionResult> DeleteUserFavorite(int id)
     {
         UserFavorite userFavorite = new()
         {
-            RecipeId = recipeId,
+            RecipeId = id,
             Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
         };
 
@@ -104,8 +104,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipeDto>>> GetUserSharedRecipes()
     {
         _logger.LogInformation("GET: api/Users/myrecipes");
-        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
-        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
         try
         {
@@ -124,8 +123,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipeDto>>> GetUserFavoriteRecipes()
     {
         _logger.LogInformation("GET: api/Users/favorites");
-        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
-        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+        var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
         try
         {

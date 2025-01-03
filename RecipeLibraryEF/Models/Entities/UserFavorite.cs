@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using RecipeLibraryEF.Models.Dtos;
 
 namespace RecipeLibraryEF.Models.Entities;
 
