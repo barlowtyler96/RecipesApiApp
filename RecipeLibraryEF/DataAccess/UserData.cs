@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using RecipeLibraryEF.Models.Dtos;
 using RecipeLibraryEF.Models.Entities;
@@ -27,21 +28,36 @@ public class UserData : IUserData
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<RecipeDto>> GetUserFavoriteRecipesAsync(string userSub)
+    public async Task<List<RecipeDto>> GetUserFavoriteRecipesAsync(string sub)
     {
-        var favoriteRecipes = await _context.UserFavorites
-            .Where(uf => uf.User.Sub == userSub)
-            .Select(uf => uf.Recipe)
+        var favoriteRecipeDtos = await _context.UserFavorites
+            .Where(uf => uf.Sub == sub)
+            .Select(uf => new RecipeDto
+            {
+                Id = uf.Recipe.Id,
+                Name = uf.Recipe.Name,
+                Description = uf.Recipe.Description,
+                Instructions = uf.Recipe.Instructions,
+                CreatedOn = uf.Recipe.CreatedOn,
+                ImageUrl = uf.Recipe.ImageUrl,
+                Ingredients = uf.Recipe.RecipeIngredients.Select(ri => new IngredientDto
+                {
+                    Id = ri.Ingredient.Id,
+                    Name = ri.Ingredient.Name,
+                    Amount = ri.Amount,
+                    Unit = ri.Unit
+                }).ToList(),
+                IsFavorited = true // Since these are all favorites
+            })
             .ToListAsync();
 
-        var favoriteRecipeDtos = _mapper.Map<List<RecipeDto>>(favoriteRecipes);
         return favoriteRecipeDtos;
     }
 
-    public async Task<List<int>> GetUserFavoriteIdsAsync(string userSub)
+    public async Task<List<int>> GetUserFavoriteIdsAsync(string sub)
     {
         var favoriteRecipes = await _context.UserFavorites
-            .Where(uf => uf.User.Sub == userSub)
+            .Where(uf => uf.User.Sub == sub)
             .Select(uf => uf.RecipeId)
             .ToListAsync();
         return favoriteRecipes;

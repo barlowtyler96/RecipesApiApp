@@ -40,22 +40,30 @@ public class RecipeData : IRecipeData
         int totalCount = await _context.Recipes.CountAsync();
 
         var recipes = await _context.Recipes
-            .Include(r => r.RecipeIngredients)
-                .ThenInclude(ri => ri.Ingredient)
             .OrderBy(r => r.Id)
             .Skip((currentPageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Include(r => r.UserFavorites)
+            .Select(r => new RecipeDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Instructions = r.Instructions,
+                CreatedOn = r.CreatedOn,
+                ImageUrl = r.ImageUrl,
+                Ingredients = r.RecipeIngredients
+                    .Select(ri => new IngredientDto
+                    {
+                        Id = ri.Ingredient.Id,
+                        Name = ri.Ingredient.Name,
+                        Amount = ri.Amount,
+                        Unit = ri.Unit
+                    }).ToList(),
+                IsFavorited = r.UserFavorites.Any(uf => uf.Sub == sub)
+            })
             .ToListAsync();
 
-        List<RecipeDto> recipeDtos = recipes.Select(recipe =>
-        {
-            var recipeDto = _mapper.Map<RecipeDto>(recipe);
-            recipeDto.IsFavorited = recipe.UserFavorites.Any(uf => uf.Sub == sub);
-            return recipeDto;
-        }).ToList();
-
-        PaginationResponse<List<RecipeDto>> pagedResponse = new (totalCount, pageSize, currentPageNumber, recipeDtos);
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(totalCount, pageSize, currentPageNumber, recipes);
         return pagedResponse;
     }
 
