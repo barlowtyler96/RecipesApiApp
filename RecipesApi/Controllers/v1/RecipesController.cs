@@ -118,7 +118,7 @@ public class RecipesController : ControllerBase
     {
         _logger.LogInformation("POST: api/v1/recipes/share");
         newRecipeDto.CreatedOn = DateTime.UtcNow;
-        newRecipeDto.CreatedBySub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
+        newRecipeDto.CreatedBy.Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
