@@ -18,20 +18,36 @@ public class RecipeData : IRecipeData
         _userData = userData;
     }
     //GET
-    public async Task<RecipeDto> GetByIdAsync(int id)
+    public async Task<RecipeDto> GetByIdAsync(int id, string sub)
     {
-        var recipeResponse = await _context.Recipes
-            .Include(r => r.RecipeIngredients)
-                .ThenInclude(ri => ri.Ingredient)
-            .FirstOrDefaultAsync(r => r.Id == id);
+        var recipeDto = await _context.Recipes
+            .Where(r => r.Id == id)
+            .Select(r => new RecipeDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Instructions = r.Instructions,
+                CreatedOn = r.CreatedOn,
+                ImageUrl = r.ImageUrl,
+                CreatedBy = new UserDto
+                {
+                    FirstName = r.CreatedBy.FirstName,
+                    LastName = r.CreatedBy.LastName
+                },
+                Ingredients = r.RecipeIngredients
+                    .Select(ri => new IngredientDto
+                    {
+                        Id = ri.Ingredient.Id,
+                        Name = ri.Ingredient.Name,
+                        Amount = ri.Amount,
+                        Unit = string.IsNullOrWhiteSpace(ri.Unit) ? null : ri.Unit
+                    }).ToList(),
+                IsFavorited = r.UserFavorites.Any(uf => uf.Sub == sub)
+            })
+            .FirstOrDefaultAsync();
 
-        if (recipeResponse == null)
-        {
-            return null!;
-        }
-
-        RecipeDto createdRecipe = _mapper.Map<RecipeDto>(recipeResponse);
-        return createdRecipe;
+        return recipeDto;
     }
 
     //GET
