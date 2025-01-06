@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using RecipeLibraryEF.DataAccess;
 using RecipeLibraryEF.Models.Dtos;
+using RecipesApi.Constants;
 using RecipesApi.Services;
 
 namespace RecipesApi.Controllers.v1;
@@ -30,11 +33,10 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> Get([FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/v1/recipes/?page={page}&pageSize={pageSize}", page, pageSize);
-        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
-        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
+            var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
             var recipes = await _recipeData.GetRecipesAsync(page, pageSize, userSub);
             
             return Ok(recipes);
@@ -51,11 +53,10 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult<PaginationResponse<List<RecipeDto>>>> GetRecents([FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/v1/recipes/?page={page}&pageSize={pageSize}", page, pageSize);
-        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
-        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
+            var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
             var recipes = await _recipeData.GetRecipesRecentAsync(page, pageSize, userSub);
 
             return Ok(recipes);
@@ -95,11 +96,10 @@ public class RecipesController : ControllerBase
     public async Task<ActionResult<RecipeDto>> GetByKeyword([FromQuery] string keyword, [FromQuery] int page, [FromQuery] int pageSize)
     {
         _logger.LogInformation("GET: api/v1/recipes/keyword?keyword={keyword}&page={page}&pageSize={pageSize}", keyword, page, pageSize);
-        var userSub = "47678e37-977b-4665-9451-88c53d5c65d0";
-        //var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
+            var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
             var output = await _recipeData.GetByKeywordAsync(keyword, page, pageSize, userSub);
             return Ok(output);
         }
@@ -111,13 +111,14 @@ public class RecipesController : ControllerBase
     }
 
     // POST api/v1/recipes/share
+    [Authorize]
+    [RequiredScope(ScopeConstants.UserReadWrite)]
     [HttpPost("share")]
     public async Task<ActionResult<RecipeDto>> Post([FromForm] RecipeDto newRecipeDto)
     {
         _logger.LogInformation("POST: api/v1/recipes/share");
-        newRecipeDto.CreatedBySub = "47678e37-977b-4665-9451-88c53d5c65d0";
         newRecipeDto.CreatedOn = DateTime.UtcNow;
-        //newRecipeDto.CreatedBy = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
+        newRecipeDto.CreatedBySub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
@@ -133,6 +134,8 @@ public class RecipesController : ControllerBase
     }
 
     // POST: api/v1/recipes/upload
+    [Authorize]
+    [RequiredScope(ScopeConstants.UserReadWrite)]
     [HttpPost("upload"), DisableRequestSizeLimit()]
     public async Task<ActionResult> PostRecipeImage()
     {
