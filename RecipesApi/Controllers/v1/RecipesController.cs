@@ -76,7 +76,8 @@ public class RecipesController : ControllerBase
 
         try
         {
-            var output = await _recipeData.GetByIdAsync(id);
+            var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
+            var output = await _recipeData.GetByIdAsync(id, userSub);
 
             if (output == null)
             {
