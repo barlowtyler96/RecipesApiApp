@@ -78,47 +78,73 @@ public class RecipeData : IRecipeData
         int totalCount = await _context.Recipes.CountAsync();
 
         var recipes = await _context.Recipes
-            .Include(r => r.RecipeIngredients)
-                .ThenInclude(ri => ri.Ingredient)
-            .OrderByDescending(r => r.CreatedOn)
+            .OrderBy(r => r.CreatedOn)
             .Skip((currentPageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Include(r => r.UserFavorites)
+            .Select(r => new RecipeDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Instructions = r.Instructions,
+                CreatedOn = r.CreatedOn,
+                ImageUrl = r.ImageUrl,
+                CreatedBy = new UserDto
+                {
+                    FirstName = r.CreatedBy.FirstName,
+                    LastName = r.CreatedBy.LastName
+                },
+                Ingredients = r.RecipeIngredients
+                    .Select(ri => new IngredientDto
+                    {
+                        Id = ri.Ingredient.Id,
+                        Name = ri.Ingredient.Name,
+                        Amount = ri.Amount,
+                        Unit = string.IsNullOrWhiteSpace(ri.Unit) ? null : ri.Unit
+                    }).ToList(),
+                IsFavorited = r.UserFavorites.Any(uf => uf.Sub == sub)
+            })
             .ToListAsync();
-
-        List<RecipeDto> recipeDtos = recipes.Select(recipe =>
-        {
-            var recipeDto = _mapper.Map<RecipeDto>(recipe);
-            recipeDto.IsFavorited = recipe.UserFavorites.Any(uf => uf.Sub == sub);
-            return recipeDto;
-        }).ToList();
-
-        PaginationResponse<List<RecipeDto>> pagedResponse = new(totalCount, pageSize, currentPageNumber, recipeDtos);
+        
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(totalCount, pageSize, currentPageNumber, recipes);
         return pagedResponse;
     }
 
-    //GET
     public async Task<PaginationResponse<List<RecipeDto>>> GetByKeywordAsync(string keyword, int currentPageNumber, int pageSize, string sub)
     {
         keyword = keyword?.Trim() ?? string.Empty;
 
         var recipes = await _context.Recipes
-            .Include(r => r.RecipeIngredients)
-                .ThenInclude(ri => ri.Ingredient)
             .Where(r => r.Name.Contains(keyword) || r.Description.Contains(keyword))
+            .OrderBy(r => r.CreatedOn)
             .Skip((currentPageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Include(r => r.UserFavorites)
+            .Select(r => new RecipeDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Instructions = r.Instructions,
+                CreatedOn = r.CreatedOn,
+                ImageUrl = r.ImageUrl,
+                CreatedBy = new UserDto
+                {
+                    FirstName = r.CreatedBy.FirstName,
+                    LastName = r.CreatedBy.LastName
+                },
+                Ingredients = r.RecipeIngredients
+                    .Select(ri => new IngredientDto
+                    {
+                        Id = ri.Ingredient.Id,
+                        Name = ri.Ingredient.Name,
+                        Amount = ri.Amount,
+                        Unit = string.IsNullOrWhiteSpace(ri.Unit) ? null : ri.Unit
+                    }).ToList(),
+                IsFavorited = r.UserFavorites.Any(uf => uf.Sub == sub)
+            })
             .ToListAsync();
 
-        List<RecipeDto> recipeDtos = recipes.Select(recipe =>
-        {
-            var recipeDto = _mapper.Map<RecipeDto>(recipe);
-            recipeDto.IsFavorited = recipe.UserFavorites.Any(uf => uf.Sub == sub);
-            return recipeDto;
-        }).ToList();
-
-        PaginationResponse<List<RecipeDto>> pagedResponse = new (recipes.Count , pageSize, currentPageNumber, recipeDtos);
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(recipes.Count, pageSize, currentPageNumber, recipes);
         return pagedResponse;
     }
 
