@@ -62,7 +62,7 @@ public class RecipeData : IRecipeData
                         Id = ri.Ingredient.Id,
                         Name = ri.Ingredient.Name,
                         Amount = ri.Amount,
-                        Unit = ri.Unit
+                        Unit = string.IsNullOrWhiteSpace(ri.Unit) ? null : ri.Unit
                     }).ToList(),
                 IsFavorited = r.UserFavorites.Any(uf => uf.Sub == sub)
             })
