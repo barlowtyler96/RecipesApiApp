@@ -51,6 +51,11 @@ public class RecipeData : IRecipeData
                 Instructions = r.Instructions,
                 CreatedOn = r.CreatedOn,
                 ImageUrl = r.ImageUrl,
+                CreatedBy = new UserDto
+                {
+                    FirstName = r.CreatedBy.FirstName,
+                    LastName = r.CreatedBy.LastName
+                },
                 Ingredients = r.RecipeIngredients
                     .Select(ri => new IngredientDto
                     {
