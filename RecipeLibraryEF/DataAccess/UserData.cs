@@ -38,7 +38,7 @@ public class UserData : IUserData
                 Name = uf.Recipe.Name,
                 Description = uf.Recipe.Description,
                 Instructions = uf.Recipe.Instructions,
-                CreatedOn = uf.Recipe.CreatedOn,
+                CreatedOn = uf.Recipe.CreatedOn.ToString("MM/dd/yyyy"),
                 ImageUrl = uf.Recipe.ImageUrl,
                 Ingredients = uf.Recipe.RecipeIngredients.Select(ri => new IngredientDto
                 {

@@ -28,7 +28,7 @@ public class RecipeData : IRecipeData
                 Name = r.Name,
                 Description = r.Description,
                 Instructions = r.Instructions,
-                CreatedOn = r.CreatedOn,
+                CreatedOn = r.CreatedOn.ToString("MM/dd/yyyy"),
                 ImageUrl = r.ImageUrl,
                 CreatedBy = new UserDto
                 {
@@ -65,7 +65,7 @@ public class RecipeData : IRecipeData
                 Name = r.Name,
                 Description = r.Description,
                 Instructions = r.Instructions,
-                CreatedOn = r.CreatedOn,
+                CreatedOn = r.CreatedOn.ToString("MM/dd/yyyy"),
                 ImageUrl = r.ImageUrl,
                 CreatedBy = new UserDto
                 {
@@ -103,7 +103,7 @@ public class RecipeData : IRecipeData
                 Name = r.Name,
                 Description = r.Description,
                 Instructions = r.Instructions,
-                CreatedOn = r.CreatedOn,
+                CreatedOn = r.CreatedOn.ToString("MM/dd/yyyy"),
                 ImageUrl = r.ImageUrl,
                 CreatedBy = new UserDto
                 {
@@ -141,7 +141,7 @@ public class RecipeData : IRecipeData
                 Name = r.Name,
                 Description = r.Description,
                 Instructions = r.Instructions,
-                CreatedOn = r.CreatedOn,
+                CreatedOn = r.CreatedOn.ToString("MM/dd/yyyy"),
                 ImageUrl = r.ImageUrl,
                 CreatedBy = new UserDto
                 {
@@ -168,7 +168,7 @@ public class RecipeData : IRecipeData
     public async Task<RecipeDto> AddRecipeAsync(RecipeDto newRecipeDto)
     {
         Recipe newRecipe = _mapper.Map<Recipe>(newRecipeDto);
-
+        newRecipe.CreatedOn = DateTime.UtcNow;
         foreach (var recipeIngredient in newRecipe.RecipeIngredients)
         {
             if(recipeIngredient.Ingredient != null)
