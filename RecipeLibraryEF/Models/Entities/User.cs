@@ -16,4 +16,5 @@ public class User
     [Required]
     public string LastName { get; set; }
     public List<UserFavorite> UserFavorites { get; set; }
+    public List<Recipe> CreatedRecipes { get; set; }
 }

@@ -17,6 +17,12 @@ public class RecipeContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Recipe>()
+            .HasOne(r => r.CreatedBy)
+            .WithMany(u => u.CreatedRecipes)
+            .HasForeignKey(r => r.CreatedBySub)
+            .OnDelete(DeleteBehavior.Restrict);
+
         modelBuilder.Entity<RecipeIngredient>()
             .HasKey(ri => new { ri.RecipeId, ri.IngredientId });
 

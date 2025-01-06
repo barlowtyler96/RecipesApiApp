@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace RecipeLibraryEF.Models.Entities;
@@ -36,4 +37,8 @@ public class Recipe
     //Navigation property
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<UserFavorite> UserFavorites { get; set; }
+
+    //Navigation property
+    [ForeignKey("CreatedBySub")]
+    public User CreatedBy { get; set; }
 }
