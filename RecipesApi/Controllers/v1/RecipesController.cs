@@ -119,8 +119,7 @@ public class RecipesController : ControllerBase
     {
         _logger.LogInformation("POST: api/v1/recipes/share");
         newRecipeDto.CreatedBy.Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
-        newRecipeDto.CreatedBy.FirstName = "Tyler";
-        newRecipeDto.CreatedBy.LastName = "Barlow";
+
         try
         {
             var createdRecipe = await _recipeData.AddRecipeAsync(newRecipeDto);
