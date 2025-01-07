@@ -168,7 +168,6 @@ public class RecipeData : IRecipeData
     public async Task<RecipeDto> AddRecipeAsync(RecipeDto newRecipeDto)
     {
         Recipe newRecipe = _mapper.Map<Recipe>(newRecipeDto);
-        newRecipe.CreatedOn = DateTime.UtcNow;
         foreach (var recipeIngredient in newRecipe.RecipeIngredients)
         {
             if(recipeIngredient.Ingredient != null)

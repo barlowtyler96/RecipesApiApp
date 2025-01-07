@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RecipeLibraryEF.Models.Dtos;
 using RecipeLibraryEF.Models.Entities;
+using System.Globalization;
 
 namespace RecipeLibraryEF.Models.MappingProfiles;
 
@@ -33,5 +34,24 @@ public class MappingProfile : Profile
 
         CreateMap<UserDto, User>();
         CreateMap<User, UserDto>();
+
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Register your custom converter
+            cfg.CreateMap<string, DateTime>().ConvertUsing<StringToDateTimeConverter>();
+
+            // Other mappings
+            cfg.CreateMap<RecipeDto, Recipe>();
+            cfg.CreateMap<Recipe, RecipeDto>();
+        });
+    }
+}
+
+public class StringToDateTimeConverter : ITypeConverter<string, DateTime>
+{
+    public DateTime Convert(string source, DateTime destination, ResolutionContext context)
+    {
+        DateTime.TryParseExact(source, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result);
+        return result; // Or handle the conversion error appropriately, e.g., throw exception or return a default DateTime.
     }
 }
