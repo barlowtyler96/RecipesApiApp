@@ -9,7 +9,8 @@
 ## Techs used: 
 * .NET Core
 * Entity Framework Core
-* SQL Server 2022
+* Azure App Service
+* Azure SQL
 * Azure AD B2C
 * Azure Blob Storage for images
 
