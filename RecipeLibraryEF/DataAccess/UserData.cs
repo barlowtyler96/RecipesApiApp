@@ -84,8 +84,35 @@ public class UserData : IUserData
         }
     }
 
-    public async Task<List<RecipeDto>> GetUserCreatedRecipesAsync(string userSub)
+    public async Task<List<RecipeDto>> GetUserCreatedRecipesAsync(string sub)
     {
-        throw new NotImplementedException();
+        var userCreatedRecipes = await _context.Recipes
+            .Where(r => r.CreatedBy.Sub == sub)
+            .Select(r => new RecipeDto
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Description = r.Description,
+                Instructions = r.Instructions,
+                CreatedOn = r.CreatedOn.ToString("MM/dd/yyyy"),
+                ImageUrl = r.ImageUrl,
+                CreatedBy = new UserDto
+                {
+                    FirstName = r.CreatedBy.FirstName,
+                    LastName = r.CreatedBy.LastName
+                },
+                Ingredients = r.RecipeIngredients
+                    .Select(ri => new IngredientDto
+                    {
+                        Id = ri.Ingredient.Id,
+                        Name = ri.Ingredient.Name,
+                        Amount = ri.Amount,
+                        Unit = string.IsNullOrWhiteSpace(ri.Unit) ? null : ri.Unit
+                    }).ToList(),
+                IsFavorited = r.UserFavorites.Any(uf => uf.Sub == sub)
+            })
+            .ToListAsync();
+
+        return userCreatedRecipes;
     }
 }
