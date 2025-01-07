@@ -40,6 +40,11 @@ public class UserData : IUserData
                 Instructions = uf.Recipe.Instructions,
                 CreatedOn = uf.Recipe.CreatedOn.ToString("MM/dd/yyyy"),
                 ImageUrl = uf.Recipe.ImageUrl,
+                CreatedBy = new UserDto
+                {
+                    FirstName = uf.Recipe.CreatedBy.FirstName,
+                    LastName = uf.Recipe.CreatedBy.LastName
+                },
                 Ingredients = uf.Recipe.RecipeIngredients.Select(ri => new IngredientDto
                 {
                     Id = ri.Ingredient.Id,
