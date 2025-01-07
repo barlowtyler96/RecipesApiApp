@@ -96,6 +96,8 @@ public class UserData : IUserData
 
     public async Task<PaginationResponse<List<RecipeDto>>> GetUserCreatedRecipesAsync(string sub, int page, int pageSize)
     {
+        var totalCount = await _context.Recipes.CountAsync(r => r.CreatedBySub == sub);
+
         var userCreatedRecipes = await _context.Recipes
             .Where(r => r.CreatedBy.Sub == sub)
             .Skip((page - 1) * pageSize)
@@ -125,7 +127,7 @@ public class UserData : IUserData
             })
             .ToListAsync();
 
-        PaginationResponse<List<RecipeDto>> pagedResponse = new(userCreatedRecipes.Count, pageSize, page, userCreatedRecipes);
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(totalCount, pageSize, page, userCreatedRecipes);
         return pagedResponse;
     }
 }
