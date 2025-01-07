@@ -101,14 +101,14 @@ public class UsersController : ControllerBase
 
     // GET: api/v1/users/myrecipes
     [HttpGet("myrecipes")]
-    public async Task<ActionResult<List<RecipeDto>>> GetUserSharedRecipes([FromQuery] int currentPage, int pageSize)
+    public async Task<ActionResult<List<RecipeDto>>> GetUserSharedRecipes([FromQuery] int page, int pageSize)
     {
         _logger.LogInformation("GET: api/Users/myrecipes");
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
         try
         {
-            var output = await _data.GetUserCreatedRecipesAsync(userSub!, currentPage, pageSize);
+            var output = await _data.GetUserCreatedRecipesAsync(userSub!, page, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
@@ -118,21 +118,21 @@ public class UsersController : ControllerBase
         }
     }
 
-    // GET: api/v1/users/favorites
+    // GET: api/v1/users/favorites?page=1&pageSize=8
     [HttpGet("favorites")]
-    public async Task<ActionResult<List<RecipeDto>>> GetUserFavoriteRecipes([FromQuery] int currentPage, int pageSize)
+    public async Task<ActionResult<List<RecipeDto>>> GetUserFavoriteRecipes([FromQuery] int page, int pageSize)
     {
-        _logger.LogInformation("GET: api/Users/favorites");
+        _logger.LogInformation("GET: api/Users/favorites?page={}&pageSize={}", page, pageSize);
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
         try
         {
-            var output = await _data.GetUserFavoriteRecipesAsync(userSub!, currentPage, pageSize);
+            var output = await _data.GetUserFavoriteRecipesAsync(userSub!, page, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Users/favorites failed. UserSub: {UserSub}", userSub);
+            _logger.LogError(ex, "The GET call to api/Users/favorites?page={currentPage}&pageSize={pageSize} failed. UserSub: {UserSub}", page, pageSize, userSub);
             return BadRequest();
         }
     }
