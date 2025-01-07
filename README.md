@@ -1,6 +1,6 @@
 # CulinaryShares Web API
 
-#### This solution consists of two projects, a class library for data access and a web API. My data access library utilizes dapper with stored procedures. The API is then consumed by my [CulinaryShares blazor](https://github.com/barlowtyler96/RecipesB2CBlazor) app, as well as the [angular clone](https://github.com/barlowtyler96/AngularRecipesB2C).
+#### This solution consists of two projects, a class library for data access and a web API. My data access library utilizes Entity Framework Core. The API is then consumed by my [CulinaryShares blazor](https://github.com/barlowtyler96/RecipesB2CBlazor) app, as well as the [angular clone](https://github.com/barlowtyler96/AngularRecipesB2C).
 
 #### This project was created to practice data access, SQL Server, Dapper, authentication/authorization, and API developement.
 
@@ -9,7 +9,8 @@
 ## Techs used: 
 * .NET Core
 * Entity Framework Core
-* SQL Server 2022
+* Azure App Service
+* Azure SQL
 * Azure AD B2C
 * Azure Blob Storage for images
 
