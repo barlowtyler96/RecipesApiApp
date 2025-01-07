@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using RecipeLibraryEF.Models.Dtos;
 using RecipeLibraryEF.Models.Entities;
+using System.Drawing.Printing;
 namespace RecipeLibraryEF.DataAccess;
 
 public class UserData : IUserData
@@ -28,10 +29,12 @@ public class UserData : IUserData
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<RecipeDto>> GetUserFavoriteRecipesAsync(string sub)
+    public async Task<PaginationResponse<List<RecipeDto>>> GetUserFavoriteRecipesAsync(string sub, int currentPageNumber, int pageSize)
     {
         var favoriteRecipeDtos = await _context.UserFavorites
             .Where(uf => uf.Sub == sub)
+            .Skip((currentPageNumber - 1) * pageSize)
+            .Take(pageSize)
             .Select(uf => new RecipeDto
             {
                 Id = uf.Recipe.Id,
@@ -56,7 +59,8 @@ public class UserData : IUserData
             })
             .ToListAsync();
 
-        return favoriteRecipeDtos;
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(favoriteRecipeDtos.Count, pageSize, currentPageNumber, favoriteRecipeDtos);
+        return pagedResponse;
     }
 
     public async Task<List<int>> GetUserFavoriteIdsAsync(string sub)
@@ -84,10 +88,12 @@ public class UserData : IUserData
         }
     }
 
-    public async Task<List<RecipeDto>> GetUserCreatedRecipesAsync(string sub)
+    public async Task<PaginationResponse<List<RecipeDto>>> GetUserCreatedRecipesAsync(string sub, int currentPageNumber, int pageSize)
     {
         var userCreatedRecipes = await _context.Recipes
             .Where(r => r.CreatedBy.Sub == sub)
+            .Skip((currentPageNumber - 1) * pageSize)
+            .Take(pageSize)
             .Select(r => new RecipeDto
             {
                 Id = r.Id,
@@ -113,6 +119,7 @@ public class UserData : IUserData
             })
             .ToListAsync();
 
-        return userCreatedRecipes;
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(userCreatedRecipes.Count, pageSize, currentPageNumber, userCreatedRecipes);
+        return pagedResponse;
     }
 }

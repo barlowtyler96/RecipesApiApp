@@ -8,7 +8,7 @@ public interface IUserData
     Task AddNewUserAsync(User newUser);
     Task AddUserFavoriteAsync(UserFavorite userFavorite);
     Task DeleteUserFavoriteAsync(UserFavorite userFavorite);
-    Task<List<RecipeDto>> GetUserFavoriteRecipesAsync(string userSub);
+    Task<PaginationResponse<List<RecipeDto>>> GetUserCreatedRecipesAsync(string sub, int currentPageNumber, int pageSize);
     Task<List<int>> GetUserFavoriteIdsAsync(string userSub);
-    Task<List<RecipeDto>> GetUserCreatedRecipesAsync(string userSub);
+    Task<PaginationResponse<List<RecipeDto>>> GetUserFavoriteRecipesAsync(string sub, int currentPageNumber, int pageSize);
 }
