@@ -101,14 +101,14 @@ public class UsersController : ControllerBase
 
     // GET: api/v1/users/myrecipes
     [HttpGet("myrecipes")]
-    public async Task<ActionResult<List<RecipeDto>>> GetUserSharedRecipes()
+    public async Task<ActionResult<List<RecipeDto>>> GetUserSharedRecipes([FromQuery] int currentPage, int pageSize)
     {
         _logger.LogInformation("GET: api/Users/myrecipes");
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
         try
         {
-            var output = await _data.GetUserCreatedRecipesAsync(userSub!);
+            var output = await _data.GetUserCreatedRecipesAsync(userSub!, currentPage, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
@@ -120,14 +120,14 @@ public class UsersController : ControllerBase
 
     // GET: api/v1/users/favorites
     [HttpGet("favorites")]
-    public async Task<ActionResult<List<RecipeDto>>> GetUserFavoriteRecipes()
+    public async Task<ActionResult<List<RecipeDto>>> GetUserFavoriteRecipes([FromQuery] int currentPage, int pageSize)
     {
         _logger.LogInformation("GET: api/Users/favorites");
         var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
         try
         {
-            var output = await _data.GetUserFavoriteRecipesAsync(userSub!);
+            var output = await _data.GetUserFavoriteRecipesAsync(userSub!, currentPage, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
