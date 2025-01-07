@@ -29,11 +29,17 @@ public class UserData : IUserData
         await _context.SaveChangesAsync();
     }
 
-    public async Task<PaginationResponse<List<RecipeDto>>> GetUserFavoriteRecipesAsync(string sub, int currentPage, int pageSize)
+    public async Task<PaginationResponse<List<RecipeDto>>> GetUserFavoriteRecipesAsync(string sub, int page, int pageSize)
     {
+        var totalCount = await _context.UserFavorites.CountAsync(uf => uf.Sub == sub);
+
         var favoriteRecipeDtos = await _context.UserFavorites
             .Where(uf => uf.Sub == sub)
-            .Skip((currentPage - 1) * pageSize)
+            .Include(uf => uf.Recipe)
+                .ThenInclude(r => r.CreatedBy)
+            .Include(uf => uf.Recipe.RecipeIngredients)
+                .ThenInclude(ri => ri.Ingredient)
+            .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(uf => new RecipeDto
             {
@@ -55,11 +61,11 @@ public class UserData : IUserData
                     Amount = ri.Amount,
                     Unit = ri.Unit
                 }).ToList(),
-                IsFavorited = true // Since these are all favorites
+                IsFavorited = true
             })
             .ToListAsync();
 
-        PaginationResponse<List<RecipeDto>> pagedResponse = new(favoriteRecipeDtos.Count, pageSize, currentPage, favoriteRecipeDtos);
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(totalCount, pageSize, page, favoriteRecipeDtos);
         return pagedResponse;
     }
 
@@ -88,11 +94,11 @@ public class UserData : IUserData
         }
     }
 
-    public async Task<PaginationResponse<List<RecipeDto>>> GetUserCreatedRecipesAsync(string sub, int currentPage, int pageSize)
+    public async Task<PaginationResponse<List<RecipeDto>>> GetUserCreatedRecipesAsync(string sub, int page, int pageSize)
     {
         var userCreatedRecipes = await _context.Recipes
             .Where(r => r.CreatedBy.Sub == sub)
-            .Skip((currentPage - 1) * pageSize)
+            .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(r => new RecipeDto
             {
@@ -119,7 +125,7 @@ public class UserData : IUserData
             })
             .ToListAsync();
 
-        PaginationResponse<List<RecipeDto>> pagedResponse = new(userCreatedRecipes.Count, pageSize, currentPage, userCreatedRecipes);
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(userCreatedRecipes.Count, pageSize, page, userCreatedRecipes);
         return pagedResponse;
     }
 }
