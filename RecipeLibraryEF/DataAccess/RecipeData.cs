@@ -192,6 +192,17 @@ public class RecipeData : IRecipeData
         _context.Recipes.Add(newRecipe);
         await _context.SaveChangesAsync();
         RecipeDto createdRecipe = _mapper.Map<RecipeDto>(newRecipe);
+
+        var user = await _context.Users
+            .Where(u => u.Sub == newRecipe.CreatedBySub)
+            .Select(u => new UserDto
+            {
+                FirstName = u.FirstName,
+                LastName = u.LastName
+            })
+            .FirstOrDefaultAsync(); 
+
+        createdRecipe.CreatedBy = user;
         return createdRecipe;
     }
 
