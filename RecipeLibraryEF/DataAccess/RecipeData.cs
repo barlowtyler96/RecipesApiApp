@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using RecipeLibraryEF.Models.Dtos;
 using RecipeLibraryEF.Models.Entities;
 namespace RecipeLibraryEF.DataAccess;
@@ -94,7 +93,7 @@ public class RecipeData : IRecipeData
         int totalCount = await _context.Recipes.CountAsync();
 
         var recipes = await _context.Recipes
-            .OrderBy(r => r.CreatedOn)
+            .OrderByDescending(r => r.CreatedOn)
             .Skip((currentPageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(r => new RecipeDto
@@ -132,7 +131,7 @@ public class RecipeData : IRecipeData
 
         var recipes = await _context.Recipes
             .Where(r => r.Name.Contains(keyword) || r.Description.Contains(keyword))
-            .OrderBy(r => r.CreatedOn)
+            .OrderByDescending(r => r.CreatedOn)
             .Skip((currentPageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(r => new RecipeDto
@@ -165,9 +164,12 @@ public class RecipeData : IRecipeData
     }
 
     //POST
-    public async Task<RecipeDto> AddRecipeAsync(RecipeDto newRecipeDto)
+    public async Task<RecipeDto> AddRecipeAsync(RecipeDto newRecipeDto, string sub)
     {
         Recipe newRecipe = _mapper.Map<Recipe>(newRecipeDto);
+        newRecipe.CreatedOn = DateTime.UtcNow;
+        newRecipe.CreatedBySub = sub;
+
         foreach (var recipeIngredient in newRecipe.RecipeIngredients)
         {
             if(recipeIngredient.Ingredient != null)
@@ -196,8 +198,16 @@ public class RecipeData : IRecipeData
     //DELETE
     public async Task DeleteRecipeAsync(int id)
     {
-        Recipe recipe = _context.Recipes.Find(id)!;
+        var recipe = await _context.Recipes.FirstOrDefaultAsync(r => r.Id == id);
+
+        if (recipe == null)
+        {
+            // Optionally handle the case where the recipe isn't found
+        }
+
         _context.Recipes.Remove(recipe);
         await _context.SaveChangesAsync();
+
+
     }
 }

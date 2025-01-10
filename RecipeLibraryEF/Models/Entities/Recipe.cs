@@ -41,4 +41,5 @@ public class Recipe
     //Navigation property
     [ForeignKey("CreatedBySub")]
     public User CreatedBy { get; set; }
+    //just make this a string?
 }

@@ -40,7 +40,7 @@ namespace RecipeLibraryEF.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("RecipeLibraryEF.Models.Entities.Recipe", b =>
@@ -81,7 +81,7 @@ namespace RecipeLibraryEF.Migrations
 
                     b.HasIndex("CreatedBySub");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("RecipeLibraryEF.Models.Entities.RecipeIngredient", b =>
@@ -103,7 +103,7 @@ namespace RecipeLibraryEF.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("RecipeIngredients");
+                    b.ToTable("RecipeIngredients", (string)null);
                 });
 
             modelBuilder.Entity("RecipeLibraryEF.Models.Entities.User", b =>
@@ -124,7 +124,7 @@ namespace RecipeLibraryEF.Migrations
 
                     b.HasKey("Sub");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("RecipeLibraryEF.Models.Entities.UserFavorite", b =>
@@ -139,7 +139,7 @@ namespace RecipeLibraryEF.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("UserFavorites");
+                    b.ToTable("UserFavorites", (string)null);
                 });
 
             modelBuilder.Entity("RecipeLibraryEF.Models.Entities.Recipe", b =>

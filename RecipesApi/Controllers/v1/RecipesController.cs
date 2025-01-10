@@ -14,15 +14,13 @@ namespace RecipesApi.Controllers.v1;
 public class RecipesController : ControllerBase
 {
     private readonly IRecipeData _recipeData;
-    private readonly IUserData _userData;
     private readonly ILogger _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IBlobService _blobService;
 
-    public RecipesController(IRecipeData recipeData, IUserData userData, ILogger<RecipesController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
+    public RecipesController(IRecipeData recipeData, ILogger<RecipesController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
     {
         _recipeData = recipeData;
-        _userData = userData;
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
         _blobService = blobService;
@@ -115,14 +113,15 @@ public class RecipesController : ControllerBase
     [Authorize]
     [RequiredScope(ScopeConstants.UserReadWrite)]
     [HttpPost("share")]
-    public async Task<ActionResult<RecipeDto>> Post([FromForm] RecipeDto newRecipeDto)
+    public async Task<ActionResult<RecipeDto>> Post(RecipeDto newRecipeDto)
     {
         _logger.LogInformation("POST: api/v1/recipes/share");
-        newRecipeDto.CreatedBy.Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
 
         try
         {
-            var createdRecipe = await _recipeData.AddRecipeAsync(newRecipeDto);
+            string sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
+
+            var createdRecipe = await _recipeData.AddRecipeAsync(newRecipeDto, sub);
             var uri = "api/Recipes/" + createdRecipe.Id;
             return Created(uri, createdRecipe);
         }
@@ -145,13 +144,16 @@ public class RecipesController : ControllerBase
             return BadRequest();
         }
 
-        var result = await _blobService.UploadFileBlobAsync(
-                "recipevaultimages",
-                file.OpenReadStream(),
-                file.ContentType,
-                file.Name);
+        //var result = await _blobService.UploadFileBlobAsync(
+        //        "recipevaultimages",
+        //        file.OpenReadStream(),
+        //        file.ContentType,
+        //        file.Name);
 
-        var toReturn = result.AbsoluteUri;
+        var result = "delete this";
+
+        //var toReturn = result.AbsoluteUri;
+        var toReturn = result;
 
         return Ok(new { path = toReturn });
     }

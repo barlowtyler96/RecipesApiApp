@@ -8,6 +8,6 @@ public interface IRecipeData
     Task<PaginationResponse<List<RecipeDto>>> GetRecipesRecentAsync(int currentPageNumber, int pageSize, string userSub);
     Task<RecipeDto> GetByIdAsync(int id, string sub);
     Task<PaginationResponse<List<RecipeDto>>> GetByKeywordAsync(string keyword, int currentPageNumber, int pageSize, string userSub);
-    Task<RecipeDto> AddRecipeAsync(RecipeDto newRecipeDto);
+    Task<RecipeDto> AddRecipeAsync(RecipeDto newRecipeDto, string userSub);
     Task DeleteRecipeAsync(int id);
 }

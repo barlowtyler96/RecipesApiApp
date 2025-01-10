@@ -59,7 +59,7 @@ public class UserData : IUserData
                     Id = ri.Ingredient.Id,
                     Name = ri.Ingredient.Name,
                     Amount = ri.Amount,
-                    Unit = ri.Unit
+                    Unit = string.IsNullOrEmpty(ri.Unit) ? null : ri.Unit
                 }).ToList(),
                 IsFavorited = true
             })

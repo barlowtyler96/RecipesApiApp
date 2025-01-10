@@ -13,7 +13,6 @@ public class Ingredient
     public string Name { get; set; } = "";
 
     //Navigation property
-    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public List<RecipeIngredient> RecipeIngredients { get; set; }
 
 }
