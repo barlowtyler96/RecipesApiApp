@@ -144,16 +144,14 @@ public class RecipesController : ControllerBase
             return BadRequest();
         }
 
-        //var result = await _blobService.UploadFileBlobAsync(
-        //        "recipevaultimages",
-        //        file.OpenReadStream(),
-        //        file.ContentType,
-        //        file.Name);
+        var result = await _blobService.UploadFileBlobAsync(
+                "recipevaultimages",
+                file.OpenReadStream(),
+                file.ContentType,
+                file.Name);
 
-        var result = "delete this";
 
-        //var toReturn = result.AbsoluteUri;
-        var toReturn = result;
+        var toReturn = result.AbsoluteUri;
 
         return Ok(new { path = toReturn });
     }
