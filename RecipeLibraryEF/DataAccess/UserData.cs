@@ -29,17 +29,13 @@ public class UserData : IUserData
         await _context.SaveChangesAsync();
     }
 
-    public async Task<PaginationResponse<List<RecipeDto>>> GetUserFavoriteRecipesAsync(string sub, int page, int pageSize)
+    public async Task<PaginationResponse<List<RecipeDto>>> GetUserFavoriteRecipesAsync(string sub, int currentPageNumber, int pageSize)
     {
         var totalCount = await _context.UserFavorites.CountAsync(uf => uf.Sub == sub);
 
         var favoriteRecipeDtos = await _context.UserFavorites
             .Where(uf => uf.Sub == sub)
-            .Include(uf => uf.Recipe)
-                .ThenInclude(r => r.CreatedBy)
-            .Include(uf => uf.Recipe.RecipeIngredients)
-                .ThenInclude(ri => ri.Ingredient)
-            .Skip((page - 1) * pageSize)
+            .Skip((currentPageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(uf => new RecipeDto
             {
@@ -65,7 +61,7 @@ public class UserData : IUserData
             })
             .ToListAsync();
 
-        PaginationResponse<List<RecipeDto>> pagedResponse = new(totalCount, pageSize, page, favoriteRecipeDtos);
+        PaginationResponse<List<RecipeDto>> pagedResponse = new(totalCount, pageSize, currentPageNumber, favoriteRecipeDtos);
         return pagedResponse;
     }
 
@@ -100,6 +96,7 @@ public class UserData : IUserData
 
         var userCreatedRecipes = await _context.Recipes
             .Where(r => r.CreatedBy.Sub == sub)
+            .OrderByDescending(r => r.CreatedOn)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(r => new RecipeDto

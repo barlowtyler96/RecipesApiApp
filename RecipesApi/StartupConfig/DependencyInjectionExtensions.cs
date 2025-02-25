@@ -36,7 +36,7 @@ public static class DependencyInjectionExtensions
     {
         builder.Services.AddDbContext<RecipeContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default2"));
         });
     }
 

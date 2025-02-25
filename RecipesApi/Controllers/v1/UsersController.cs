@@ -55,15 +55,28 @@ public class UsersController : ControllerBase
     [HttpPost("favorite/{id}")]
     public async Task<ActionResult> PostUserFavorite(int id)
     {
+        _logger.LogInformation("POST: api/users/favorite");
+
+        var user = new User()
+        {
+            FirstName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_FirstName")?.Value!,
+            LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "extension_LastName")?.Value!,
+            Sub = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+        };
+
+        if (_httpContextAccessor.HttpContext!.User.FindFirst("newUser") != null)
+        {
+            await _data.AddNewUserAsync(user);
+        }
+
         UserFavorite userFavorite = new()
         {
             RecipeId = id,
-            Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+            Sub = user.Sub
         };
 
         try
         {
-            _logger.LogInformation("POST: api/users/favorite");
             await _data.AddUserFavoriteAsync(userFavorite);
             return Ok();
         }
@@ -79,15 +92,28 @@ public class UsersController : ControllerBase
     [HttpDelete("favorite/{id}")]
     public async Task<ActionResult> DeleteUserFavorite(int id)
     {
+        _logger.LogInformation("DELETE: api/users/favorite");
+
+        var user = new User()
+        {
+            FirstName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_FirstName")?.Value!,
+            LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "extension_LastName")?.Value!,
+            Sub = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+        };
+
+        if (_httpContextAccessor.HttpContext!.User.FindFirst("newUser") != null)
+        {
+            await _data.AddNewUserAsync(user);
+        }
+
         UserFavorite userFavorite = new()
         {
             RecipeId = id,
-            Sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+            Sub = user.Sub
         };
 
         try
         {
-            _logger.LogInformation("DELETE: api/users/favorite");
             await _data.DeleteUserFavoriteAsync(userFavorite);
             return Ok();
         }
@@ -104,16 +130,27 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipeDto>>> GetUserSharedRecipes([FromQuery] int page, int pageSize)
     {
         _logger.LogInformation("GET: api/Users/myrecipes");
-        var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+
+        var user = new User()
+        {
+            FirstName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_FirstName")?.Value!,
+            LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "extension_LastName")?.Value!,
+            Sub = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+        };
+
+        if (_httpContextAccessor.HttpContext!.User.FindFirst("newUser") != null)
+        {
+            await _data.AddNewUserAsync(user);
+        }
 
         try
         {
-            var output = await _data.GetUserCreatedRecipesAsync(userSub!, page, pageSize);
+            var output = await _data.GetUserCreatedRecipesAsync(user.Sub, page, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Users/myrecipes failed. UserSub: {userSub}", userSub);
+            _logger.LogError(ex, "The GET call to api/Users/myrecipes failed. UserSub: {userSub}", user.Sub);
             return BadRequest();
         }
     }
@@ -123,16 +160,27 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipeDto>>> GetUserFavoriteRecipes([FromQuery] int page, int pageSize)
     {
         _logger.LogInformation("GET: api/Users/favorites?page={}&pageSize={}", page, pageSize);
-        var userSub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+
+        var user = new User()
+        {
+            FirstName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_FirstName")?.Value!,
+            LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "extension_LastName")?.Value!,
+            Sub = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+        };
+
+        if (_httpContextAccessor.HttpContext!.User.FindFirst("newUser") != null)
+        {
+            await _data.AddNewUserAsync(user);
+        }
 
         try
         {
-            var output = await _data.GetUserFavoriteRecipesAsync(userSub!, page, pageSize);
+            var output = await _data.GetUserFavoriteRecipesAsync(user.Sub, page, pageSize);
             return Ok(output);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The GET call to api/Users/favorites?page={currentPage}&pageSize={pageSize} failed. UserSub: {UserSub}", page, pageSize, userSub);
+            _logger.LogError(ex, "The GET call to api/Users/favorites?page={currentPage}&pageSize={pageSize} failed. UserSub: {UserSub}", page, pageSize, user.Sub);
             return BadRequest();
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using RecipeLibraryEF.DataAccess;
 using RecipeLibraryEF.Models.Dtos;
+using RecipeLibraryEF.Models.Entities;
 using RecipesApi.Constants;
 using RecipesApi.Services;
 
@@ -17,10 +18,12 @@ public class RecipesController : ControllerBase
     private readonly ILogger _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IBlobService _blobService;
+    private readonly IUserData _userData;
 
-    public RecipesController(IRecipeData recipeData, ILogger<RecipesController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
+    public RecipesController(IRecipeData recipeData, IUserData userData, ILogger<RecipesController> logger, IHttpContextAccessor httpContextAccessor, IBlobService blobService)
     {
         _recipeData = recipeData;
+        _userData = userData;
         _logger = logger;
         _httpContextAccessor = httpContextAccessor;
         _blobService = blobService;
@@ -119,9 +122,19 @@ public class RecipesController : ControllerBase
 
         try
         {
-            string sub = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!;
+            var user = new User()
+            {
+                FirstName = _httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(x => x.Type == "extension_FirstName")?.Value!,
+                LastName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "extension_LastName")?.Value!,
+                Sub = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value!
+            };
 
-            var createdRecipe = await _recipeData.AddRecipeAsync(newRecipeDto, sub);
+            if(_httpContextAccessor.HttpContext!.User.FindFirst("newUser") != null)
+            {
+                await _userData.AddNewUserAsync(user);
+            }
+            
+            var createdRecipe = await _recipeData.AddRecipeAsync(newRecipeDto, user.Sub);
             var uri = "api/Recipes/" + createdRecipe.Id;
             return Created(uri, createdRecipe);
         }
